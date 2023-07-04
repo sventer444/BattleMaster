@@ -28,11 +28,14 @@ Master
 - [ ] Pokedex
 - [ ] Achievements
 - [ ] Quests/Challenges
+- [ ] Healing???
 - [ ] Pokemon stats are implemented
     - Speed: Increases attack per turn
     - Attack: Damage given per turn
     - Hp: Health
     - Defense: Damage reduction
+    - Criticals
+- [ ] Pokemon at front is targeted
 - [ ] National Dex
 - [ ] Level 100 Max
 - [ ] Evolution at normal levels?

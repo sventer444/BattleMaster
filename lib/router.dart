@@ -1,27 +1,29 @@
+import 'package:battle_master/components/icons.dart';
 import 'package:battle_master/components/opponent.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:battle_master/components/base.dart';
 import 'package:battle_master/components/app_bar.dart';
 
 import 'components/bottom_nav.dart';
+import 'components/map.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   final router = GoRouter(
-    initialLocation: '/pc',
+    initialLocation: '/map',
     navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) {
+          GameIcons icons = GameIcons(context: context);
           return NoTransitionPage(
               child: Scaffold(
-            appBar: TopBar().appBar,
+            appBar: TopBar(icons: icons),
             body: child,
-            bottomNavigationBar: BottomNav().getNav(context),
+            bottomNavigationBar: BottomNav(icons: icons),
           ));
         },
         routes: [
@@ -39,9 +41,7 @@ class AppRouter {
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
               return const NoTransitionPage(
-                child: Scaffold(
-                  body: Center(child: Text("Map")),
-                ),
+                child: RouteMap(),
               );
             },
           ),

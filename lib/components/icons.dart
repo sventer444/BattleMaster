@@ -1,24 +1,36 @@
 import 'package:flutter/material.dart';
 
 class GameIcons {
-  static get pokedex => IconButton(
-        onPressed: dexPressed(),
+  const GameIcons({required this.context});
+
+  final BuildContext context;
+
+  // User Pokedex
+  get pokedex => IconButton(
+        onPressed: () => {dexPressed()},
         icon: dexIcon,
       );
-  static get dexIcon => null;
+  final Icon dexIcon = const Icon(Icons.account_balance_wallet);
 
-  static get userProfile =>
-      IconButton(onPressed: userPressed(), icon: profileIcon);
-  static get profileIcon => null;
+  static dexPressed() {
+    print('dex hit');
+  }
 
-  static get map => const Icon(Icons.map);
-  static get pc => const Icon(Icons.computer);
+  // User Account
+  get userProfile =>
+      IconButton(onPressed: () => {userPressed()}, icon: profileIcon);
+  final Icon profileIcon = const Icon(Icons.person);
 
   static userPressed() {
     print('user hit');
   }
 
-  static dexPressed() {
-    print('dex hit');
-  }
+  // Route Map
+  get routesMap => BottomNavigationBarItem(icon: mapIcon, label: 'Map',);
+
+          BottomNavigationBarItem(icon: GameIcons.pc, label: 'PC'),
+  final Icon mapIcon = const Icon(Icons.map);
+
+  // PC Storage
+  final Icon pcIcon = const Icon(Icons.computer);
 }
