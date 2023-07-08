@@ -19,17 +19,17 @@ import 'package:flutter/material.dart';
 /// we could allow players to customize colors, for example,
 /// or even get the colors from the network.
 class Palette {
-  Color get pokeRed => const Color.fromRGBO(164, 16, 0, 1);
-  Color get bgGrey1 => const Color.fromRGBO(82, 82, 82, 1);
-  Color get bgGrey2 => const Color.fromRGBO(131, 131, 131, 1);
-  Color get orange1 => const Color.fromRGBO(222, 82, 0, 1);
-  Color get orange2 => const Color.fromRGBO(255, 139, 0, 1);
-  Color get blue1 => const Color.fromRGBO(32, 82, 139, 1);
-  Color get blue2 => const Color.fromRGBO(82, 172, 238, 1);
-  Color get blue3 => const Color.fromRGBO(115, 189, 246, 1);
-  Color get blue4 => const Color.fromRGBO(164, 222, 255, 1);
+  static Color get pokeRed => const Color.fromRGBO(164, 16, 0, 1);
+  static Color get bgGrey1 => const Color.fromRGBO(82, 82, 82, 1);
+  static Color get bgGrey2 => const Color.fromRGBO(131, 131, 131, 1);
+  static Color get orange1 => const Color.fromRGBO(222, 82, 0, 1);
+  static Color get orange2 => const Color.fromRGBO(255, 139, 0, 1);
+  static Color get blue1 => const Color.fromRGBO(32, 82, 139, 1);
+  static Color get blue2 => const Color.fromRGBO(82, 172, 238, 1);
+  static Color get blue3 => const Color.fromRGBO(115, 189, 246, 1);
+  static Color get blue4 => const Color.fromRGBO(164, 222, 255, 1);
 
-  Color get inkFullOpacity => const Color(0xff352b42);
-  Color get ink => const Color(0xee352b42);
-  Color get trueWhite => const Color(0xffffffff);
+  static Color get inkFullOpacity => const Color(0xff352b42);
+  static Color get ink => const Color(0xee352b42);
+  static Color get trueWhite => const Color(0xffffffff);
 }

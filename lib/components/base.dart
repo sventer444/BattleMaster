@@ -72,19 +72,14 @@ class BasePage extends StatelessWidget {
             },
             dispose: (context, audio) => audio.dispose(),
           ),
-          Provider(
-            create: (context) => Palette(),
-          ),
         ],
         child: Builder(builder: (context) {
-          final palette = context.watch<Palette>();
-
           return MaterialApp.router(
             title: 'Battle Master',
             theme: ThemeData.from(
               colorScheme: ColorScheme.fromSeed(
-                seedColor: palette.ink,
-                background: palette.bgGrey2,
+                seedColor: Palette.ink,
+                background: Palette.bgGrey2,
               ),
             ),
             debugShowCheckedModeBanner: false,
@@ -110,83 +105,3 @@ class BasePage extends StatelessWidget {
     // }
   }
 }
-
-
-
-
-
-
-// class MyApp extends StatelessWidget {
-//   
-
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return AppLifecycleObserver(
-//       child: MultiProvider(
-//         providers: [
-//           ChangeNotifierProvider(
-//             create: (context) {
-//               var progress = PlayerProgress(playerProgressPersistence);
-//               progress.getLatestFromStore();
-//               return progress;
-//             },
-//           ),
-//           Provider<GamesServicesController?>.value(
-//               value: gamesServicesController),
-//           Provider<AdsController?>.value(value: adsController),
-//           ChangeNotifierProvider<InAppPurchaseController?>.value(
-//               value: inAppPurchaseController),
-//           Provider<SettingsController>(
-//             lazy: false,
-//             create: (context) => SettingsController(
-//               persistence: settingsPersistence,
-//             )..loadStateFromPersistence(),
-//           ),
-//           ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
-//               AudioController>(
-//             // Ensures that the AudioController is created on startup,
-//             // and not "only when it's needed", as is default behavior.
-//             // This way, music starts immediately.
-//             lazy: false,
-//             create: (context) => AudioController()..initialize(),
-//             update: (context, settings, lifecycleNotifier, audio) {
-//               if (audio == null) throw ArgumentError.notNull();
-//               audio.attachSettings(settings);
-//               audio.attachLifecycleNotifier(lifecycleNotifier);
-//               return audio;
-//             },
-//             dispose: (context, audio) => audio.dispose(),
-//           ),
-//           Provider(
-//             create: (context) => Palette(),
-//           ),
-//         ],
-//         child: Builder(builder: (context) {
-//           final palette = context.watch<Palette>();
-
-//           return MaterialApp.router(
-//             title: 'Flutter Demo',
-//             theme: ThemeData.from(
-//               colorScheme: ColorScheme.fromSeed(
-//                 seedColor: palette.darkPen,
-//                 background: palette.backgroundMain,
-//               ),
-//               textTheme: TextTheme(
-//                 bodyText2: TextStyle(
-//                   color: palette.ink,
-//                 ),
-//               ),
-//             ),
-//             routeInformationProvider: _router.routeInformationProvider,
-//             routeInformationParser: _router.routeInformationParser,
-//             routerDelegate: _router.routerDelegate,
-//             scaffoldMessengerKey: scaffoldMessengerKey,
-//           );
-//         }),
-//       ),
-//     );
-
-
-//   }

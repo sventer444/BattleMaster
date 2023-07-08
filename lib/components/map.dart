@@ -12,10 +12,8 @@ class RouteMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.watch<Palette>();
-
     return Scaffold(
-      backgroundColor: palette.bgGrey2,
+      backgroundColor: Palette.bgGrey2,
       body: ResponsiveScreen(
         squarishMainArea: Column(
           children: [
@@ -56,15 +54,15 @@ class RouteMap extends StatelessWidget {
             ),
           ],
         ),
-        rectangularMenuArea: DelayedAppear(
-          ms: ScreenDelays.fourth,
-          child: TextButton(
-            onPressed: () {
-              GoRouter.of(context).pop();
-            },
-            child: const Text('Back'),
-          ),
-        ),
+        // rectangularMenuArea: DelayedAppear(
+        //   ms: ScreenDelays.fourth,
+        //   child: TextButton(
+        //     onPressed: () {
+        //       //GoRouter.of(context).pop();
+        //     },
+        //     child: const Text('Region: Kanto'),
+        //   ),
+        // ),
       ),
     );
   }
@@ -78,7 +76,6 @@ class _LevelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
-    final palette = context.watch<Palette>();
 
     // /// Level is either one that the player has already bested, on one above.
     // final available = playerProgress.highestLevelReached + 1 >= number;
@@ -93,7 +90,7 @@ class _LevelButton extends StatelessWidget {
           child: SizedBox.expand(
             child: Padding(
               padding: const EdgeInsets.all(8),
-              child: Text('level $number'),
+              child: Text('Route $number'),
             ),
           )),
     );

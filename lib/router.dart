@@ -1,4 +1,4 @@
-import 'package:battle_master/components/icons.dart';
+import 'package:battle_master/styles/icons.dart';
 import 'package:battle_master/components/opponent.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,27 +12,28 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class AppRouter {
   final router = GoRouter(
-    initialLocation: '/map',
+    initialLocation: '/',
     navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
         pageBuilder: (context, state, child) {
-          GameIcons icons = GameIcons(context: context);
+          var topBar = TopBar();
+          var bottomNav = BottomNav(context: context);
           return NoTransitionPage(
               child: Scaffold(
-            appBar: TopBar(icons: icons),
+            appBar: topBar.appBar,
             body: child,
-            bottomNavigationBar: BottomNav(icons: icons),
+            bottomNavigationBar: bottomNav.nav,
           ));
         },
         routes: [
           GoRoute(
-            path: '/activeOpponent',
+            path: '/',
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
               return const NoTransitionPage(
-                child: Opponent(opponentType: 'KantoStarters'),
+                child: Center(child: Text('Home')),
               );
             },
           ),

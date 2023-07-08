@@ -5,18 +5,17 @@ import 'snack_bar.dart';
 
 void showErrorSnackbar(String errorMessage, {SnackBarAction? action}) {
   final messenger = scaffoldMessengerKey.currentState;
-  final palette = Palette();
   final text = RichText(
     text: TextSpan(
       children: [
         TextSpan(
           text: 'Error: ',
-          style: TextStyle(color: palette.pokeRed, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Palette.pokeRed, fontWeight: FontWeight.bold),
         ),
         TextSpan(
           text: errorMessage,
           style: TextStyle(
-            color: palette.ink,
+            color: Palette.ink,
           ),
         ),
       ],
@@ -33,7 +32,7 @@ void showErrorSnackbar(String errorMessage, {SnackBarAction? action}) {
         margin: const EdgeInsets.only(bottom: 30, left: 24, right: 24),
         behavior: SnackBarBehavior.floating,
         duration: duration,
-        backgroundColor: palette.bgGrey1,
+        backgroundColor: Palette.bgGrey1,
         dismissDirection: DismissDirection.horizontal,
         action: action,
       ),

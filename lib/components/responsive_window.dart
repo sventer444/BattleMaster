@@ -7,7 +7,7 @@ class ResponsiveScreen extends StatelessWidget {
 
   /// The second-largest area after [squarishMainArea]. It can be narrow
   /// or wide.
-  final Widget rectangularMenuArea;
+  final Widget? rectangularMenuArea;
 
   /// An area reserved for some static text close to the top of the screen.
   final Widget topMessageArea;
@@ -18,7 +18,7 @@ class ResponsiveScreen extends StatelessWidget {
 
   const ResponsiveScreen({
     required this.squarishMainArea,
-    required this.rectangularMenuArea,
+    this.rectangularMenuArea,
     this.topMessageArea = const SizedBox.shrink(),
     this.mainAreaProminence = 0.8,
     super.key,

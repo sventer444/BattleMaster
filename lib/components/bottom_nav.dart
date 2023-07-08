@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:battle_master/components/icons.dart';
+import 'package:battle_master/styles/icons.dart';
 
 import '../styles/palette.dart';
 
 class BottomNav {
-  BottomNav({required this.icons});
-  final GameIcons icons;
+  BottomNav({required this.context});
+  final BuildContext context;
 
-  get navBar => BottomNavigationBar(
-        backgroundColor: Palette().trueWhite,
-        items: [
-          BottomNavigationBarItem(icon: GameIcons.map, label: 'Map'),
-          BottomNavigationBarItem(icon: GameIcons.pc, label: 'PC'),
+  static const navRoutingMap = ['map', 'pc'];
+
+  get nav => BottomNavigationBar(
+        backgroundColor: Palette.trueWhite,
+        items: const [
+          BottomNavigationBarItem(icon: GameIcons.mapIcon, label: 'Map'),
+          BottomNavigationBarItem(icon: GameIcons.pcIcon, label: 'PC'),
         ],
-        onTap: (index) => {navigate(index, appContext)},
+        onTap: (index) => {navigate(context, index)},
       );
+
+  navigate(BuildContext context, int index) {
+    context.go('/${navRoutingMap[index]}');
+  }
 }
