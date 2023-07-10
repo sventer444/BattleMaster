@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../states/player_progress.dart';
 import '../styles/delayed_appear.dart';
 import '../styles/palette.dart';
+import 'mapRoutes/kanto.dart';
 import 'responsive_window.dart';
 
 class RouteMap extends StatelessWidget {
@@ -23,55 +24,66 @@ class RouteMap extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: Center(
                   child: Text(
-                    'Select Route',
+                    'Kanto',
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 50),
-            // This is the grid of numbers.
             Expanded(
-              child: Center(
-                child: AspectRatio(
-                    aspectRatio: 1,
-                    child: Column(
-                      children: [
-                        for (var y = 0; y < 3; y++)
-                          Expanded(
-                            child: Row(
-                              children: [
-                                for (var x = 0; x < 3; x++)
-                                  AspectRatio(
-                                    aspectRatio: 1,
-                                    child: _LevelButton(y * 3 + x + 1),
-                                  )
-                              ],
-                            ),
-                          )
-                      ],
-                    )),
-              ),
-            ),
+                child: Row(
+              children: [
+                // This is the grid of locations
+                Column(
+                  children: [
+                    for (var i = 0; i < locations.length; i++)
+                      _LocationButton(i)
+                  ],
+                ),
+                // This is the grid of routes
+                Column(
+                  children: [
+                    for (var i = 0; i < totalRoutesCount; i++)
+                      _RouteButton(i + 1)
+                  ],
+                )
+              ],
+            )),
+
+            // Expanded(
+            //   child: Center(
+            //     child: Column(
+            //       children: [
+            //         for (var y = 0; y < 3; y++)
+            //           Row(
+            //             children: [Text('${y + 1}')],
+            //           ),
+            //         // Expanded(
+            //         //   child: Row(
+            //         //     children: [
+            //         //       for (var x = 0; x < 2; x++)
+            //         //         AspectRatio(
+            //         //           aspectRatio: 1,
+            //         //           child: _LevelButton(y * 3 + x + 1),
+            //         //         )
+            //         //     ],
+            //         //   ),
+            //         // )
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
-        // rectangularMenuArea: DelayedAppear(
-        //   ms: ScreenDelays.fourth,
-        //   child: TextButton(
-        //     onPressed: () {
-        //       //GoRouter.of(context).pop();
-        //     },
-        //     child: const Text('Region: Kanto'),
-        //   ),
-        // ),
       ),
     );
   }
 }
 
-class _LevelButton extends StatelessWidget {
-  final int number;
+class _RouteButton extends StatelessWidget {
+  final int routeNumber;
 
-  const _LevelButton(this.number, {Key? key}) : super(key: key);
+  const _RouteButton(this.routeNumber, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,15 +96,47 @@ class _LevelButton extends StatelessWidget {
     // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
 
     return DelayedAppear(
-      ms: ScreenDelays.second + (number - 1) * 70,
+      ms: ScreenDelays.second + (routeNumber - 1) * 70,
       child: TextButton(
-          onPressed: () => GoRouter.of(context).go('/play/session/$number'),
-          child: SizedBox.expand(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text('Route $number'),
-            ),
-          )),
+        onPressed: () => GoRouter.of(context).go('/kanto/route/$routeNumber'),
+        // child: SizedBox.expand(
+        // child: Padding(
+        //   padding: const EdgeInsets.all(8),
+        child: Text('Route $routeNumber'),
+        // ),
+        // )
+      ),
+    );
+  }
+}
+
+class _LocationButton extends StatelessWidget {
+  final int locationIndex;
+
+  const _LocationButton(this.locationIndex, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final playerProgress = context.watch<PlayerProgress>();
+
+    // /// Level is either one that the player has already bested, on one above.
+    // final available = playerProgress.highestLevelReached + 1 >= number;
+
+    // /// We allow the player to skip one level.
+    // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
+
+    return DelayedAppear(
+      ms: ScreenDelays.second + (locationIndex - 1) * 70,
+      child: TextButton(
+        onPressed: () =>
+            GoRouter.of(context).go('/kanto/${locations[locationIndex].$1}'),
+        // child: SizedBox.expand(
+        // child: Padding(
+        //   padding: const EdgeInsets.all(8),
+        child: Text('${locations[locationIndex].$2}'),
+        // ),
+        // )
+      ),
     );
   }
 }

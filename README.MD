@@ -38,14 +38,15 @@ Master
 - [ ] Pokemon at front is targeted
 - [ ] National Dex
 - [ ] Level 100 Max
+- [ ] At 100 prestige levels, unlock a permenant passive ability
 - [ ] Evolution at normal levels?
-- [ ] Pokemon can faint, and need to be re-caught
+- [ ] Pokemon can faint, and need to be re-caught?
 - [ ] IVs for permenant upgrades to a pokemon
 - [ ] Shiny mechanics?
 - [ ] Make money from battling, can buy pokeballs to catch with
 - [ ] Map/Travel System?
 - [ ] Perm Evolution? 
-- [ ] Badge Mechanics (With Prestige?)
+- [ ] Badge Mechanics (With Level up?)
 - [ ] Starter choice
 - [ ] New Journey (Prestige)
 - [ ] Inverse Challenge (unlockable reverse path through region)
@@ -58,3 +59,4 @@ Master
 - [ ] Starting screen
 - [ ] Retain player progress/state
 - [ ] Tutorial
+- [ ] Split routes and special locations into individual map columns

@@ -82,7 +82,7 @@ class _DelayedAppearState extends State<DelayedAppear>
 }
 
 class ScreenDelays {
-  static const int _cadence = 300;
+  static const int _cadence = 500;
 
   static const int first = 400;
   static int second = first + _cadence;

@@ -1,3 +1,5 @@
+import 'package:battle_master/states/persistence/player/memory_player_persistence.dart';
+import 'package:battle_master/states/persistence/settings/memory_settings_peristence.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -34,9 +36,9 @@ import 'states/persistence/settings/local_storage_settings.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Logger _log = Logger('main.dart');
+  Logger log = Logger('main.dart');
 
-  _log.info('Full Screen');
+  log.info('Full Screen');
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
   );
@@ -69,8 +71,11 @@ void main() {
 
   runApp(
     BasePage(
-      settingsPersistence: LocalStorageSettingsPersistence(),
-      playerProgressPersistence: LocalStoragePlayerProgressPersistence(),
+      // in-memory used for testing
+      settingsPersistence:
+          MemoryOnlySettingsPersistence(), //LocalStorageSettingsPersistence(),
+      playerProgressPersistence:
+          MemoryOnlyPlayerProgressPersistence(), //LocalStoragePlayerProgressPersistence(),
       // inAppPurchaseController: inAppPurchaseController,
       // adsController: adsController,
       // gamesServicesController: gamesServicesController,
