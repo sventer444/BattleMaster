@@ -95,18 +95,22 @@ class _RouteButton extends StatelessWidget {
     // /// We allow the player to skip one level.
     // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
 
-    return DelayedAppear(
-      ms: ScreenDelays.second + (routeNumber - 1) * 70,
-      child: TextButton(
-        onPressed: () => GoRouter.of(context).go('/kanto/route/$routeNumber'),
-        // child: SizedBox.expand(
-        // child: Padding(
-        //   padding: const EdgeInsets.all(8),
-        child: Text('Route $routeNumber'),
-        // ),
-        // )
-      ),
-    );
+    if (routeNumber <= playerProgress.highestRoute) {
+      return DelayedAppear(
+        ms: ScreenDelays.second + (routeNumber - 1) * 70,
+        child: TextButton(
+          onPressed: () => GoRouter.of(context).go('/kanto/route/$routeNumber'),
+          // child: SizedBox.expand(
+          // child: Padding(
+          //   padding: const EdgeInsets.all(8),
+          child: Text('Route $routeNumber'),
+          // ),
+          // )
+        ),
+      );
+    } else {
+      return SizedBox(height: 10);
+    }
   }
 }
 
@@ -124,19 +128,24 @@ class _LocationButton extends StatelessWidget {
 
     // /// We allow the player to skip one level.
     // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
-
-    return DelayedAppear(
-      ms: ScreenDelays.second + (locationIndex - 1) * 70,
-      child: TextButton(
-        onPressed: () =>
-            GoRouter.of(context).go('/kanto/${locations[locationIndex].$1}'),
-        // child: SizedBox.expand(
-        // child: Padding(
-        //   padding: const EdgeInsets.all(8),
-        child: Text('${locations[locationIndex].$2}'),
-        // ),
-        // )
-      ),
-    );
+    if (locationIndex <= playerProgress.furthestLocationReached) {
+      return DelayedAppear(
+        ms: ScreenDelays.second + (locationIndex - 1) * 70,
+        child: TextButton(
+          onPressed: () =>
+              GoRouter.of(context).go('/kanto/${locations[locationIndex].$1}'),
+          // child: SizedBox.expand(
+          // child: Padding(
+          //   padding: const EdgeInsets.all(8),
+          child: Text(locations[locationIndex].$2),
+          // ),
+          // )
+        ),
+      );
+    } else {
+      return SizedBox(
+        height: 10,
+      );
+    }
   }
 }
