@@ -1,3 +1,4 @@
+import 'package:battle_master/components/mon.dart';
 import 'package:battle_master/constants/dex_status.dart';
 
 import 'player_persistence.dart';
@@ -9,8 +10,8 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   int highestRoute = 0;
   int furthestLocationReached = 0;
   List<(String, DexStatus)> playerDex = List.empty(growable: true);
-  List<String> playerPc = List.empty(growable: true);
-  List<String> playerTeam = List.empty(growable: true);
+  List<Pokemon> playerPc = List.empty(growable: true);
+  List<Pokemon> playerTeam = List.empty(growable: true);
 
   // @override
   // Future<int> getHighestLevelReached() async {
@@ -45,12 +46,12 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   }
 
   @override
-  Future<List<String>> getPlayerPc() async {
+  Future<List<Pokemon>> getPlayerPc() async {
     return playerPc;
   }
 
   @override
-  Future<List<String>> getPlayerTeam() async {
+  Future<List<Pokemon>> getPlayerTeam() async {
     return playerTeam;
   }
 
@@ -69,10 +70,10 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
       playerDex = value;
 
   @override
-  Future<void> savePlayerPc(List<String> value) async => playerPc = value;
+  Future<void> savePlayerPc(List<Pokemon> value) async => playerPc = value;
 
   @override
-  Future<void> savePlayerTeam(List<String> value) async => playerTeam = value;
+  Future<void> savePlayerTeam(List<Pokemon> value) async => playerTeam = value;
 
   @override
   Future<void> savePlayerData(
@@ -80,8 +81,8 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
       int highestRoute,
       int furthestLocationReached,
       List<(String, DexStatus)> playerDex,
-      List<String> playerPc,
-      List<String> playerTeam) async {
+      List<Pokemon> playerPc,
+      List<Pokemon> playerTeam) async {
     this.farthestRegion = farthestRegion;
     this.highestRoute = highestRoute;
     this.furthestLocationReached = furthestLocationReached;

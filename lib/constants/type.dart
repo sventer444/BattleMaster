@@ -1,0 +1,19 @@
+enum Types {
+  grass,
+  fire,
+  water,
+  rock,
+  ground,
+  bug,
+  flying,
+  normal,
+  steel,
+  dark,
+  ghost,
+  psychic,
+  ice,
+  dragon,
+  fairy,
+  fighting,
+  poison
+}

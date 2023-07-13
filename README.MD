@@ -34,7 +34,7 @@ Master
     - Attack: Damage given per turn
     - Hp: Health
     - Defense: Damage reduction
-    - Criticals
+- [ ] Critical hits
 - [ ] Pokemon at front is targeted
 - [ ] National Dex
 - [ ] Level 100 Max
@@ -47,6 +47,8 @@ Master
 - [ ] Map/Travel System?
 - [ ] Perm Evolution? 
 - [ ] Badge Mechanics (With Level up?)
+- [ ] Shadow pokemon?
+- [ ] Status effects?
 - [ ] Starter choice
 - [ ] New Journey (Prestige)
 - [ ] Inverse Challenge (unlockable reverse path through region)
@@ -59,4 +61,4 @@ Master
 - [ ] Starting screen
 - [ ] Retain player progress/state
 - [ ] Tutorial
-- [ ] Split routes and special locations into individual map columns
+- [x] Split routes and special locations into individual map columns

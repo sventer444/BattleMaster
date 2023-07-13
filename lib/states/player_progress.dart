@@ -1,5 +1,6 @@
 // import 'dart:async';
 
+import 'package:battle_master/components/mon.dart';
 import 'package:flutter/foundation.dart';
 
 import '../constants/dex_status.dart';
@@ -17,9 +18,9 @@ class PlayerProgress extends ChangeNotifier {
 
   List<(String, DexStatus)> _playerDex = List.empty(growable: true);
 
-  List<String> _playerPc = List.empty(growable: true);
+  List<Pokemon> _playerPc = List.empty(growable: true);
 
-  List<String> _playerTeam = List.empty(growable: true);
+  List<Pokemon> _playerTeam = List.empty(growable: true);
 
   PlayerProgress(this._store);
 
@@ -32,9 +33,9 @@ class PlayerProgress extends ChangeNotifier {
   // List of pokemon the player has encountered
   List<(String, DexStatus)> get playerDex => _playerDex;
   // Pokemon available in the player's pc
-  List<String> get playerPc => _playerPc;
+  List<Pokemon> get playerPc => _playerPc;
   // Pokemon currently assigned to the player's team
-  List<String> get playerTeam => _playerTeam;
+  List<Pokemon> get playerTeam => _playerTeam;
 
   void getLatestFromStore() async {
     // final level = await _store.getHighestLevelReached();
@@ -104,13 +105,13 @@ class PlayerProgress extends ChangeNotifier {
     _store.savePlayerDex(_playerDex);
   }
 
-  void setPlayerPc(String playerPc) {
+  void setPlayerPc(Pokemon playerPc) {
     _playerPc.add(playerPc);
     notifyListeners();
     _store.savePlayerPc(_playerPc);
   }
 
-  void setPlayerTeam(String playerTeam) {
+  void setPlayerTeam(Pokemon playerTeam) {
     _playerTeam.add(playerTeam);
     notifyListeners();
     _store.savePlayerTeam(_playerTeam);

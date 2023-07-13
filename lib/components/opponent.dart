@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'mon.dart';
+
 class Opponent extends StatelessWidget {
-  const Opponent({super.key, required this.name, required this.onClick});
+  const Opponent({super.key, required this.mon, required this.onClick});
 
   final void Function() onClick;
 
-  final String name;
+  final Pokemon mon;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class Opponent extends StatelessWidget {
         padding: const EdgeInsets.all(6.0),
       ),
       child: Text(
-        name,
+        mon.name,
       ),
     );
   }

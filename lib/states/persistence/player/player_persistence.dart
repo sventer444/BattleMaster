@@ -1,3 +1,4 @@
+import 'package:battle_master/components/mon.dart';
 import 'package:battle_master/constants/dex_status.dart';
 
 /// An interface of persistence stores for the player's progress.
@@ -13,9 +14,9 @@ abstract class PlayerProgressPersistence {
 
   Future<List<(String, DexStatus)>> getPlayerDex();
 
-  Future<List<String>> getPlayerPc();
+  Future<List<Pokemon>> getPlayerPc();
 
-  Future<List<String>> getPlayerTeam();
+  Future<List<Pokemon>> getPlayerTeam();
 
   Future<void> saveFarthestRegion(String region);
 
@@ -25,15 +26,15 @@ abstract class PlayerProgressPersistence {
 
   Future<void> savePlayerDex(List<(String, DexStatus)> playerDex);
 
-  Future<void> savePlayerPc(List<String> playerPc);
+  Future<void> savePlayerPc(List<Pokemon> playerPc);
 
-  Future<void> savePlayerTeam(List<String> playerTeam);
+  Future<void> savePlayerTeam(List<Pokemon> playerTeam);
 
   Future<void> savePlayerData(
       String farthestRegion,
       int highestRoute,
       int furthestLocationReached,
       List<(String, DexStatus)> playerDex,
-      List<String> playerPc,
-      List<String> playerTeam);
+      List<Pokemon> playerPc,
+      List<Pokemon> playerTeam);
 }

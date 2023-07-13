@@ -1,10 +1,11 @@
+import 'package:battle_master/components/mon.dart';
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/constants/dex_status.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../states/player_progress.dart';
-import '../../responsive_window.dart';
+import '../../../components/responsive_window.dart';
 
 class ProfessorsLab extends StatelessWidget {
   const ProfessorsLab(
@@ -16,11 +17,11 @@ class ProfessorsLab extends StatelessWidget {
 
   final String name;
 
-  final String choice1;
+  final Pokemon choice1;
 
-  final String choice2;
+  final Pokemon choice2;
 
-  final String choice3;
+  final Pokemon choice3;
 
   @override
   Widget build(BuildContext context) {
@@ -44,17 +45,17 @@ class ProfessorsLab extends StatelessWidget {
                   children: [
                     // Choice 1
                     Opponent(
-                        name: choice1,
+                        mon: choice1,
                         onClick: () =>
                             starterSelected(playerProgress, choice1)),
                     // Choice 2
                     Opponent(
-                        name: choice2,
+                        mon: choice2,
                         onClick: () =>
                             starterSelected(playerProgress, choice2)),
                     // Choice 3
                     Opponent(
-                        name: choice3,
+                        mon: choice3,
                         onClick: () =>
                             starterSelected(playerProgress, choice3)),
                   ],
@@ -67,8 +68,8 @@ class ProfessorsLab extends StatelessWidget {
     );
   }
 
-  void starterSelected(PlayerProgress progress, String starterChoice) {
-    progress.setPlayerDex((starterChoice, DexStatus.caught));
+  void starterSelected(PlayerProgress progress, Pokemon starterChoice) {
+    progress.setPlayerDex((starterChoice.name, DexStatus.caught));
     progress.setPlayerTeam(starterChoice);
   }
 }

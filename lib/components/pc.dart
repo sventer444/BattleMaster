@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../states/player_progress.dart';
+import 'mon.dart';
 import 'responsive_window.dart';
 
 class PlayerPc extends StatelessWidget {
@@ -12,7 +12,7 @@ class PlayerPc extends StatelessWidget {
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
 
-    List<String> _playerPc = playerProgress.playerPc;
+    List<Pokemon> _playerPc = playerProgress.playerPc;
 
     return Scaffold(
       body: ResponsiveScreen(
@@ -37,7 +37,7 @@ class PlayerPc extends StatelessWidget {
                       for (var teamIndex = 0;
                           teamIndex < playerProgress.playerTeam.length;
                           teamIndex++)
-                        Text('${playerProgress.playerTeam[teamIndex]}')
+                        Text('${playerProgress.playerTeam[teamIndex].name}')
                     ],
                   ),
                   SizedBox(

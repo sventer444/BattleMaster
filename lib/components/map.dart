@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../states/player_progress.dart';
 import '../styles/delayed_appear.dart';
 import '../styles/palette.dart';
-import 'mapRoutes/kanto.dart';
+import '../region/kanto/kanto.dart';
 import 'responsive_window.dart';
 
 class RouteMap extends StatelessWidget {

@@ -7,7 +7,7 @@ import 'package:battle_master/components/app_bar.dart';
 
 import 'components/bottom_nav.dart';
 import 'components/map.dart';
-import 'components/mapRoutes/kanto.dart';
+import 'region/kanto/kanto.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
