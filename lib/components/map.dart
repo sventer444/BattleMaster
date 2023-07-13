@@ -13,6 +13,8 @@ class RouteMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final playerProgress = context.watch<PlayerProgress>();
+
     return Scaffold(
       backgroundColor: Palette.bgGrey2,
       body: ResponsiveScreen(
@@ -20,12 +22,10 @@ class RouteMap extends StatelessWidget {
           children: [
             DelayedAppear(
               ms: ScreenDelays.first,
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Center(
-                  child: Text(
-                    'Kanto',
-                  ),
+                  child: Text(playerProgress.farthestRegion),
                 ),
               ),
             ),
@@ -132,8 +132,8 @@ class _LocationButton extends StatelessWidget {
       return DelayedAppear(
         ms: ScreenDelays.second + (locationIndex - 1) * 70,
         child: TextButton(
-          onPressed: () =>
-              GoRouter.of(context).go('/kanto/${locations[locationIndex].$1}'),
+          onPressed: () => GoRouter.of(context)
+              .go('/kanto/location/${locations[locationIndex].$1}'),
           // child: SizedBox.expand(
           // child: Padding(
           //   padding: const EdgeInsets.all(8),

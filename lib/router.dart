@@ -6,6 +6,7 @@ import 'package:battle_master/components/app_bar.dart';
 
 import 'components/bottom_nav.dart';
 import 'components/map.dart';
+import 'components/mapRoutes/kanto.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -33,10 +34,34 @@ class AppRouter {
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
               return const NoTransitionPage(
-                child: Center(child: Text('Home')),
+                child: Text(''),
               );
             },
           ),
+          GoRoute(
+              path: '/kanto',
+              pageBuilder: (context, state) {
+                return NoTransitionPage(child: Text('Kanto'));
+              },
+              routes: [
+                GoRoute(
+                  path: 'route/:routeNumber',
+                  pageBuilder: (context, state) {
+                    final routeNumber =
+                        int.parse(state.pathParameters['routeNumber']!);
+                    return NoTransitionPage(child: Text('route'));
+                  },
+                ),
+                GoRoute(
+                  path: 'location/:locationPath',
+                  pageBuilder: (context, state) {
+                    final locationPath = state.pathParameters['locationPath']!;
+                    final location =
+                        locations.singleWhere((loc) => loc.$1 == locationPath);
+                    return NoTransitionPage(child: location.$3);
+                  },
+                ),
+              ]),
           GoRoute(
             path: '/map',
             parentNavigatorKey: _shellNavigatorKey,
@@ -75,61 +100,4 @@ class AppRouter {
       ),
     ],
   );
-
-  // static final _router = GoRouter(
-  //   routes: [
-  //     GoRoute(
-  //         path: '/',
-  //         builder: (context, state) =>
-  //             const MainMenuScreen(key: Key('main menu')),
-  //         routes: [
-  //           GoRoute(
-  //               path: 'play',
-  //               pageBuilder: (context, state) => buildTransition<void>(
-  //                     child: const LevelSelectionScreen(
-  //                         key: Key('level selection')),
-  //                     color: context.watch<Palette>().backgroundLevelSelection,
-  //                   ),
-  //               routes: [
-  //                 GoRoute(
-  //                   path: 'session/:level',
-  //                   pageBuilder: (context, state) {
-  //                     final levelNumber = int.parse(state.params['level']!);
-  //                     final level = gameLevels
-  //                         .singleWhere((e) => e.number == levelNumber);
-  //                     return buildTransition<void>(
-  //                       child: PlaySessionScreen(
-  //                         level,
-  //                         key: const Key('play session'),
-  //                       ),
-  //                       color: context.watch<Palette>().backgroundPlaySession,
-  //                       flipHorizontally: true,
-  //                     );
-  //                   },
-  //                 ),
-  //                 GoRoute(
-  //                   path: 'won',
-  //                   pageBuilder: (context, state) {
-  //                     final map = state.extra! as Map<String, dynamic>;
-  //                     final score = map['score'] as Score;
-
-  //                     return buildTransition<void>(
-  //                       child: WinGameScreen(
-  //                         score: score,
-  //                         key: const Key('win game'),
-  //                       ),
-  //                       color: context.watch<Palette>().backgroundPlaySession,
-  //                       flipHorizontally: true,
-  //                     );
-  //                   },
-  //                 )
-  //               ]),
-  //           GoRoute(
-  //             path: 'settings',
-  //             builder: (context, state) =>
-  //                 const SettingsScreen(key: Key('settings')),
-  //           ),
-  //         ]),
-  //   ],
-  // );
 }
