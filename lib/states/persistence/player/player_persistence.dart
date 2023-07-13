@@ -11,9 +11,11 @@ abstract class PlayerProgressPersistence {
 
   Future<int> getFurthestLocationReached();
 
-  Future<List<(int, DexStatus)>> getPlayerDex();
+  Future<List<(String, DexStatus)>> getPlayerDex();
 
-  Future<List<int>> getPlayerPc();
+  Future<List<String>> getPlayerPc();
+
+  Future<List<String>> getPlayerTeam();
 
   Future<void> saveFarthestRegion(String region);
 
@@ -21,14 +23,17 @@ abstract class PlayerProgressPersistence {
 
   Future<void> saveFurthestLocationReached(int location);
 
-  Future<void> savePlayerDex(List<(int, DexStatus)> playerDex);
+  Future<void> savePlayerDex(List<(String, DexStatus)> playerDex);
 
-  Future<void> savePlayerPc(List<int> playerPc);
+  Future<void> savePlayerPc(List<String> playerPc);
+
+  Future<void> savePlayerTeam(List<String> playerTeam);
 
   Future<void> savePlayerData(
       String farthestRegion,
       int highestRoute,
       int furthestLocationReached,
-      List<(int, DexStatus)> playerDex,
-      List<int> playerPc);
+      List<(String, DexStatus)> playerDex,
+      List<String> playerPc,
+      List<String> playerTeam);
 }

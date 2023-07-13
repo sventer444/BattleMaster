@@ -1,5 +1,6 @@
 // import 'package:battle_master/styles/icons.dart';
 // import 'package:battle_master/components/opponent.dart';
+import 'package:battle_master/components/pc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:battle_master/components/app_bar.dart';
@@ -77,7 +78,7 @@ class AppRouter {
               pageBuilder: (context, state) {
                 return const NoTransitionPage(
                   child: Scaffold(
-                    body: Center(child: Text("PC")),
+                    body: Center(child: PlayerPc()),
                   ),
                 );
               }),

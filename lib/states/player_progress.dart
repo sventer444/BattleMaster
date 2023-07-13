@@ -15,9 +15,11 @@ class PlayerProgress extends ChangeNotifier {
 
   int _furthestLocationReached = 0;
 
-  List<(int, DexStatus)> _playerDex = List.empty(growable: true);
+  List<(String, DexStatus)> _playerDex = List.empty(growable: true);
 
-  List<int> _playerPc = List.empty(growable: true);
+  List<String> _playerPc = List.empty(growable: true);
+
+  List<String> _playerTeam = List.empty(growable: true);
 
   PlayerProgress(this._store);
 
@@ -28,9 +30,11 @@ class PlayerProgress extends ChangeNotifier {
   // Furthest location player has reached
   int get furthestLocationReached => _furthestLocationReached;
   // List of pokemon the player has encountered
-  List<(int, DexStatus)> get playerDex => _playerDex;
+  List<(String, DexStatus)> get playerDex => _playerDex;
   // Pokemon available in the player's pc
-  List<int> get playerPc => _playerPc;
+  List<String> get playerPc => _playerPc;
+  // Pokemon currently assigned to the player's team
+  List<String> get playerTeam => _playerTeam;
 
   void getLatestFromStore() async {
     // final level = await _store.getHighestLevelReached();
@@ -45,6 +49,8 @@ class PlayerProgress extends ChangeNotifier {
     _furthestLocationReached = await _store.getFurthestLocationReached();
     _playerDex = await _store.getPlayerDex();
     _playerPc = await _store.getPlayerPc();
+    _playerTeam = await _store.getPlayerTeam();
+    notifyListeners();
   }
 
   /// Resets the player's progress
@@ -54,10 +60,11 @@ class PlayerProgress extends ChangeNotifier {
     _furthestLocationReached = 0;
     _playerDex = List.empty(growable: true);
     _playerPc = List.empty(growable: true);
+    _playerTeam = List.empty(growable: true);
 
     notifyListeners();
     _store.savePlayerData(_farthestRegion, _highestRoute,
-        _furthestLocationReached, _playerDex, _playerPc);
+        _furthestLocationReached, _playerDex, _playerPc, _playerTeam);
   }
 
   /// Registers [level] as reached.
@@ -91,15 +98,21 @@ class PlayerProgress extends ChangeNotifier {
     _store.saveFurthestLocationReached(location);
   }
 
-  void setPlayerDex(List<(int, DexStatus)> playerDex) {
-    _playerDex = playerDex;
+  void setPlayerDex((String, DexStatus) playerDex) {
+    _playerDex.add(playerDex);
     notifyListeners();
-    _store.savePlayerDex(playerDex);
+    _store.savePlayerDex(_playerDex);
   }
 
-  void setPlayerPc(List<int> playerPc) {
-    _playerPc = playerPc;
+  void setPlayerPc(String playerPc) {
+    _playerPc.add(playerPc);
     notifyListeners();
-    _store.savePlayerPc(playerPc);
+    _store.savePlayerPc(_playerPc);
+  }
+
+  void setPlayerTeam(String playerTeam) {
+    _playerTeam.add(playerTeam);
+    notifyListeners();
+    _store.savePlayerTeam(_playerTeam);
   }
 }

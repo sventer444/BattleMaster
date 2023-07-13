@@ -8,8 +8,9 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   String farthestRegion = '';
   int highestRoute = 0;
   int furthestLocationReached = 0;
-  List<(int, DexStatus)> playerDex = List.empty(growable: true);
-  List<int> playerPc = List.empty(growable: true);
+  List<(String, DexStatus)> playerDex = List.empty(growable: true);
+  List<String> playerPc = List.empty(growable: true);
+  List<String> playerTeam = List.empty(growable: true);
 
   // @override
   // Future<int> getHighestLevelReached() async {
@@ -39,13 +40,18 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   }
 
   @override
-  Future<List<(int, DexStatus)>> getPlayerDex() async {
+  Future<List<(String, DexStatus)>> getPlayerDex() async {
     return playerDex;
   }
 
   @override
-  Future<List<int>> getPlayerPc() async {
+  Future<List<String>> getPlayerPc() async {
     return playerPc;
+  }
+
+  @override
+  Future<List<String>> getPlayerTeam() async {
+    return playerTeam;
   }
 
   @override
@@ -59,23 +65,28 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
       furthestLocationReached = value;
 
   @override
-  Future<void> savePlayerDex(List<(int, DexStatus)> value) async =>
+  Future<void> savePlayerDex(List<(String, DexStatus)> value) async =>
       playerDex = value;
 
   @override
-  Future<void> savePlayerPc(List<int> value) async => playerPc = value;
+  Future<void> savePlayerPc(List<String> value) async => playerPc = value;
+
+  @override
+  Future<void> savePlayerTeam(List<String> value) async => playerTeam = value;
 
   @override
   Future<void> savePlayerData(
       String farthestRegion,
       int highestRoute,
       int furthestLocationReached,
-      List<(int, DexStatus)> playerDex,
-      List<int> playerPc) async {
+      List<(String, DexStatus)> playerDex,
+      List<String> playerPc,
+      List<String> playerTeam) async {
     this.farthestRegion = farthestRegion;
     this.highestRoute = highestRoute;
     this.furthestLocationReached = furthestLocationReached;
     this.playerDex = playerDex;
     this.playerPc = playerPc;
+    this.playerTeam = playerTeam;
   }
 }
