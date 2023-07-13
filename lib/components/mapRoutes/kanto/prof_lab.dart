@@ -14,13 +14,13 @@ class ProfessorsLab extends StatelessWidget {
         squarishMainArea: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Center(
                 child: Text(name),
               ),
             ),
             const SizedBox(height: 50),
-            Expanded(
+            const Expanded(
               child: Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

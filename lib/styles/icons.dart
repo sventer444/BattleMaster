@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 
 class GameIcons {
   // User Pokedex
@@ -10,7 +10,7 @@ class GameIcons {
   static const Icon dexIcon = Icon(Icons.account_balance_wallet);
 
   static dexPressed() {
-    print('dex hit');
+    // print('dex hit');
   }
 
   // User Account
@@ -19,7 +19,7 @@ class GameIcons {
   static const Icon profileIcon = Icon(Icons.person);
 
   static userPressed() {
-    print('user hit');
+    // print('user hit');
   }
 
   // Routes Map

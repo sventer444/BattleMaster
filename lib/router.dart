@@ -1,5 +1,5 @@
-import 'package:battle_master/styles/icons.dart';
-import 'package:battle_master/components/opponent.dart';
+// import 'package:battle_master/styles/icons.dart';
+// import 'package:battle_master/components/opponent.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:battle_master/components/app_bar.dart';
@@ -41,15 +41,15 @@ class AppRouter {
           GoRoute(
               path: '/kanto',
               pageBuilder: (context, state) {
-                return NoTransitionPage(child: Text('Kanto'));
+                return const NoTransitionPage(child: Text('Kanto'));
               },
               routes: [
                 GoRoute(
                   path: 'route/:routeNumber',
                   pageBuilder: (context, state) {
-                    final routeNumber =
-                        int.parse(state.pathParameters['routeNumber']!);
-                    return NoTransitionPage(child: Text('route'));
+                    // final routeNumber =
+                    //     int.parse(state.pathParameters['routeNumber']!);
+                    return const NoTransitionPage(child: Text('route'));
                   },
                 ),
                 GoRoute(

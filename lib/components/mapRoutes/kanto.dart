@@ -3,5 +3,5 @@ import 'package:flutter/widgets.dart';
 
 const int totalRoutesCount = 5;
 final List<(String, String, StatelessWidget)> locations = [
-  ('prof_lab', 'Professors Lab', ProfessorsLab(name: 'Professors Lab'))
+  ('prof_lab', 'Professors Lab', const ProfessorsLab(name: 'Professors Lab'))
 ];

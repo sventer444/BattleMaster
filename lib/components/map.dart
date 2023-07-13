@@ -23,7 +23,7 @@ class RouteMap extends StatelessWidget {
             DelayedAppear(
               ms: ScreenDelays.first,
               child: Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Center(
                   child: Text(playerProgress.farthestRegion),
                 ),
@@ -109,7 +109,7 @@ class _RouteButton extends StatelessWidget {
         ),
       );
     } else {
-      return SizedBox(height: 10);
+      return const SizedBox(height: 10);
     }
   }
 }
@@ -143,7 +143,7 @@ class _LocationButton extends StatelessWidget {
         ),
       );
     } else {
-      return SizedBox(
+      return const SizedBox(
         height: 10,
       );
     }

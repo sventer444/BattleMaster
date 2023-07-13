@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'dart:math';
+// import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/widgets.dart';
@@ -18,11 +18,11 @@ class AudioController {
   /// sound effects.
   final List<AudioPlayer> _sfxPlayers;
 
-  int _currentSfxPlayer = 0;
+  // int _currentSfxPlayer = 0;
 
   final Queue<Song> _playlist;
 
-  final Random _random = Random();
+  // final Random _random = Random();
 
   SettingsController? _settings;
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:battle_master/states/game_state.dart';
 
 class Opponent extends StatelessWidget {
   const Opponent({super.key, required this.opponentType});
