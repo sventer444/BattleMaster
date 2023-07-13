@@ -23,6 +23,7 @@ class ProfessorsLab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ResponsiveScreen(
+        rectangularMenuArea: const Text('Welcome to the professors lab!'),
         squarishMainArea: Column(
           children: [
             Padding(
@@ -31,27 +32,17 @@ class ProfessorsLab extends StatelessWidget {
                 child: Text(name),
               ),
             ),
-            const SizedBox(height: 50),
             Expanded(
               child: Center(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // Choice 1
                     Opponent(name: choice1, onClick: () {}),
-                    const SizedBox(
-                      width: 15,
-                    ),
                     // Choice 2
                     Opponent(name: choice2, onClick: () {}),
-                    const SizedBox(
-                      width: 15,
-                    ),
                     // Choice 3
                     Opponent(name: choice3, onClick: () {}),
-                    const SizedBox(
-                      width: 15,
-                    ),
                   ],
                 ),
               ),
