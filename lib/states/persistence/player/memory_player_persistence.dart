@@ -6,7 +6,7 @@ import 'player_persistence.dart';
 /// An in-memory implementation of [PlayerProgressPersistence].
 /// Useful for testing.
 class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
-  String farthestRegion = '';
+  String farthestRegion = 'Kanto';
   int highestRoute = 0;
   int furthestLocationReached = 0;
   List<(String, DexStatus)> playerDex = List.empty(growable: true);
