@@ -38,6 +38,7 @@ Master
 - [ ] Pokemon at front is targeted
 - [ ] National Dex
 - [ ] Level 100 Max
+- [ ] Moves? (phys / special split)
 - [ ] At 100 prestige levels, unlock a permenant passive ability
 - [ ] Evolution at normal levels?
 - [ ] Pokemon can faint, and need to be re-caught?

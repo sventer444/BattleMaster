@@ -48,9 +48,9 @@ class AppRouter {
                 GoRoute(
                   path: 'route/:routeNumber',
                   pageBuilder: (context, state) {
-                    // final routeNumber =
-                    //     int.parse(state.pathParameters['routeNumber']!);
-                    return const NoTransitionPage(child: Text('route'));
+                    final routeNumber =
+                        int.parse(state.pathParameters['routeNumber']!);
+                    return NoTransitionPage(child: routes[routeNumber - 1]);
                   },
                 ),
                 GoRoute(

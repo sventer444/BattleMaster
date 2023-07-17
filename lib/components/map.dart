@@ -43,7 +43,7 @@ class RouteMap extends StatelessWidget {
                 // This is the grid of routes
                 Column(
                   children: [
-                    for (var i = 0; i < totalRoutesCount; i++)
+                    for (var i = 0; i < playerProgress.highestRoute; i++)
                       _RouteButton(i + 1)
                   ],
                 )

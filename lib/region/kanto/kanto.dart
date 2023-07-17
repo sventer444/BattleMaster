@@ -3,10 +3,18 @@ import 'package:battle_master/region/kanto/map/prof_lab.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../components/mon.dart';
-
-const int totalRoutesCount = 5;
+import 'map/routes/route_1.dart';
 
 final List<Pokemon> regionDex = dex;
+
+final List<(double, Pokemon)> route1Encounters = [
+  (50.0, regionDex[15]),
+  (50.0, regionDex[18])
+];
+
+final List<StatelessWidget> routes = [
+  Route1(routeEncounters: route1Encounters)
+];
 
 final List<(String, String, StatelessWidget)> locations = [
   (
@@ -15,8 +23,8 @@ final List<(String, String, StatelessWidget)> locations = [
     ProfessorsLab(
       name: 'Professors Lab',
       choice1: regionDex.first,
-      choice2: regionDex[1],
-      choice3: regionDex[2],
+      choice2: regionDex[3],
+      choice3: regionDex[6],
     )
   )
 ];

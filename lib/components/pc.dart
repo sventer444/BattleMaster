@@ -47,9 +47,9 @@ class PlayerPc extends StatelessWidget {
                   Row(
                     children: [
                       for (var pcIndex = 0;
-                          pcIndex < playerProgress.playerPc.length;
+                          pcIndex < _playerPc.length;
                           pcIndex++)
-                        Text('${playerProgress.playerPc[pcIndex]}')
+                        Text('${_playerPc[pcIndex]}')
                     ],
                   ),
                 ],
