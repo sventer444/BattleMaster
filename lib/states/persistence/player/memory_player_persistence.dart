@@ -1,4 +1,4 @@
-import 'package:battle_master/components/mon.dart';
+import 'package:battle_master/constants/mon.dart';
 import 'package:battle_master/constants/dex_status.dart';
 
 import 'player_persistence.dart';
@@ -12,6 +12,7 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   List<(String, DexStatus)> playerDex = List.empty(growable: true);
   List<Pokemon> playerPc = List.empty(growable: true);
   List<Pokemon> playerTeam = List.empty(growable: true);
+  bool runInProgress = false;
 
   // @override
   // Future<int> getHighestLevelReached() async {
@@ -28,6 +29,11 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   @override
   Future<String> getFarthestRegion() async {
     return farthestRegion;
+  }
+
+  @override
+  Future<bool> getRunInProgress() async {
+    return runInProgress;
   }
 
   @override
@@ -66,6 +72,9 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
       furthestLocationReached = value;
 
   @override
+  Future<void> saveRunInProgress(bool value) async => runInProgress = value;
+
+  @override
   Future<void> savePlayerDex(List<(String, DexStatus)> value) async =>
       playerDex = value;
 
@@ -82,12 +91,14 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
       int furthestLocationReached,
       List<(String, DexStatus)> playerDex,
       List<Pokemon> playerPc,
-      List<Pokemon> playerTeam) async {
+      List<Pokemon> playerTeam,
+      bool runInProgress) async {
     this.farthestRegion = farthestRegion;
     this.highestRoute = highestRoute;
     this.furthestLocationReached = furthestLocationReached;
     this.playerDex = playerDex;
     this.playerPc = playerPc;
     this.playerTeam = playerTeam;
+    this.runInProgress = runInProgress;
   }
 }

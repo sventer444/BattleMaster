@@ -1,4 +1,4 @@
-import '../constants/type.dart';
+import 'type.dart';
 
 class Pokemon {
   Pokemon(
@@ -13,17 +13,21 @@ class Pokemon {
 
   final String name;
 
-  final double hp;
+  late double currentHp;
+
+  double hp;
 
   final double attack;
 
   final double defense;
 
-  final double speed;
+  final int speed;
 
   final Types type1;
 
   final Types? type2;
 
-  final int level;
+  int level;
+
+  double experienceAmount = 0;
 }

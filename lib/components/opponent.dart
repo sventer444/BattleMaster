@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'mon.dart';
+import '../constants/mon.dart';
 
 class Opponent extends StatelessWidget {
   const Opponent({super.key, required this.mon, required this.onClick});

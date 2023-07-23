@@ -1,4 +1,4 @@
-import 'package:battle_master/components/mon.dart';
+import 'package:battle_master/constants/mon.dart';
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/constants/dex_status.dart';
 import 'package:flutter/material.dart';
@@ -72,10 +72,12 @@ class ProfessorsLab extends StatelessWidget {
   void starterSelected(
       BuildContext context, PlayerProgress progress, Pokemon starterChoice) {
     progress.setPlayerDex((starterChoice.name, DexStatus.caught));
+    starterChoice.currentHp = starterChoice.hp;
     progress.setPlayerTeam(starterChoice);
     if (progress.highestRoute < 1) {
       progress.setHighestRoute(1);
     }
+    progress.setRunInProgress(true);
     GoRouter.of(context).go('/kanto/route/1');
   }
 }

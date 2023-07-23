@@ -1,6 +1,6 @@
 // import 'dart:async';
 
-import 'package:battle_master/components/mon.dart';
+import 'package:battle_master/constants/mon.dart';
 import 'package:flutter/foundation.dart';
 
 import '../constants/dex_status.dart';
@@ -11,6 +11,8 @@ class PlayerProgress extends ChangeNotifier {
   final PlayerProgressPersistence _store;
 
   String _farthestRegion = 'Kanto';
+
+  bool _runInProgress = false;
 
   int _highestRoute = 0;
 
@@ -28,6 +30,8 @@ class PlayerProgress extends ChangeNotifier {
   String get farthestRegion => _farthestRegion;
   // Highest route player has reached
   int get highestRoute => _highestRoute;
+  // Whether or not the player has an active run
+  bool get runInProgresss => _runInProgress;
   // Furthest location player has reached
   int get furthestLocationReached => _furthestLocationReached;
   // List of pokemon the player has encountered
@@ -51,7 +55,26 @@ class PlayerProgress extends ChangeNotifier {
     _playerDex = await _store.getPlayerDex();
     _playerPc = await _store.getPlayerPc();
     _playerTeam = await _store.getPlayerTeam();
+    _runInProgress = await _store.getRunInProgress();
     notifyListeners();
+  }
+
+  void endPlayerRun() {
+    _runInProgress = false;
+    _highestRoute = 0;
+    _furthestLocationReached = 0;
+    _playerPc = List.empty(growable: true);
+    _playerTeam = List.empty(growable: true);
+
+    notifyListeners();
+    _store.savePlayerData(
+        _farthestRegion,
+        _highestRoute,
+        _furthestLocationReached,
+        _playerDex,
+        _playerPc,
+        _playerTeam,
+        _runInProgress);
   }
 
   /// Resets the player's progress
@@ -62,10 +85,17 @@ class PlayerProgress extends ChangeNotifier {
     _playerDex = List.empty(growable: true);
     _playerPc = List.empty(growable: true);
     _playerTeam = List.empty(growable: true);
+    _runInProgress = false;
 
     notifyListeners();
-    _store.savePlayerData(_farthestRegion, _highestRoute,
-        _furthestLocationReached, _playerDex, _playerPc, _playerTeam);
+    _store.savePlayerData(
+        _farthestRegion,
+        _highestRoute,
+        _furthestLocationReached,
+        _playerDex,
+        _playerPc,
+        _playerTeam,
+        _runInProgress);
   }
 
   /// Registers [level] as reached.
@@ -103,6 +133,12 @@ class PlayerProgress extends ChangeNotifier {
     _playerDex.add(playerDex);
     notifyListeners();
     _store.savePlayerDex(_playerDex);
+  }
+
+  void setRunInProgress(bool progress) {
+    _runInProgress = progress;
+    notifyListeners();
+    _store.saveRunInProgress(_runInProgress);
   }
 
   void setPlayerPc(Pokemon playerPc) {

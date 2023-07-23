@@ -1,4 +1,4 @@
-import 'package:battle_master/components/mon.dart';
+import 'package:battle_master/constants/mon.dart';
 
 import '../../constants/type.dart';
 
