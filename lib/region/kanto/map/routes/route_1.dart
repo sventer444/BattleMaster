@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:battle_master/components/mon.dart';
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/constants/dex_status.dart';
@@ -6,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../components/responsive_window.dart';
+import '../../../../constants/game_functions.dart';
 import '../../../../states/player_progress.dart';
 
 class Route1 extends StatelessWidget {
@@ -18,7 +21,8 @@ class Route1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
-    Pokemon currentOpponent = setOpponent();
+    List<Pokemon> encounterTable = setEncounterTable(routeEncounters);
+    Pokemon currentOpponent = setOpponent(encounterTable);
 
     return Scaffold(
       body: ResponsiveScreen(
@@ -60,9 +64,5 @@ class Route1 extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Pokemon setOpponent() {
-    return routeEncounters.first.$2;
   }
 }
