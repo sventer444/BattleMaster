@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../../components/responsive_window.dart';
 import '../../../../constants/game_functions.dart';
 import '../../../../states/player_progress.dart';
+import '../../../../styles/delayed_appear.dart';
 
 class Route1 extends StatefulWidget {
   const Route1({super.key, required this.routeEncounters});
@@ -30,6 +31,8 @@ class _Route1State extends State<Route1> {
 
   late Timer _timer;
 
+  late Widget _opponentWidget;
+
   @override
   void dispose() {
     _timer.cancel();
@@ -42,17 +45,22 @@ class _Route1State extends State<Route1> {
     List<Pokemon> encounterTable = setEncounterTable(routeEncounters);
     _currentOpponent = setOpponent(encounterTable);
 
+    _opponentWidget = AnimatedOpacity(
+        opacity: 1.0,
+        duration: const Duration(milliseconds: 1000),
+        // The green box must be a child of the AnimatedOpacity widget.
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(_currentOpponent.name),
+          Text('${_currentOpponent.currentHp}')
+        ]));
+
     _timer = Timer.periodic(
         attackTime,
         (Timer t) => {
               if (!mounted)
                 {t.cancel()}
               else
-                {
-                  setState(() {
-                    attackRound(playerProgress, encounterTable, context);
-                  })
-                }
+                {attackRound(playerProgress, encounterTable, context)}
             });
 
     return Scaffold(
@@ -63,13 +71,8 @@ class _Route1State extends State<Route1> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_currentOpponent.name),
-                  Text('${_currentOpponent.currentHp}'),
-                ],
-              )),
+                child: _opponentWidget,
+              ),
             ),
             Expanded(
                 child: Column(
@@ -107,55 +110,52 @@ class _Route1State extends State<Route1> {
       // Ensure run is still valid
       if (playerProgress.runInProgresss) {
         if (mon == _currentOpponent) {
-          setState(() {
-            if (mon.currentHp != 0) {
-              playerTeam[0] = applyDamage(playerTeam.first, mon);
-            } else {
-              _currentOpponent = setOpponent(encounterTable);
-            }
-          });
-        } else {
-          setState(() {
-            if (mon.currentHp != 0) {
-              _currentOpponent = applyDamage(_currentOpponent, mon);
-            } else {
-              playerProgress.endPlayerRun();
-            }
-          });
-        }
-        if (mon == _currentOpponent) {
-          setState(() {
-            _currentOpponent = setOpponent(encounterTable);
-          });
-        } else {
-          // TODO:
-          // implement team knockout switch
-        }
-      } else {
+          // setState(() {
+          //   if (mon.currentHp != 0) {
+          //     playerTeam[0] = applyDamage(playerTeam.first, mon);
+          //   } else {
+          //     _currentOpponent = setOpponent(encounterTable);
+          //     _opponentWidget = AnimatedOpacity(
+          //         opacity: 1.0,
+          //         duration: const Duration(milliseconds: 700),
+          //         // The green box must be a child of the AnimatedOpacity widget.
+          //         child: Column(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Text(_currentOpponent.name),
+          //               Text('${_currentOpponent.currentHp}')
+          //             ]));
+          //   } // else opponent is dead so set a new one
+          // });
+        } // if the current mon is the opponent
+        else {
+          // setState(() {
+          //   if (mon.currentHp != 0) {
+          //     _currentOpponent = applyDamage(_currentOpponent, mon);
+          //     // _opponentWidget = DelayedAppear(
+          //     //     child: Center(
+          //     //         child: Column(
+          //     //             mainAxisAlignment: MainAxisAlignment.center,
+          //     //             children: [
+          //     //           Text(_currentOpponent.name),
+          //     //           Text('${_currentOpponent.currentHp}')
+          //     //         ])),
+          //     //     ms: ScreenDelays.second + (3 - 1) * 70);
+          //   } // if player mon is alive
+          //   else {
+          //     playerProgress.endPlayerRun();
+          //   } // player mon is dead so end run
+          // });
+        } // else the current mon is a player mon
+      } // if the run is alive
+      else {
         // TODO:
         // implement exp gain and level scaling
         print('You lost...');
 
         GoRouter.of(context).go('/map');
-      }
+      } // run is ended go back to map
     });
-
-    //   if (mon == _currentOpponent) {
-    //     //applyDamage(playerTeam.first, mon);
-    //   } else {
-    //     setState(() {
-    //       applyDamage(_currentOpponent, mon);
-    //     });
-    //   }
-    // }
-    // if (_currentOpponent.hp == 0.0) {
-    //   // TODO:
-    //   // implement exp gain and level scaling
-    //   setState(() {
-    //     _currentOpponent = setOpponent(encounterTable);
-    //   });
-    //   // TODO:
-    //   // implement team knockout / loss
   }
   // ···
 }
