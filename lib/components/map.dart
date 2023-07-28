@@ -21,6 +21,7 @@ class RouteMap extends StatelessWidget {
         squarishMainArea: Column(
           children: [
             DelayedAppear(
+              key: ValueKey('RoutesMap'),
               ms: ScreenDelays.first,
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -97,6 +98,7 @@ class _RouteButton extends StatelessWidget {
 
     if (routeNumber <= playerProgress.highestRoute) {
       return DelayedAppear(
+        key: ValueKey(routeNumber),
         ms: ScreenDelays.second + (routeNumber - 1) * 70,
         child: TextButton(
           onPressed: () => GoRouter.of(context).go('/kanto/route/$routeNumber'),
@@ -130,6 +132,7 @@ class _LocationButton extends StatelessWidget {
     // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
     if (locationIndex <= playerProgress.furthestLocationReached) {
       return DelayedAppear(
+        key: ValueKey(locationIndex),
         ms: ScreenDelays.second + (locationIndex - 1) * 70,
         child: TextButton(
           onPressed: () => GoRouter.of(context)

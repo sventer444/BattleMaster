@@ -14,7 +14,8 @@ Pokemon currentOpponent = setOpponent(encounterTable);
 
 bool activeRound = false;
 
-var opponentWidget = DelayedAppear(
+StatefulWidget opponentWidget = DelayedAppear(
+  key: ValueKey(currentOpponent.id),
   ms: ScreenDelays.first,
   child: Padding(
     padding: const EdgeInsets.all(16),
@@ -36,9 +37,16 @@ Timer startAttackTimer(PlayerProgress playerProgress, BuildContext context) {
 
 Pokemon setOpponent(List<Pokemon> encounterTable) {
   int encounterIndex = Random().nextInt(encounterTable.length);
-  print('Woah, ${encounterTable[encounterIndex].name} appeared!');
-  encounterTable[encounterIndex].currentHp = encounterTable[encounterIndex].hp;
-  return encounterTable[encounterIndex];
+  Pokemon encounter = encounterTable[encounterIndex];
+  print('Woah, ${encounter.name} appeared!');
+  return Pokemon(
+      name: encounter.name,
+      type1: encounter.type1,
+      type2: encounter.type2,
+      hp: encounter.hp,
+      attack: encounter.attack,
+      defense: encounter.defense,
+      speed: encounter.speed);
 }
 
 List<Pokemon> determineAttackOrder(Pokemon opponent, List<Pokemon> playerTeam) {

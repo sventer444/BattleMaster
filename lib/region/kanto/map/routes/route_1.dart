@@ -46,7 +46,6 @@ class _Route1State extends State<Route1> {
     if (!activeRound) {
       //_attackTimer = startAttackTimer(playerProgress, context);
     }
-
     return Scaffold(
       body: ResponsiveScreen(
         rectangularMenuArea: Text(_name),
@@ -80,25 +79,23 @@ class _Route1State extends State<Route1> {
                 onPressed: () => {
                       print('hit button press?'),
                       currentOpponent = setOpponent(encounterTable),
-                      setState(() => {
-                            opponentWidget = DelayedAppear(
-                              ms: ScreenDelays.first,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Center(
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        // Text('Test State Update')
-                                        Text(currentOpponent.name),
-                                        Text(
-                                            '${currentOpponent.currentHp} / ${currentOpponent.hp}')
-                                      ]),
-                                ),
+                      setState(() => opponentWidget = DelayedAppear(
+                            key: ValueKey(currentOpponent.id),
+                            ms: ScreenDelays.first,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Center(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      // Text('Test State Update')
+                                      Text(currentOpponent.name),
+                                      Text(
+                                          '${currentOpponent.currentHp} / ${currentOpponent.hp}')
+                                    ]),
                               ),
-                            )
-                          })
+                            ),
+                          ))
                     },
                 child: const Text('Test Update Opponent'))
           ],

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'type.dart';
 
 class Pokemon {
@@ -13,9 +15,9 @@ class Pokemon {
 
   final String name;
 
-  late double currentHp;
-
   double hp;
+
+  late double currentHp = hp;
 
   final double attack;
 
@@ -30,4 +32,6 @@ class Pokemon {
   int level;
 
   double experienceAmount = 0;
+
+  int id = Random().nextInt(25600);
 }
