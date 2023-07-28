@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/constants/mon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -80,22 +81,15 @@ class _Route1State extends State<Route1> {
                       print('hit button press?'),
                       currentOpponent = setOpponent(encounterTable),
                       setState(() => opponentWidget = DelayedAppear(
-                            key: ValueKey(currentOpponent.id),
-                            ms: ScreenDelays.first,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Center(
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      // Text('Test State Update')
-                                      Text(currentOpponent.name),
-                                      Text(
-                                          '${currentOpponent.currentHp} / ${currentOpponent.hp}')
-                                    ]),
-                              ),
-                            ),
-                          ))
+                          key: ValueKey(currentOpponent.id),
+                          ms: ScreenDelays.first,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Center(
+                                child: Opponent(
+                              currentOpponent: currentOpponent,
+                            )),
+                          )))
                     },
                 child: const Text('Test Update Opponent'))
           ],

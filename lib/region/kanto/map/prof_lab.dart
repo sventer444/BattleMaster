@@ -45,19 +45,19 @@ class ProfessorsLab extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // Choice 1
-                    Opponent(
-                        mon: choice1,
-                        onClick: () =>
+                    TextButton(
+                        child: Text(choice1.name),
+                        onPressed: () =>
                             starterSelected(context, playerProgress, choice1)),
                     // Choice 2
-                    Opponent(
-                        mon: choice2,
-                        onClick: () =>
+                    TextButton(
+                        child: Text(choice2.name),
+                        onPressed: () =>
                             starterSelected(context, playerProgress, choice2)),
                     // Choice 3
-                    Opponent(
-                        mon: choice3,
-                        onClick: () =>
+                    TextButton(
+                        child: Text(choice3.name),
+                        onPressed: () =>
                             starterSelected(context, playerProgress, choice3)),
                   ],
                 ),
