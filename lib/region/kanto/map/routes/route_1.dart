@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:battle_master/constants/mon.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../components/responsive_window.dart';
@@ -27,9 +25,11 @@ class _Route1State extends State<Route1> {
 
   List<(double, Pokemon)> routeEncounters;
 
+  //late Timer _attackTimer;
+
   @override
   void dispose() {
-    attackTimer.cancel();
+    //_attackTimer.cancel();
     super.dispose();
   }
 
@@ -44,7 +44,7 @@ class _Route1State extends State<Route1> {
     final playerProgress = context.watch<PlayerProgress>();
 
     if (!activeRound) {
-      startAttackTimer(playerProgress, context);
+      //_attackTimer = startAttackTimer(playerProgress, context);
     }
 
     return Scaffold(
@@ -76,6 +76,31 @@ class _Route1State extends State<Route1> {
                 ),
               ],
             )),
+            TextButton(
+                onPressed: () => {
+                      print('hit button press?'),
+                      currentOpponent = setOpponent(encounterTable),
+                      setState(() => {
+                            opponentWidget = DelayedAppear(
+                              ms: ScreenDelays.first,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Center(
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // Text('Test State Update')
+                                        Text(currentOpponent.name),
+                                        Text(
+                                            '${currentOpponent.currentHp} / ${currentOpponent.hp}')
+                                      ]),
+                                ),
+                              ),
+                            )
+                          })
+                    },
+                child: const Text('Test Update Opponent'))
           ],
         ),
       ),

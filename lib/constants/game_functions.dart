@@ -12,11 +12,9 @@ const attackTime = Duration(seconds: 7);
 
 Pokemon currentOpponent = setOpponent(encounterTable);
 
-late Timer attackTimer;
-
 bool activeRound = false;
 
-StatefulWidget opponentWidget = DelayedAppear(
+var opponentWidget = DelayedAppear(
   ms: ScreenDelays.first,
   child: Padding(
     padding: const EdgeInsets.all(16),
@@ -31,8 +29,8 @@ StatefulWidget opponentWidget = DelayedAppear(
 
 late List<Pokemon> encounterTable;
 
-void startAttackTimer(PlayerProgress playerProgress, BuildContext context) {
-  attackTimer = Timer.periodic(
+Timer startAttackTimer(PlayerProgress playerProgress, BuildContext context) {
+  return Timer.periodic(
       attackTime, (Timer t) => attackRound(playerProgress, context));
 }
 
@@ -91,7 +89,7 @@ setEncounterTable(List<(double, Pokemon)> routeEncounters) {
 void attackRound(PlayerProgress playerProgress, BuildContext context) {
   List<Pokemon> playerTeam = playerProgress.playerTeam;
   List<Pokemon> attackOrder = determineAttackOrder(currentOpponent, playerTeam);
-  attackOrder.forEach((mon) {
+  for (var mon in attackOrder) {
     print('${mon.name}, ${mon.currentHp}, SPD: ${mon.speed}');
     // Ensure run is still valid
     if (playerProgress.runInProgresss) {
@@ -141,5 +139,5 @@ void attackRound(PlayerProgress playerProgress, BuildContext context) {
 
       GoRouter.of(context).go('/map');
     } // run is ended go back to map
-  });
+  }
 }

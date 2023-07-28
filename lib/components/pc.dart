@@ -12,7 +12,7 @@ class PlayerPc extends StatelessWidget {
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
 
-    List<Pokemon> _playerPc = playerProgress.playerPc;
+    List<Pokemon> playerPc = playerProgress.playerPc;
 
     return Scaffold(
       body: ResponsiveScreen(
@@ -20,8 +20,8 @@ class PlayerPc extends StatelessWidget {
             const Text('This is where the pokemon you have caught are stored'),
         squarishMainArea: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(25),
+            const Padding(
+              padding: EdgeInsets.all(25),
               child: Center(
                 child: Text('Player Pc'),
               ),
@@ -30,26 +30,26 @@ class PlayerPc extends StatelessWidget {
               child: Center(
                   child: Column(
                 children: [
-                  Text('Current Team'),
+                  const Text('Current Team'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       for (var teamIndex = 0;
                           teamIndex < playerProgress.playerTeam.length;
                           teamIndex++)
-                        Text('${playerProgress.playerTeam[teamIndex].name}')
+                        Text(playerProgress.playerTeam[teamIndex].name)
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 100.0,
                   ),
-                  Text('Storage'),
+                  const Text('Storage'),
                   Row(
                     children: [
                       for (var pcIndex = 0;
-                          pcIndex < _playerPc.length;
+                          pcIndex < playerPc.length;
                           pcIndex++)
-                        Text('${_playerPc[pcIndex]}')
+                        Text('${playerPc[pcIndex]}')
                     ],
                   ),
                 ],
