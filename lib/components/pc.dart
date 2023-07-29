@@ -1,3 +1,5 @@
+import 'package:battle_master/components/team.dart';
+import 'package:battle_master/constants/animation_type.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,15 +33,9 @@ class PlayerPc extends StatelessWidget {
                   child: Column(
                 children: [
                   const Text('Current Team'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      for (var teamIndex = 0;
-                          teamIndex < playerProgress.playerTeam.length;
-                          teamIndex++)
-                        Text(playerProgress.playerTeam[teamIndex].name)
-                    ],
-                  ),
+                  PlayerTeam(
+                      playerTeam: playerProgress.playerTeam,
+                      animation: AnimationType.none),
                   const SizedBox(
                     height: 100.0,
                   ),

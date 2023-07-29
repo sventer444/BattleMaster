@@ -1,7 +1,7 @@
 import 'package:battle_master/constants/game_functions.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/encounter_states.dart';
+import '../constants/animation_type.dart';
 import '../constants/mon.dart';
 import '../styles/delayed_appear.dart';
 
@@ -16,7 +16,7 @@ class Opponent extends StatelessWidget {
 
   final Pokemon currentOpponent;
 
-  final EncounterState encounter;
+  final AnimationType encounter;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class Opponent extends StatelessWidget {
       height: 10,
     );
     switch (encounter) {
-      case EncounterState.wildEncounter:
+      case AnimationType.wildEncounter:
         opponentWidget = DelayedAppear(
             key: ValueKey(currentOpponent.id),
             ms: ScreenDelays.first,
@@ -39,9 +39,9 @@ class Opponent extends StatelessWidget {
                   ])),
             ));
         break;
-      case EncounterState.starter:
+      case AnimationType.starter:
         break;
-      case EncounterState.takeDamage:
+      case AnimationType.takeDamage:
         opponentWidget = Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -49,7 +49,7 @@ class Opponent extends StatelessWidget {
           Text('${currentOpponent.currentHp} / ${currentOpponent.hp}')
         ]));
         break;
-      case EncounterState.none:
+      case AnimationType.none:
         SizedBox(
           height: 10,
         );

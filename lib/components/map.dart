@@ -33,6 +33,7 @@ class RouteMap extends StatelessWidget {
             const SizedBox(height: 50),
             Expanded(
                 child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // This is the grid of locations
                 Column(

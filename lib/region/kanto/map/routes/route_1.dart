@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:battle_master/components/opponent.dart';
-import 'package:battle_master/constants/encounter_states.dart';
+import 'package:battle_master/components/team.dart';
+import 'package:battle_master/constants/animation_type.dart';
 import 'package:battle_master/constants/mon.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -37,9 +38,10 @@ class _Route1State extends State<Route1> {
   void dispose() {
     //_attackTimer.cancel();
     _encounterTimer.cancel();
+    currentOpponent = setOpponent(encounterTable);
     opponentWidget = Opponent(
         currentOpponent: currentOpponent,
-        encounter: EncounterState.none,
+        encounter: AnimationType.none,
         onClick: () => {});
     super.dispose();
   }
@@ -65,25 +67,9 @@ class _Route1State extends State<Route1> {
               child: Center(child: opponentWidget),
             ),
             Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (var i = 0; i < playerProgress.playerTeam.length; i++)
-                      Text(playerProgress.playerTeam[i].name)
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (var i = 0; i < playerProgress.playerTeam.length; i++)
-                      Text('${playerProgress.playerTeam[i].currentHp}')
-                  ],
-                ),
-              ],
-            )),
+                child: PlayerTeam(
+                    playerTeam: playerProgress.playerTeam,
+                    animation: AnimationType.none)),
             TextButton(
                 onPressed: () => {
                       if (activeRound)
@@ -104,7 +90,7 @@ class _Route1State extends State<Route1> {
       setState(() {
         opponentWidget = Opponent(
             currentOpponent: currentOpponent,
-            encounter: EncounterState.wildEncounter,
+            encounter: AnimationType.wildEncounter,
             onClick: () => {});
       });
     });
@@ -121,21 +107,21 @@ class _Route1State extends State<Route1> {
       if (playerProgress.runInProgress) {
         if (mon == currentOpponent) {
           // setState(() {
-          //   if (mon.currentHp != 0) {
-          //     playerTeam[0] = applyDamage(playerTeam.first, mon);
-          //   } else {
-          //     _currentOpponent = setOpponent(encounterTable);
-          //     _opponentWidget = AnimatedOpacity(
-          //         opacity: 1.0,
-          //         duration: const Duration(milliseconds: 700),
-          //         // The green box must be a child of the AnimatedOpacity widget.
-          //         child: Column(
-          //             mainAxisAlignment: MainAxisAlignment.center,
-          //             children: [
-          //               Text(_currentOpponent.name),
-          //               Text('${_currentOpponent.currentHp}')
-          //             ]));
-          //   } // else opponent is dead so set a new one
+          if (mon.currentHp != 0) {
+            //playerTeam[0] = applyDamage(playerTeam.first, mon);
+          } else {
+            // _currentOpponent = setOpponent(encounterTable);
+            // _opponentWidget = AnimatedOpacity(
+            //     opacity: 1.0,
+            //     duration: const Duration(milliseconds: 700),
+            //     // The green box must be a child of the AnimatedOpacity widget.
+            //     child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text(_currentOpponent.name),
+            //           Text('${_currentOpponent.currentHp}')
+            //         ]));
+          } // else opponent is dead so set a new one
           // });
         } // if the current mon is the opponent
         else {
@@ -147,7 +133,7 @@ class _Route1State extends State<Route1> {
               setState(() {
                 opponentWidget = Opponent(
                     currentOpponent: currentOpponent,
-                    encounter: EncounterState.none,
+                    encounter: AnimationType.none,
                     onClick: () => {});
               });
               setEncounterTimer();
@@ -156,20 +142,10 @@ class _Route1State extends State<Route1> {
               setState(() {
                 opponentWidget = Opponent(
                     currentOpponent: currentOpponent,
-                    encounter: EncounterState.takeDamage,
+                    encounter: AnimationType.takeDamage,
                     onClick: () => {});
               });
             }
-
-            // _opponentWidget = DelayedAppear(
-            //     child: Center(
-            //         child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //           Text(_currentOpponent.name),
-            //           Text('${_currentOpponent.currentHp}')
-            //         ])),
-            //     ms: ScreenDelays.second + (3 - 1) * 70);
           } // if player mon is alive
           else {
             playerProgress.endPlayerRun();
