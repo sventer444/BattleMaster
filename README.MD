@@ -48,6 +48,7 @@ Master
 - [ ] Map/Travel System?
 - [ ] Perm Evolution? 
 - [ ] Badge Mechanics (With Level up?)
+- [ ] Reset progress at pokelab
 - [ ] Shadow pokemon?
 - [ ] Status effects?
 - [ ] Starter choice

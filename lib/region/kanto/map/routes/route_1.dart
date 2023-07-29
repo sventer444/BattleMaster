@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:battle_master/components/opponent.dart';
+import 'package:battle_master/constants/encounter_states.dart';
 import 'package:battle_master/constants/mon.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../components/responsive_window.dart';
@@ -26,17 +29,25 @@ class _Route1State extends State<Route1> {
 
   List<(double, Pokemon)> routeEncounters;
 
-  //late Timer _attackTimer;
+  late Pokemon currentOpponent;
+
+  late Timer _encounterTimer;
 
   @override
   void dispose() {
     //_attackTimer.cancel();
+    _encounterTimer.cancel();
+    opponentWidget = Opponent(
+        currentOpponent: currentOpponent,
+        encounter: EncounterState.none,
+        onClick: () => {});
     super.dispose();
   }
 
   @override
   void initState() {
     setEncounterTable(routeEncounters);
+    setEncounterTimer();
     super.initState();
   }
 
@@ -44,9 +55,6 @@ class _Route1State extends State<Route1> {
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
 
-    if (!activeRound) {
-      //_attackTimer = startAttackTimer(playerProgress, context);
-    }
     return Scaffold(
       body: ResponsiveScreen(
         rectangularMenuArea: Text(_name),
@@ -78,24 +86,104 @@ class _Route1State extends State<Route1> {
             )),
             TextButton(
                 onPressed: () => {
-                      print('hit button press?'),
-                      currentOpponent = setOpponent(encounterTable),
-                      setState(() => opponentWidget = DelayedAppear(
-                          key: ValueKey(currentOpponent.id),
-                          ms: ScreenDelays.first,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Center(
-                                child: Opponent(
-                              currentOpponent: currentOpponent,
-                            )),
-                          )))
+                      if (activeRound)
+                        attackRound(currentOpponent, playerProgress, context)
                     },
-                child: const Text('Test Update Opponent'))
+                child: const Text('Attack'))
           ],
         ),
       ),
     );
+  }
+
+  void setEncounterTimer() {
+    int randomEncounterInterval = Random().nextInt(3) + 3;
+    _encounterTimer = Timer(Duration(seconds: randomEncounterInterval), () {
+      currentOpponent = setOpponent(encounterTable);
+      activeRound = true;
+      setState(() {
+        opponentWidget = Opponent(
+            currentOpponent: currentOpponent,
+            encounter: EncounterState.wildEncounter,
+            onClick: () => {});
+      });
+    });
+  }
+
+  void attackRound(Pokemon currentOpponent, PlayerProgress playerProgress,
+      BuildContext context) {
+    List<Pokemon> playerTeam = playerProgress.playerTeam;
+    List<Pokemon> attackOrder =
+        determineAttackOrder(currentOpponent, playerTeam);
+    for (var mon in attackOrder) {
+      print('${mon.name}, ${mon.currentHp}, SPD: ${mon.speed}');
+      // Ensure run is still valid
+      if (playerProgress.runInProgress) {
+        if (mon == currentOpponent) {
+          // setState(() {
+          //   if (mon.currentHp != 0) {
+          //     playerTeam[0] = applyDamage(playerTeam.first, mon);
+          //   } else {
+          //     _currentOpponent = setOpponent(encounterTable);
+          //     _opponentWidget = AnimatedOpacity(
+          //         opacity: 1.0,
+          //         duration: const Duration(milliseconds: 700),
+          //         // The green box must be a child of the AnimatedOpacity widget.
+          //         child: Column(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Text(_currentOpponent.name),
+          //               Text('${_currentOpponent.currentHp}')
+          //             ]));
+          //   } // else opponent is dead so set a new one
+          // });
+        } // if the current mon is the opponent
+        else {
+          if (mon.currentHp != 0) {
+            applyDamage(currentOpponent, mon);
+            if (currentOpponent.currentHp == 0) {
+              // TODO:
+              // Implement catching
+              setState(() {
+                opponentWidget = Opponent(
+                    currentOpponent: currentOpponent,
+                    encounter: EncounterState.none,
+                    onClick: () => {});
+              });
+              setEncounterTimer();
+              activeRound = false;
+            } else {
+              setState(() {
+                opponentWidget = Opponent(
+                    currentOpponent: currentOpponent,
+                    encounter: EncounterState.takeDamage,
+                    onClick: () => {});
+              });
+            }
+
+            // _opponentWidget = DelayedAppear(
+            //     child: Center(
+            //         child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //           Text(_currentOpponent.name),
+            //           Text('${_currentOpponent.currentHp}')
+            //         ])),
+            //     ms: ScreenDelays.second + (3 - 1) * 70);
+          } // if player mon is alive
+          else {
+            playerProgress.endPlayerRun();
+          } // player mon is dead so end run
+        } // else the current mon is a player mon
+      } // if the run is alive
+      else {
+        // TODO:
+        // implement exp gain and level scaling
+        print('You lost...');
+
+        GoRouter.of(context).go('/map');
+      } // run is ended go back to map
+    }
   }
 
   // ···

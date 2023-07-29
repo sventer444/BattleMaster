@@ -31,7 +31,7 @@ class PlayerProgress extends ChangeNotifier {
   // Highest route player has reached
   int get highestRoute => _highestRoute;
   // Whether or not the player has an active run
-  bool get runInProgresss => _runInProgress;
+  bool get runInProgress => _runInProgress;
   // Furthest location player has reached
   int get furthestLocationReached => _furthestLocationReached;
   // List of pokemon the player has encountered

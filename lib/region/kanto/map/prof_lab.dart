@@ -1,3 +1,4 @@
+import 'package:battle_master/constants/encounter_states.dart';
 import 'package:battle_master/constants/mon.dart';
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/constants/dex_status.dart';
@@ -46,19 +47,19 @@ class ProfessorsLab extends StatelessWidget {
                   children: [
                     // Choice 1
                     TextButton(
-                        child: Text(choice1.name),
                         onPressed: () =>
-                            starterSelected(context, playerProgress, choice1)),
+                            {starterSelected(context, playerProgress, choice1)},
+                        child: Text(choice1.name)),
                     // Choice 2
                     TextButton(
-                        child: Text(choice2.name),
                         onPressed: () =>
-                            starterSelected(context, playerProgress, choice2)),
+                            {starterSelected(context, playerProgress, choice2)},
+                        child: Text(choice2.name)),
                     // Choice 3
                     TextButton(
-                        child: Text(choice3.name),
                         onPressed: () =>
-                            starterSelected(context, playerProgress, choice3)),
+                            {starterSelected(context, playerProgress, choice3)},
+                        child: Text(choice3.name)),
                   ],
                 ),
               ),
