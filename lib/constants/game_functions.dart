@@ -1,19 +1,16 @@
-import 'dart:async';
 import 'dart:math';
 
-import 'package:battle_master/states/player_progress.dart';
+import 'package:battle_master/region/kanto/kanto.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
 
-import '../components/opponent.dart';
-import '../styles/delayed_appear.dart';
 import 'mon.dart';
 
 const attackTime = Duration(seconds: 5);
 
 bool activeRound = false;
 
-Widget opponentWidget = SizedBox(
+Widget opponentWidget = const SizedBox(
   height: 10,
 );
 
@@ -27,7 +24,9 @@ late List<Pokemon> encounterTable;
 Pokemon setOpponent(List<Pokemon> encounterTable) {
   int encounterIndex = Random().nextInt(encounterTable.length);
   Pokemon encounter = encounterTable[encounterIndex];
-  print('Woah, ${encounter.name} appeared!');
+  if (kDebugMode) {
+    print('Woah, ${encounter.name} appeared!');
+  }
   return Pokemon(
       name: encounter.name,
       type1: encounter.type1,
@@ -38,46 +37,68 @@ Pokemon setOpponent(List<Pokemon> encounterTable) {
       speed: encounter.speed);
 }
 
+// Determines the order of attacks for a round
+// If a pokemon is sufficiently faster than it's opponent,
+// it can attack multiple times
 List<Pokemon> determineAttackOrder(Pokemon opponent, List<Pokemon> playerTeam) {
-  List<Pokemon> attackOrder = List.empty(growable: true);
-  List<Pokemon> attackList = playerTeam.toList();
-  attackList.add(opponent);
-  attackList.sort((a, b) => b.speed.compareTo(a.speed));
-  attackOrder = attackList;
-  // TODO:
-  // implement attack speed bonus
-  print('${attackOrder.first.name} moves first!');
-  return attackOrder;
+  List<Pokemon> determinedOrder = List.empty(growable: true);
+  List<Pokemon> attackersList = playerTeam.toList();
+  attackersList.add(opponent); // Attackers list has player team and opponent
+
+  // Sorts attackers based on speed
+  // TODO: Test/Implement speed tie logic
+  attackersList.sort((a, b) => b.speed.compareTo(a.speed));
+  // TODO: Implement attack speed bonus
+
+  determinedOrder = attackersList;
+  if (kDebugMode) {
+    print('${determinedOrder.first.name} moves first!');
+  }
+  return determinedOrder;
 }
 
 void applyDamage(Pokemon target, Pokemon source) {
-  // TODO:
-  // implement
+  // TODO: Implement typings
+
+  // TODO: Adjust how defense is used?
   double rawDamage = (source.attack - target.defense) < 0
       ? 0
       : (source.attack - target.defense);
   if ((target.currentHp - rawDamage) <= 0) {
-    print('${target.name} had ${target.currentHp}, but damage was $rawDamage');
+    if (kDebugMode) {
+      print(
+          '${target.name} had ${target.currentHp}, but damage was $rawDamage');
+    }
     target.currentHp = 0;
-  } else {
-    print('${target.name} with ${target.currentHp} takes $rawDamage damage');
+  } // if raw damage would K.O. the mon
+  else {
+    if (kDebugMode) {
+      print('${target.name} with ${target.currentHp} takes $rawDamage damage');
+    }
     target.currentHp -= rawDamage;
+  } // else apply the damage calc
+}
+
+// Sets up the encounter table, for a route/location
+// Given a list of pokemon and encounter probabilities,
+// fill a 100 size list based on the odds of encounter
+void setEncounterTable(List<(int, Pokemon)> routeEncounters) {
+  // Ensure the encounter odds equal 100
+  if (ensureFullEncounters(routeEncounters)) {
+    //Initial filled list of route encounters, to be replaced
+    List<Pokemon> table = List.empty(growable: true);
+    for ((int, Pokemon) encounter in routeEncounters) {
+      var encounterList = List.filled(encounter.$1, encounter.$2);
+      table.addAll(encounterList);
+    }
+    encounterTable = table;
   }
 }
 
-void setEncounterTable(List<(double, Pokemon)> routeEncounters) {
-  int encounterIndex = 0;
-  const tableLength = 100;
-  List<Pokemon> table = List.empty(growable: true);
-  for (var i = 0; i < tableLength; i++) {
-    int encounterRate = routeEncounters[encounterIndex].$1.toInt();
-    for (var k = 0; k < encounterIndex; k++) {
-      encounterRate += routeEncounters[k].$1.toInt();
-    }
-    if (encounterRate < i) {
-      encounterIndex++;
-    }
-    table.add(routeEncounters[encounterIndex].$2);
+bool ensureFullEncounters(List<(int, Pokemon)> routeEncounters) {
+  int total = 0;
+  for ((int, Pokemon) encounter in routeEncounters) {
+    total += encounter.$1;
   }
-  encounterTable = table;
+  return total == 100;
 }

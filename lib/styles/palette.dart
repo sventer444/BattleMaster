@@ -18,6 +18,10 @@ import 'package:flutter/material.dart';
 /// as `static const`. But this way the palette is more malleable:
 /// we could allow players to customize colors, for example,
 /// or even get the colors from the network.
+///
+
+// TODO: Rename colors to combination of use and color
+// EX: bottomNavWhite, appBarRed, backgroundGrey, etc.
 class Palette {
   static Color get pokeRed => const Color.fromRGBO(164, 16, 0, 1);
   static Color get bgGrey1 => const Color.fromRGBO(82, 82, 82, 1);

@@ -1,1 +1,1 @@
-enum AnimationType { wildEncounter, starter, none, takeDamage }
+enum AnimationType { wildEncounter, starter, none, takeDamage, battle }

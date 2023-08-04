@@ -2,6 +2,11 @@ import 'dart:math';
 
 import 'type.dart';
 
+//TODO: Implement Sprites
+
+// TODO: Implement Level scaling
+
+// TODO: Implement experience
 class Pokemon {
   Pokemon(
       {required this.name,

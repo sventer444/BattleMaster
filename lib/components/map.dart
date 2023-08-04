@@ -21,7 +21,7 @@ class RouteMap extends StatelessWidget {
         squarishMainArea: Column(
           children: [
             DelayedAppear(
-              key: ValueKey('RoutesMap'),
+              key: const ValueKey('RoutesMap'),
               ms: ScreenDelays.first,
               child: Padding(
                 padding: const EdgeInsets.all(16),

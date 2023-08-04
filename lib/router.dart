@@ -1,5 +1,3 @@
-// import 'package:battle_master/styles/icons.dart';
-// import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/components/pc.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +10,9 @@ import 'region/kanto/kanto.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
+// TODO: Implement some kind of base page logic
+// Maybe have the player's current mon (roaming)?
+// If fresh start, probably show some welcome/tutorial screen?
 class AppRouter {
   final router = GoRouter(
     initialLocation: '/',
@@ -23,11 +24,12 @@ class AppRouter {
           var topBar = TopBar();
           var bottomNav = BottomNav(context: context);
           return NoTransitionPage(
-              child: Scaffold(
-            appBar: topBar.appBar,
-            body: child,
-            bottomNavigationBar: bottomNav.nav,
-          ));
+            child: Scaffold(
+              appBar: topBar.appBar,
+              body: child,
+              bottomNavigationBar: bottomNav.nav,
+            ),
+          );
         },
         routes: [
           GoRoute(
@@ -35,7 +37,7 @@ class AppRouter {
             parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) {
               return const NoTransitionPage(
-                child: Text(''),
+                child: Text('Base Page'),
               );
             },
           ),

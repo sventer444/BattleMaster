@@ -17,14 +17,12 @@ class DelayedAppear extends StatefulWidget {
 
   final VoidCallback? onDelayFinished;
 
-  final Key key;
-
   DelayedAppear({
     required this.child,
     required int ms,
     this.delayStateCreation = false,
     this.onDelayFinished,
-    required this.key,
+    super.key,
   }) : delay = Duration(milliseconds: ms);
 
   @override

@@ -4,6 +4,7 @@ import 'package:battle_master/styles/icons.dart';
 
 import '../styles/palette.dart';
 
+// TODO: Implement Store?
 class BottomNav {
   BottomNav({required this.context});
   final BuildContext context;

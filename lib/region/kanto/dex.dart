@@ -2,6 +2,7 @@ import 'package:battle_master/constants/mon.dart';
 
 import '../../constants/type.dart';
 
+//TODO: Add all of kanto
 final List<Pokemon> dex = [
   Pokemon(
       name: 'Bulbasaur',

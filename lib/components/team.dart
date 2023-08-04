@@ -1,10 +1,10 @@
-import 'package:battle_master/constants/game_functions.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/animation_type.dart';
 import '../constants/mon.dart';
-import '../styles/delayed_appear.dart';
 
+//TODO: Convert to stateful and setState when mon selected
 class PlayerTeam extends StatelessWidget {
   PlayerTeam({super.key, required this.playerTeam, required this.animation});
 
@@ -12,11 +12,10 @@ class PlayerTeam extends StatelessWidget {
 
   final AnimationType animation;
 
+  //TODO: Move team selection to game_functions
   int selectedTeamIndex = -1;
 
-  Widget teamWidget = SizedBox(
-    height: 10,
-  );
+  Widget? teamWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +23,29 @@ class PlayerTeam extends StatelessWidget {
       case AnimationType.wildEncounter:
         break;
       case AnimationType.starter:
+        break;
+      case AnimationType.battle:
+        teamWidget = Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                for (var i = 0; i < playerTeam.length; i++)
+                  TextButton(
+                      child: Text(playerTeam[i].name),
+                      onPressed: () => {switchTeamMembers(i)}),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                for (var i = 0; i < playerTeam.length; i++)
+                  Text('${playerTeam[i].currentHp}')
+              ],
+            ),
+          ],
+        );
         break;
       case AnimationType.takeDamage:
         teamWidget = Expanded(
@@ -72,21 +94,25 @@ class PlayerTeam extends StatelessWidget {
           ],
         );
         break;
-      case AnimationType.none:
-        break;
     }
-    return teamWidget;
+    return teamWidget!;
   } // build
 
   void switchTeamMembers(int index) {
     if (selectedTeamIndex == index) {
       selectedTeamIndex = -1;
-      print('unselected teammember');
+      if (kDebugMode) {
+        print('unselected teammember');
+      }
     } else if (selectedTeamIndex == -1) {
-      print('setting selected to $index');
+      if (kDebugMode) {
+        print('setting selected to $index');
+      }
       selectedTeamIndex = index;
     } else {
-      print('swapping $selectedTeamIndex with $index');
+      if (kDebugMode) {
+        print('swapping $selectedTeamIndex with $index');
+      }
       Pokemon temp = playerTeam[selectedTeamIndex];
       playerTeam[selectedTeamIndex] = playerTeam[index];
       playerTeam[index] = temp;

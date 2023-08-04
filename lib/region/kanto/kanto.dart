@@ -1,18 +1,21 @@
-import 'package:battle_master/region/kanto/dex.dart';
-import 'package:battle_master/region/kanto/map/prof_lab.dart';
+import 'dex.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../constants/mon.dart';
-import 'map/routes/route_1.dart';
+import '../../components/route.dart';
+import 'locations/prof_lab.dart';
 
+//TODO: Scope kanto regionDex
 final List<Pokemon> regionDex = dex;
 
-final List<(double, Pokemon)> route1Encounters = [
-  (50.0, regionDex[15]),
-  (50.0, regionDex[18])
+final List<(int, Pokemon)> route1Encounters = [
+  (50, regionDex[15]),
+  (50, regionDex[18])
 ];
 
-final List<StatefulWidget> routes = [Route1(routeEncounters: route1Encounters)];
+final List<StatefulWidget> routes = [
+  MapRoute(routeEncounters: route1Encounters, routeName: 'Route 1')
+];
 
 final List<(String, String, StatelessWidget)> locations = [
   (
@@ -26,3 +29,6 @@ final List<(String, String, StatelessWidget)> locations = [
     )
   )
 ];
+
+//TODO: Add battles list
+final List<StatefulWidget> battles = [];

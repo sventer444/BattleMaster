@@ -1,12 +1,12 @@
-import 'package:battle_master/constants/game_functions.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/animation_type.dart';
 import '../constants/mon.dart';
 import '../styles/delayed_appear.dart';
 
+//TODO: Update to mimic delayed appear more
 class Opponent extends StatelessWidget {
-  Opponent(
+  const Opponent(
       {super.key,
       required this.currentOpponent,
       required this.encounter,
@@ -20,7 +20,7 @@ class Opponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget opponentWidget = SizedBox(
+    Widget opponentWidget = const SizedBox(
       height: 10,
     );
     switch (encounter) {
@@ -41,6 +41,22 @@ class Opponent extends StatelessWidget {
         break;
       case AnimationType.starter:
         break;
+      case AnimationType.battle:
+        opponentWidget = DelayedAppear(
+            key: ValueKey(currentOpponent.id),
+            ms: ScreenDelays.first,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Center(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                    Text(currentOpponent.name),
+                    Text('${currentOpponent.currentHp} / ${currentOpponent.hp}')
+                  ])),
+            ));
+        break;
+
       case AnimationType.takeDamage:
         opponentWidget = Center(
             child:
@@ -50,12 +66,11 @@ class Opponent extends StatelessWidget {
         ]));
         break;
       case AnimationType.none:
-        SizedBox(
+        const SizedBox(
           height: 10,
         );
         break;
     }
-    ;
     return opponentWidget;
   }
 }

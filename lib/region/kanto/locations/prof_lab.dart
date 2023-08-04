@@ -1,6 +1,4 @@
-import 'package:battle_master/constants/animation_type.dart';
 import 'package:battle_master/constants/mon.dart';
-import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/constants/dex_status.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +31,7 @@ class ProfessorsLab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
-    Widget labWidget = SizedBox(
+    Widget labWidget = const SizedBox(
       height: 10,
     );
 
@@ -98,10 +96,11 @@ class ProfessorsLab extends StatelessWidget {
               Expanded(
                 child: Center(
                     child: TextButton(
-                  child: Text('End Challenge'),
+                  child: const Text('End Challenge'),
                   onPressed: () => {
+                    //TODO: Impelment prestige in game_functions
                     playerProgress.endPlayerRun(),
-                    GoRouter.of(context).go('/map')
+                    GoRouter.of(context).go('/')
                   },
                 )),
               ),

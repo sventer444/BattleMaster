@@ -5,30 +5,29 @@ import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/components/team.dart';
 import 'package:battle_master/constants/animation_type.dart';
 import 'package:battle_master/constants/mon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../components/responsive_window.dart';
-import '../../../../constants/game_functions.dart';
-import '../../../../states/player_progress.dart';
-import '../../../../styles/delayed_appear.dart';
+import 'responsive_window.dart';
+import '../constants/game_functions.dart';
+import '../states/player_progress.dart';
 
-class Route1 extends StatefulWidget {
-  const Route1({super.key, required this.routeEncounters});
+class MapRoute extends StatefulWidget {
+  const MapRoute(
+      {super.key, required this.routeEncounters, required this.routeName});
 
-  final List<(double, Pokemon)> routeEncounters;
+  final List<(int, Pokemon)> routeEncounters;
+
+  final String routeName;
 
   @override
-  State<Route1> createState() => _Route1State(routeEncounters: routeEncounters);
+  State<MapRoute> createState() => _MapRouteState();
 }
 
-class _Route1State extends State<Route1> {
-  _Route1State({required this.routeEncounters});
-
-  final String _name = 'Route 1';
-
-  List<(double, Pokemon)> routeEncounters;
+class _MapRouteState extends State<MapRoute> {
+  _MapRouteState();
 
   late Pokemon currentOpponent;
 
@@ -48,7 +47,7 @@ class _Route1State extends State<Route1> {
 
   @override
   void initState() {
-    setEncounterTable(routeEncounters);
+    setEncounterTable(widget.routeEncounters);
     setEncounterTimer();
     super.initState();
   }
@@ -56,10 +55,9 @@ class _Route1State extends State<Route1> {
   @override
   Widget build(BuildContext context) {
     final playerProgress = context.watch<PlayerProgress>();
-
     return Scaffold(
       body: ResponsiveScreen(
-        rectangularMenuArea: Text(_name),
+        rectangularMenuArea: Text(widget.routeName),
         squarishMainArea: Column(
           children: [
             Padding(
@@ -67,15 +65,17 @@ class _Route1State extends State<Route1> {
               child: Center(child: opponentWidget),
             ),
             Expanded(
-                child: PlayerTeam(
-                    playerTeam: playerProgress.playerTeam,
-                    animation: AnimationType.none)),
+              child: PlayerTeam(
+                  playerTeam: playerProgress.playerTeam,
+                  animation: AnimationType.none),
+            ),
             TextButton(
-                onPressed: () => {
-                      if (activeRound)
-                        attackRound(currentOpponent, playerProgress, context)
-                    },
-                child: const Text('Attack'))
+              onPressed: () => {
+                if (activeRound)
+                  attackRound(currentOpponent, playerProgress, context)
+              },
+              child: const Text('Attack'),
+            )
           ],
         ),
       ),
@@ -98,11 +98,17 @@ class _Route1State extends State<Route1> {
 
   void attackRound(Pokemon currentOpponent, PlayerProgress playerProgress,
       BuildContext context) {
+    // TODO: Implement exp gain and level scaling
+
+    // TODO: Implement catching
+
     List<Pokemon> playerTeam = playerProgress.playerTeam;
     List<Pokemon> attackOrder =
         determineAttackOrder(currentOpponent, playerTeam);
     for (var mon in attackOrder) {
-      print('${mon.name}, ${mon.currentHp}, SPD: ${mon.speed}');
+      if (kDebugMode) {
+        print('${mon.name}, ${mon.currentHp}, SPD: ${mon.speed}');
+      }
       // Ensure run is still valid
       if (playerProgress.runInProgress) {
         if (mon == currentOpponent) {
@@ -128,8 +134,6 @@ class _Route1State extends State<Route1> {
           if (mon.currentHp != 0) {
             applyDamage(currentOpponent, mon);
             if (currentOpponent.currentHp == 0) {
-              // TODO:
-              // Implement catching
               setState(() {
                 opponentWidget = Opponent(
                     currentOpponent: currentOpponent,
@@ -148,14 +152,16 @@ class _Route1State extends State<Route1> {
             }
           } // if player mon is alive
           else {
-            playerProgress.endPlayerRun();
-          } // player mon is dead so end run
+            // TODO: Handle player mon K.O.
+
+            //playerProgress.endPlayerRun();
+          } // else player mon has 0 hp, potentially end run
         } // else the current mon is a player mon
       } // if the run is alive
       else {
-        // TODO:
-        // implement exp gain and level scaling
-        print('You lost...');
+        if (kDebugMode) {
+          print('You lost...');
+        }
 
         GoRouter.of(context).go('/map');
       } // run is ended go back to map
