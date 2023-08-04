@@ -33,9 +33,7 @@ class PlayerPc extends StatelessWidget {
                   child: Column(
                 children: [
                   const Text('Current Team'),
-                  PlayerTeam(
-                      playerTeam: playerProgress.playerTeam,
-                      animation: AnimationType.none),
+                  PlayerTeam(animation: AnimationType.none),
                   const SizedBox(
                     height: 100.0,
                   ),

@@ -56,6 +56,14 @@ class AppRouter {
                   },
                 ),
                 GoRoute(
+                  path: 'battle/:battleNumber',
+                  pageBuilder: (context, state) {
+                    final battleNumber =
+                        int.parse(state.pathParameters['battleNumber']!);
+                    return NoTransitionPage(child: battles[battleNumber - 1]);
+                  },
+                ),
+                GoRoute(
                   path: 'location/:locationPath',
                   pageBuilder: (context, state) {
                     final locationPath = state.pathParameters['locationPath']!;

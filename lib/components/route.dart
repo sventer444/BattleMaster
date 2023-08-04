@@ -1,18 +1,14 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/components/team.dart';
-import 'package:battle_master/constants/animation_type.dart';
-import 'package:battle_master/constants/mon.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
+import '../constants/animation_type.dart';
+import '../constants/mon.dart';
+import 'package:flutter/material.dart';
 
+import '../states/player_progress.dart';
 import 'responsive_window.dart';
 import '../constants/game_functions.dart';
-import '../states/player_progress.dart';
 
 class MapRoute extends StatefulWidget {
   const MapRoute(
@@ -29,32 +25,12 @@ class MapRoute extends StatefulWidget {
 class _MapRouteState extends State<MapRoute> {
   _MapRouteState();
 
-  late Pokemon currentOpponent;
-
-  late Timer _encounterTimer;
-
-  @override
-  void dispose() {
-    //_attackTimer.cancel();
-    _encounterTimer.cancel();
-    currentOpponent = setOpponent(encounterTable);
-    opponentWidget = Opponent(
-        currentOpponent: currentOpponent,
-        encounter: AnimationType.none,
-        onClick: () => {});
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    setEncounterTable(widget.routeEncounters);
-    setEncounterTimer();
-    super.initState();
-  }
-
+  StatefulWidget? opponentWidget;
+  StatefulWidget playerTeamWidget =
+      const PlayerTeam(animation: AnimationType.none);
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
+    List<Pokemon> encounterTable = setEncounterTable(widget.routeEncounters);
     return Scaffold(
       body: ResponsiveScreen(
         rectangularMenuArea: Text(widget.routeName),
@@ -62,17 +38,21 @@ class _MapRouteState extends State<MapRoute> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Center(child: opponentWidget),
+              child: Center(
+                  child: opponentWidget ??
+                      const SizedBox(
+                        height: 10,
+                      )),
             ),
-            Expanded(
-              child: PlayerTeam(
-                  playerTeam: playerProgress.playerTeam,
-                  animation: AnimationType.none),
-            ),
+            Expanded(child: playerTeamWidget),
             TextButton(
               onPressed: () => {
-                if (activeRound)
-                  attackRound(currentOpponent, playerProgress, context)
+                // if (activeRound)
+                //attackRound(currentOpponent, playerProgress, context)
+                setState(() => opponentWidget = Opponent(
+                      animationType: AnimationType.wildEncounter,
+                      currentOpponent: setEncounterOpponent(encounterTable),
+                    ))
               },
               child: const Text('Attack'),
             )
@@ -82,19 +62,38 @@ class _MapRouteState extends State<MapRoute> {
     );
   }
 
-  void setEncounterTimer() {
-    int randomEncounterInterval = Random().nextInt(3) + 3;
-    _encounterTimer = Timer(Duration(seconds: randomEncounterInterval), () {
-      currentOpponent = setOpponent(encounterTable);
-      activeRound = true;
-      setState(() {
-        opponentWidget = Opponent(
-            currentOpponent: currentOpponent,
-            encounter: AnimationType.wildEncounter,
-            onClick: () => {});
-      });
-    });
-  }
+  // @override
+  // void dispose() {
+  //   //_attackTimer.cancel();
+  //   // _encounterTimer.cancel();
+  //   // currentOpponent = setEncounterOpponent(encounterTable);
+  //   // opponentWidget = Opponent(
+  //   //     currentOpponent: currentOpponent,
+  //   //     encounter: AnimationType.none,
+  //   //     onClick: () => {});
+  //   super.dispose();
+  // }
+
+  // @override
+  // void initState() {
+  //   // encounterTable = setEncounterTable(widget.routeEncounters);
+  //   // setEncounterTimer();
+  //   super.initState();
+  // }
+
+  // void setEncounterTimer() {
+  //   int randomEncounterInterval = Random().nextInt(3) + 3;
+  //   _encounterTimer = Timer(Duration(seconds: randomEncounterInterval), () {
+  //     currentOpponent = setEncounterOpponent(encounterTable);
+  //     activeRound = true;
+  //     setState(() {
+  //       opponentWidget = Opponent(
+  //           currentOpponent: currentOpponent,
+  //           encounter: AnimationType.wildEncounter,
+  //           onClick: () => {});
+  //     });
+  //   });
+  // }
 
   void attackRound(Pokemon currentOpponent, PlayerProgress playerProgress,
       BuildContext context) {
@@ -136,18 +135,18 @@ class _MapRouteState extends State<MapRoute> {
             if (currentOpponent.currentHp == 0) {
               setState(() {
                 opponentWidget = Opponent(
-                    currentOpponent: currentOpponent,
-                    encounter: AnimationType.none,
-                    onClick: () => {});
+                  currentOpponent: currentOpponent,
+                  animationType: AnimationType.none,
+                );
               });
-              setEncounterTimer();
+              //setEncounterTimer();
               activeRound = false;
             } else {
               setState(() {
                 opponentWidget = Opponent(
-                    currentOpponent: currentOpponent,
-                    encounter: AnimationType.takeDamage,
-                    onClick: () => {});
+                  currentOpponent: currentOpponent,
+                  animationType: AnimationType.takeDamage,
+                );
               });
             }
           } // if player mon is alive
@@ -167,6 +166,4 @@ class _MapRouteState extends State<MapRoute> {
       } // run is ended go back to map
     }
   }
-
-  // ···
 }

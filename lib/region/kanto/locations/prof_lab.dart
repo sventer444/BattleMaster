@@ -95,14 +95,15 @@ class ProfessorsLab extends StatelessWidget {
               ),
               Expanded(
                 child: Center(
-                    child: TextButton(
-                  child: const Text('End Challenge'),
-                  onPressed: () => {
-                    //TODO: Impelment prestige in game_functions
-                    playerProgress.endPlayerRun(),
-                    GoRouter.of(context).go('/')
-                  },
-                )),
+                  child: TextButton(
+                    child: const Text('End Challenge'),
+                    onPressed: () => {
+                      //TODO: Impelment prestige in game_functions
+                      playerProgress.endPlayerRun(),
+                      GoRouter.of(context).go('/')
+                    },
+                  ),
+                ),
               ),
             ],
           ),
@@ -115,12 +116,25 @@ class ProfessorsLab extends StatelessWidget {
   void starterSelected(
       BuildContext context, PlayerProgress progress, Pokemon starterChoice) {
     progress.setPlayerDex((starterChoice.name, DexStatus.caught));
-    starterChoice.currentHp = starterChoice.hp;
     progress.setPlayerTeam(starterChoice);
-    if (progress.highestRoute < 1) {
-      progress.setHighestRoute(1);
-    }
+    // if (progress.highestRoute < 1) {
+    //   progress.setHighestRoute(1);
+    // }
+    //String rivalStarter = determineStarter(starterChoice.name);
+
     progress.setRunInProgress(true);
-    GoRouter.of(context).go('/kanto/route/1');
+    GoRouter.of(context).go('/kanto/battle/1');
+  }
+
+  String determineStarter(String starterChoice) {
+    switch (starterChoice) {
+      case 'Bulbasaur':
+        return 'Charmander';
+      case 'Squirtle':
+        return 'Bulbasaur';
+      case 'Charmander':
+        return 'Squirtle';
+    }
+    return '';
   }
 }

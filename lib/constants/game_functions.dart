@@ -1,8 +1,6 @@
 import 'dart:math';
 
-import 'package:battle_master/region/kanto/kanto.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 
 import 'mon.dart';
 
@@ -10,18 +8,15 @@ const attackTime = Duration(seconds: 5);
 
 bool activeRound = false;
 
-Widget opponentWidget = const SizedBox(
-  height: 10,
-);
-
-late List<Pokemon> encounterTable;
+int selectedTeamIndex = -1;
 
 // Timer startAttackTimer(PlayerProgress playerProgress, BuildContext context) {
 //   return Timer.periodic(
 //       attackTime, (Timer t) => attackRound(playerProgress, context));
 // }
 
-Pokemon setOpponent(List<Pokemon> encounterTable) {
+// Returns an encounter from the given encounter Table
+Pokemon setEncounterOpponent(List<Pokemon> encounterTable) {
   int encounterIndex = Random().nextInt(encounterTable.length);
   Pokemon encounter = encounterTable[encounterIndex];
   if (kDebugMode) {
@@ -57,6 +52,7 @@ List<Pokemon> determineAttackOrder(Pokemon opponent, List<Pokemon> playerTeam) {
   return determinedOrder;
 }
 
+// Applies damage from the source to the target
 void applyDamage(Pokemon target, Pokemon source) {
   // TODO: Implement typings
 
@@ -79,10 +75,10 @@ void applyDamage(Pokemon target, Pokemon source) {
   } // else apply the damage calc
 }
 
-// Sets up the encounter table, for a route/location
+// Returns an encounter table for a route/location
 // Given a list of pokemon and encounter probabilities,
 // fill a 100 size list based on the odds of encounter
-void setEncounterTable(List<(int, Pokemon)> routeEncounters) {
+List<Pokemon> setEncounterTable(List<(int, Pokemon)> routeEncounters) {
   // Ensure the encounter odds equal 100
   if (ensureFullEncounters(routeEncounters)) {
     //Initial filled list of route encounters, to be replaced
@@ -91,14 +87,65 @@ void setEncounterTable(List<(int, Pokemon)> routeEncounters) {
       var encounterList = List.filled(encounter.$1, encounter.$2);
       table.addAll(encounterList);
     }
-    encounterTable = table;
+    return table;
+  } else {
+    if (kDebugMode) {
+      print('Route encounters did not add to 100');
+    }
+    return List.filled(100, routeEncounters.first.$2);
   }
 }
 
+// Ensure the encounter table given has a 100 total
 bool ensureFullEncounters(List<(int, Pokemon)> routeEncounters) {
   int total = 0;
   for ((int, Pokemon) encounter in routeEncounters) {
     total += encounter.$1;
   }
   return total == 100;
+}
+
+void switchTeamMembers(List<Pokemon> playerTeam, int index) {
+  if (selectedTeamIndex == index) {
+    selectedTeamIndex = -1;
+    if (kDebugMode) {
+      print('unselected teammember');
+    }
+  } else if (selectedTeamIndex == -1) {
+    if (kDebugMode) {
+      print('setting selected to $index');
+    }
+    selectedTeamIndex = index;
+  } else {
+    if (kDebugMode) {
+      print('swapping $selectedTeamIndex with $index');
+    }
+    Pokemon temp = playerTeam[selectedTeamIndex];
+    playerTeam[selectedTeamIndex] = playerTeam[index];
+    playerTeam[index] = temp;
+    selectedTeamIndex = -1;
+  }
+
+  // teamWidget = Column(
+  //   mainAxisAlignment: MainAxisAlignment.center,
+  //   children: [
+  //     Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+  //       for (var i = 0; i < playerTeam.length; i++)
+  //         // (i == selectedTeamIndex)
+  //         //     ? OutlinedButton(
+  //         //         onPressed: () => {switchTeamMembers(i)},
+  //         //         child: Text(playerTeam[i].name))
+  //         TextButton(
+  //             child: Text(playerTeam[i].name),
+  //             onPressed: () => {switchTeamMembers(i)}),
+  //     ]),
+  //     Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         for (var i = 0; i < playerTeam.length; i++)
+  //           Text('${playerTeam[i].currentHp}')
+  //       ],
+  //     ),
+  //   ],
+  // );
 }

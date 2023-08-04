@@ -8,58 +8,56 @@ import '../../../../components/responsive_window.dart';
 import '../../../../constants/game_functions.dart';
 import '../../../../states/player_progress.dart';
 
-class RivalBattle extends StatefulWidget {
-  const RivalBattle({super.key, required this.rivalTeam});
+// class RivalBattle extends StatefulWidget {
+//   const RivalBattle({super.key, required this.rivalTeam});
 
-  final List<Pokemon> rivalTeam;
+//   final List<Pokemon> rivalTeam;
 
-  @override
-  State<RivalBattle> createState() => _RivalBattleState();
-}
+//   @override
+//   State<RivalBattle> createState() => _RivalBattleState();
+// }
 
-//TODO: Implement battling logic (probably in game_functions)
-class _RivalBattleState extends State<RivalBattle> {
-  _RivalBattleState();
+// //TODO: Implement battling logic (probably in game_functions)
+// class _RivalBattleState extends State<RivalBattle> {
+//   _RivalBattleState();
 
-  final String _name = 'Nick';
+//   final String _name = 'Nick';
 
-  late Pokemon currentOpponent;
+//   late Pokemon currentOpponent;
 
-  @override
-  void dispose() {
-    //_attackTimer.cancel();
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     //_attackTimer.cancel();
+//     super.dispose();
+//   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+//   @override
+//   void initState() {
+//     super.initState();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
+//   @override
+//   Widget build(BuildContext context) {
+//     final playerProgress = context.watch<PlayerProgress>();
 
-    return Scaffold(
-      body: ResponsiveScreen(
-        rectangularMenuArea: Text(_name),
-        squarishMainArea: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Center(child: opponentWidget),
-            ),
-            Expanded(
-              child: PlayerTeam(
-                  playerTeam: playerProgress.playerTeam,
-                  animation: AnimationType.none),
-            ),
-            TextButton(onPressed: () => {}, child: const Text('Attack'))
-          ],
-        ),
-      ),
-    );
-  }
+//     return Scaffold(
+//       body: ResponsiveScreen(
+//         rectangularMenuArea: Text(_name),
+//         squarishMainArea: Column(
+//           children: [
+//             Padding(
+//               padding: const EdgeInsets.all(16),
+//               child: Center(child: opponentWidget),
+//             ),
+//             Expanded(
+//               child: PlayerTeam(animation: AnimationType.none),
+//             ),
+//             TextButton(onPressed: () => {}, child: const Text('Attack'))
+//           ],
+//         ),
+//       ),
+//     );
+//   }
 
-  // ···
-}
+//   // ···
+// }
