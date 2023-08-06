@@ -1,5 +1,7 @@
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/components/team.dart';
+import 'package:battle_master/states/player_progress.dart';
+import 'package:provider/provider.dart';
 import '../constants/animation_type.dart';
 import '../constants/mon.dart';
 import 'package:flutter/material.dart';
@@ -23,13 +25,12 @@ class BattleWidget extends StatefulWidget {
 class _BattleWidgetState extends State<BattleWidget> {
   _BattleWidgetState();
 
-  StatefulWidget? opponentWidget;
-  StatefulWidget playerTeamWidget =
-      const PlayerTeam(animation: AnimationType.none);
+  Opponent? opponentWidget;
+  PlayerTeam playerTeamWidget = const PlayerTeam(animation: AnimationType.none);
   @override
   void initState() {
     if (widget.opponentTeam.isEmpty) {
-      //TODO: Figure out opponent takes super effective mon logic
+      //TODO: Implement opponent chooses super effective mon logic
       widget.opponentTeam.add(dex[0]);
     }
     opponentWidget = Opponent(
@@ -42,6 +43,9 @@ class _BattleWidgetState extends State<BattleWidget> {
   //TODO: Implement battle logic
   @override
   Widget build(BuildContext context) {
+    final playerProgress = context.watch<PlayerProgress>();
+    List<Pokemon> playerTeam = playerProgress.playerTeam;
+
     return Scaffold(
       body: ResponsiveScreen(
         rectangularMenuArea: Text(widget.opponentName),
@@ -56,6 +60,8 @@ class _BattleWidgetState extends State<BattleWidget> {
               onPressed: () => {
                 // if (activeRound)
                 //attackRound(currentOpponent, playerProgress, context)
+                attackRound(
+                    playerTeam, opponentWidget!.currentOpponent, context)
               },
               child: const Text('Attack'),
             )
@@ -64,4 +70,7 @@ class _BattleWidgetState extends State<BattleWidget> {
       ),
     );
   }
+
+  void attackRound(List<Pokemon> playerTeam, Pokemon currentOpponent,
+      BuildContext context) {}
 }

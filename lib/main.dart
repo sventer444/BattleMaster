@@ -33,6 +33,7 @@ import 'components/base.dart';
 //   guardedMain();
 // }
 
+//TODO: Rewrite using Get
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 

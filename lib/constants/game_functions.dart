@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import 'mon.dart';
 
-const attackTime = Duration(seconds: 5);
+const attackDelay = Duration(seconds: 5);
 
 bool activeRound = false;
 

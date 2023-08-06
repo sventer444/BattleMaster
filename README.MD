@@ -56,6 +56,7 @@ Master
 - [ ] Inverse Challenge (unlockable reverse path through region)
 ### Resources
 [Flutter Game Example](https://github.com/filiph/tictactoe)
+[Flutter Get](https://pub.dev/packages/get)
 
 
 
