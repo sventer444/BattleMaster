@@ -1,7 +1,11 @@
+import 'package:battle_master/constants/router.dart';
+import 'package:battle_master/controllers/page.dart';
 import 'package:battle_master/states/persistence/player/memory_player_persistence.dart';
 import 'package:battle_master/states/persistence/settings/memory_settings_peristence.dart';
+import 'package:battle_master/styles/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -44,6 +48,8 @@ void main() {
     SystemUiMode.edgeToEdge,
   );
 
+  Get.put(ActivePageController());
+
 //   AdsController? adsController;
 //   if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
 //     /// Prepare the google_mobile_ads plugin so that the first ad loads
@@ -70,16 +76,27 @@ void main() {
   //   inAppPurchaseController.restorePurchases();
   // }
 
-  runApp(
-    BasePage(
-      // in-memory used for testing
-      settingsPersistence:
-          MemoryOnlySettingsPersistence(), //LocalStorageSettingsPersistence(),
-      playerProgressPersistence:
-          MemoryOnlyPlayerProgressPersistence(), //LocalStoragePlayerProgressPersistence(),
-      // inAppPurchaseController: inAppPurchaseController,
-      // adsController: adsController,
-      // gamesServicesController: gamesServicesController,
+  runApp(GetMaterialApp(
+    title: 'Battle Master',
+    theme: ThemeData.from(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Palette.ink,
+        background: Palette.bgGrey2,
+      ),
     ),
-  );
+    debugShowCheckedModeBanner: false,
+    initialRoute: '/',
+    getPages: routes,
+  )
+      // BasePage(
+      //   // in-memory used for testing
+      //   settingsPersistence:
+      //       MemoryOnlySettingsPersistence(), //LocalStorageSettingsPersistence(),
+      //   playerProgressPersistence:
+      //       MemoryOnlyPlayerProgressPersistence(), //LocalStoragePlayerProgressPersistence(),
+      //   // inAppPurchaseController: inAppPurchaseController,
+      //   // adsController: adsController,
+      //   // gamesServicesController: gamesServicesController,
+      // ),
+      );
 }

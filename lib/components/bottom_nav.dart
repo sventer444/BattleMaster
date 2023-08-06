@@ -6,8 +6,7 @@ import '../styles/palette.dart';
 
 // TODO: Implement Store?
 class BottomNav {
-  BottomNav({required this.context});
-  final BuildContext context;
+  BottomNav();
 
   static const navRoutingMap = ['map', 'pc'];
 
@@ -17,7 +16,7 @@ class BottomNav {
           BottomNavigationBarItem(icon: GameIcons.mapIcon, label: 'Map'),
           BottomNavigationBarItem(icon: GameIcons.pcIcon, label: 'PC'),
         ],
-        onTap: (index) => {navigate(context, index)},
+        //onTap: (index) => {navigate(context, index)},
       );
 
   navigate(BuildContext context, int index) {

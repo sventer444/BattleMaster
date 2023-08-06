@@ -10,6 +10,8 @@ import 'locations/prof_lab.dart';
 //TODO: Scope kanto regionDex
 final List<Pokemon> regionDex = dex;
 
+const String regionName = 'Kanto';
+
 const String rivalName = 'Nick';
 
 final List<(int, Pokemon)> route1Encounters = [
@@ -17,7 +19,7 @@ final List<(int, Pokemon)> route1Encounters = [
   (50, regionDex[18])
 ];
 
-final List<Widget> routes = [
+final List<Widget> mapRoutes = [
   MapRoute(routeEncounters: route1Encounters, routeName: 'Route 1')
 ];
 
