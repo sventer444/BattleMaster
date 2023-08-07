@@ -1,11 +1,14 @@
 import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/components/team.dart';
+import 'package:battle_master/controllers/player.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/animation_type.dart';
 import '../constants/mon.dart';
 import 'package:flutter/material.dart';
 
+import '../controllers/game.dart';
 import '../states/player_progress.dart';
 import 'responsive_window.dart';
 import '../constants/game_functions.dart';
@@ -25,14 +28,17 @@ class MapRoute extends StatefulWidget {
 class _MapRouteState extends State<MapRoute> {
   _MapRouteState();
 
-  StatefulWidget? opponentWidget;
-  StatefulWidget playerTeamWidget =
-      const PlayerTeam(animation: AnimationType.none);
+  var opponentWidget;
+  var playerTeamWidget = PlayerTeam();
   @override
   Widget build(BuildContext context) {
+    final PlayerController playerController = Get.find();
+    final GameController gameController = Get.find();
+    gameController.setTeamWidget(PlayerTeam());
     List<Pokemon> encounterTable = setEncounterTable(widget.routeEncounters);
+
     return Scaffold(
-      body: ResponsiveScreen(
+      body: ResponsiveWindow(
         rectangularMenuArea: Text(widget.routeName),
         squarishMainArea: Column(
           children: [
@@ -95,13 +101,13 @@ class _MapRouteState extends State<MapRoute> {
   //   });
   // }
 
-  void attackRound(Pokemon currentOpponent, PlayerProgress playerProgress,
+  void attackRound(Pokemon currentOpponent, PlayerController playerProgress,
       BuildContext context) {
     // TODO: Implement exp gain and level scaling
 
     // TODO: Implement catching
 
-    List<Pokemon> playerTeam = playerProgress.playerTeam;
+    var playerTeam = playerProgress.playerTeam.value;
     List<Pokemon> attackOrder =
         determineAttackOrder(currentOpponent, playerTeam);
     for (var mon in attackOrder) {
@@ -109,7 +115,7 @@ class _MapRouteState extends State<MapRoute> {
         print('${mon.name}, ${mon.currentHp}, SPD: ${mon.speed}');
       }
       // Ensure run is still valid
-      if (playerProgress.runInProgress) {
+      if (playerProgress.runInProgress.value) {
         if (mon == currentOpponent) {
           // setState(() {
           if (mon.currentHp != 0) {

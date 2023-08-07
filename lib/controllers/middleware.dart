@@ -14,8 +14,8 @@ class GlobalMiddleware extends GetMiddleware {
   //       : RouteSettings(name: '/login');
   // }
 
-  var topBar = TopBar();
-  var bottomNav = BottomNav();
+  AppBar topBar = appBar;
+  BottomNavigationBar bottomNav = bottomNavBar;
 
   @override
   GetPage? onPageCalled(GetPage? page) {
@@ -25,9 +25,9 @@ class GlobalMiddleware extends GetMiddleware {
       return GetPage(
         name: page.name,
         page: () => Scaffold(
-          appBar: topBar.appBar,
+          appBar: topBar,
           body: page.page(),
-          bottomNavigationBar: bottomNav.nav,
+          bottomNavigationBar: bottomNav,
         ),
       );
     }

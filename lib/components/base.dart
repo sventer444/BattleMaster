@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 import '../controllers/audio.dart';
 // import '../controllers/game_services.dart';
-import '../controllers/page.dart';
 import '../states/app_lifecycle.dart';
 import '../states/persistence/player/player_persistence.dart';
 import '../states/persistence/settings/settings_persistence.dart';
@@ -38,19 +37,14 @@ class BasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ActivePageController activePage = Get.find<ActivePageController>();
-
-    return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            children: <Widget>[Text('Home Test')],
-            controller: activePage.controller.value,
-            pageSnapping: false,
-            physics: NeverScrollableScrollPhysics(),
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text('Home Page')],
+        )
+      ],
     );
     // AppLifecycleObserver(
     //   child: MultiProvider(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ResponsiveScreen extends StatelessWidget {
+class ResponsiveWindow extends StatelessWidget {
   /// This is the "hero" of the screen. It's more or less square, and will
   /// be placed in the visual "center" of the screen.
   final Widget squarishMainArea;
@@ -16,7 +16,7 @@ class ResponsiveScreen extends StatelessWidget {
   /// elements.
   final double mainAreaProminence;
 
-  const ResponsiveScreen({
+  const ResponsiveWindow({
     required this.squarishMainArea,
     this.rectangularMenuArea,
     this.topMessageArea = const SizedBox.shrink(),

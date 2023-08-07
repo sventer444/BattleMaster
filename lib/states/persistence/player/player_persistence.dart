@@ -14,7 +14,7 @@ abstract class PlayerProgressPersistence {
 
   Future<int> getFurthestLocationReached();
 
-  Future<List<(String, DexStatus)>> getPlayerDex();
+  Future<List<(Pokemon, DexStatus)>> getPlayerDex();
 
   Future<List<Pokemon>> getPlayerPc();
 
@@ -28,7 +28,7 @@ abstract class PlayerProgressPersistence {
 
   Future<void> saveFurthestLocationReached(int location);
 
-  Future<void> savePlayerDex(List<(String, DexStatus)> playerDex);
+  Future<void> savePlayerDex(List<(Pokemon, DexStatus)> playerDex);
 
   Future<void> savePlayerPc(List<Pokemon> playerPc);
 
@@ -38,7 +38,7 @@ abstract class PlayerProgressPersistence {
       String farthestRegion,
       int highestRoute,
       int furthestLocationReached,
-      List<(String, DexStatus)> playerDex,
+      List<(Pokemon, DexStatus)> playerDex,
       List<Pokemon> playerPc,
       List<Pokemon> playerTeam,
       bool runInProgress);

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../controllers/player.dart';
 import '../states/player_progress.dart';
 import '../styles/delayed_appear.dart';
 import '../styles/palette.dart';
@@ -13,11 +15,12 @@ class RouteMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
+    // final playerProgress = context.watch<PlayerProgress>();
+    final PlayerController playerController = Get.find();
 
     return Scaffold(
       backgroundColor: Palette.bgGrey2,
-      body: ResponsiveScreen(
+      body: ResponsiveWindow(
         squarishMainArea: Column(
           children: [
             DelayedAppear(
@@ -26,7 +29,7 @@ class RouteMap extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Center(
-                  child: Text(playerProgress.farthestRegion),
+                  child: Text(playerController.farthestRegion.value),
                 ),
               ),
             ),
@@ -45,7 +48,7 @@ class RouteMap extends StatelessWidget {
                 // This is the grid of routes
                 Column(
                   children: [
-                    for (var i = 0; i < playerProgress.highestRoute; i++)
+                    for (var i = 0; i < mapRoutes.length; i++)
                       _RouteButton(i + 1)
                   ],
                 )
@@ -89,31 +92,26 @@ class _RouteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
-
     // /// Level is either one that the player has already bested, on one above.
     // final available = playerProgress.highestLevelReached + 1 >= number;
 
     // /// We allow the player to skip one level.
     // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
 
-    if (routeNumber <= playerProgress.highestRoute) {
-      return DelayedAppear(
-        key: ValueKey(routeNumber),
-        ms: ScreenDelays.second + (routeNumber - 1) * 70,
-        child: TextButton(
-          onPressed: () => GoRouter.of(context).go('/kanto/route/$routeNumber'),
-          // child: SizedBox.expand(
-          // child: Padding(
-          //   padding: const EdgeInsets.all(8),
-          child: Text('Route $routeNumber'),
-          // ),
-          // )
-        ),
-      );
-    } else {
-      return const SizedBox(height: 10);
-    }
+    return DelayedAppear(
+      key: ValueKey(routeNumber),
+      ms: ScreenDelays.second + (routeNumber - 1) * 70,
+      child: TextButton(
+        onPressed: () =>
+            Get.toNamed('/route', arguments: {'routeNumber': routeNumber}),
+        // child: SizedBox.expand(
+        // child: Padding(
+        //   padding: const EdgeInsets.all(8),
+        child: Text('Route $routeNumber'),
+        // ),
+        // )
+      ),
+    );
   }
 }
 
@@ -124,32 +122,24 @@ class _LocationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
-
     // /// Level is either one that the player has already bested, on one above.
     // final available = playerProgress.highestLevelReached + 1 >= number;
 
     // /// We allow the player to skip one level.
     // final availableWithSkip = playerProgress.highestLevelReached + 2 >= number;
-    if (locationIndex <= playerProgress.furthestLocationReached) {
-      return DelayedAppear(
-        key: ValueKey(locationIndex),
-        ms: ScreenDelays.second + (locationIndex - 1) * 70,
-        child: TextButton(
-          onPressed: () => GoRouter.of(context)
-              .go('/kanto/location/${locations[locationIndex].$1}'),
-          // child: SizedBox.expand(
-          // child: Padding(
-          //   padding: const EdgeInsets.all(8),
-          child: Text(locations[locationIndex].$2),
-          // ),
-          // )
-        ),
-      );
-    } else {
-      return const SizedBox(
-        height: 10,
-      );
-    }
+    return DelayedAppear(
+      key: ValueKey(locationIndex),
+      ms: ScreenDelays.second + (locationIndex - 1) * 70,
+      child: TextButton(
+        onPressed: () =>
+            Get.toNamed('/location/${locations[locationIndex].$1}'),
+        // child: SizedBox.expand(
+        // child: Padding(
+        //   padding: const EdgeInsets.all(8),
+        child: Text(locations[locationIndex].$2),
+        // ),
+        // )
+      ),
+    );
   }
 }

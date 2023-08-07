@@ -9,7 +9,7 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   String farthestRegion = 'Kanto';
   int highestRoute = 0;
   int furthestLocationReached = 0;
-  List<(String, DexStatus)> playerDex = List.empty(growable: true);
+  List<(Pokemon, DexStatus)> playerDex = List.empty(growable: true);
   List<Pokemon> playerPc = List.empty(growable: true);
   List<Pokemon> playerTeam = List.empty(growable: true);
   bool runInProgress = false;
@@ -47,7 +47,7 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   }
 
   @override
-  Future<List<(String, DexStatus)>> getPlayerDex() async {
+  Future<List<(Pokemon, DexStatus)>> getPlayerDex() async {
     return playerDex;
   }
 
@@ -75,7 +75,7 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
   Future<void> saveRunInProgress(bool value) async => runInProgress = value;
 
   @override
-  Future<void> savePlayerDex(List<(String, DexStatus)> value) async =>
+  Future<void> savePlayerDex(List<(Pokemon, DexStatus)> value) async =>
       playerDex = value;
 
   @override
@@ -89,7 +89,7 @@ class MemoryOnlyPlayerProgressPersistence implements PlayerProgressPersistence {
       String farthestRegion,
       int highestRoute,
       int furthestLocationReached,
-      List<(String, DexStatus)> playerDex,
+      List<(Pokemon, DexStatus)> playerDex,
       List<Pokemon> playerPc,
       List<Pokemon> playerTeam,
       bool runInProgress) async {

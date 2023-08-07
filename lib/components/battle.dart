@@ -1,13 +1,15 @@
 import 'package:battle_master/components/opponent.dart';
+import 'package:battle_master/components/responsive_window.dart';
 import 'package:battle_master/components/team.dart';
+import 'package:battle_master/controllers/player.dart';
 import 'package:battle_master/states/player_progress.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../constants/animation_type.dart';
 import '../constants/mon.dart';
 import 'package:flutter/material.dart';
 
 import '../region/kanto/dex.dart';
-import 'responsive_window.dart';
 import '../constants/game_functions.dart';
 
 class BattleWidget extends StatefulWidget {
@@ -26,7 +28,7 @@ class _BattleWidgetState extends State<BattleWidget> {
   _BattleWidgetState();
 
   Opponent? opponentWidget;
-  PlayerTeam playerTeamWidget = const PlayerTeam(animation: AnimationType.none);
+  PlayerTeam playerTeamWidget = const PlayerTeam();
   @override
   void initState() {
     if (widget.opponentTeam.isEmpty) {
@@ -43,11 +45,11 @@ class _BattleWidgetState extends State<BattleWidget> {
   //TODO: Implement battle logic
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
-    List<Pokemon> playerTeam = playerProgress.playerTeam;
+    final PlayerController playerController = Get.find();
+    var playerTeam = playerController.playerTeam;
 
     return Scaffold(
-      body: ResponsiveScreen(
+      body: ResponsiveWindow(
         rectangularMenuArea: Text(widget.opponentName),
         squarishMainArea: Column(
           children: [
@@ -71,6 +73,6 @@ class _BattleWidgetState extends State<BattleWidget> {
     );
   }
 
-  void attackRound(List<Pokemon> playerTeam, Pokemon currentOpponent,
+  void attackRound(List<dynamic> playerTeam, Pokemon currentOpponent,
       BuildContext context) {}
 }

@@ -1,6 +1,8 @@
 import 'package:battle_master/constants/mon.dart';
 import 'package:battle_master/constants/dex_status.dart';
+import 'package:battle_master/controllers/player.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -30,14 +32,15 @@ class ProfessorsLab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
+    final PlayerController playerController = Get.find();
+
     Widget labWidget = const SizedBox(
       height: 10,
     );
 
-    if (!playerProgress.runInProgress) {
+    if (!playerController.runInProgress.value) {
       labWidget = Scaffold(
-        body: ResponsiveScreen(
+        body: ResponsiveWindow(
           rectangularMenuArea: Text(starterText),
           squarishMainArea: Column(
             children: [
@@ -56,21 +59,21 @@ class ProfessorsLab extends StatelessWidget {
                       TextButton(
                           onPressed: () => {
                                 starterSelected(
-                                    context, playerProgress, choice1)
+                                    context, playerController, choice1)
                               },
                           child: Text(choice1.name)),
                       // Choice 2
                       TextButton(
                           onPressed: () => {
                                 starterSelected(
-                                    context, playerProgress, choice2)
+                                    context, playerController, choice2)
                               },
                           child: Text(choice2.name)),
                       // Choice 3
                       TextButton(
                           onPressed: () => {
                                 starterSelected(
-                                    context, playerProgress, choice3)
+                                    context, playerController, choice3)
                               },
                           child: Text(choice3.name)),
                     ],
@@ -83,7 +86,7 @@ class ProfessorsLab extends StatelessWidget {
       );
     } else {
       labWidget = Scaffold(
-        body: ResponsiveScreen(
+        body: ResponsiveWindow(
           rectangularMenuArea: Text(endChallengeText),
           squarishMainArea: Column(
             children: [
@@ -99,8 +102,8 @@ class ProfessorsLab extends StatelessWidget {
                     child: const Text('End Challenge'),
                     onPressed: () => {
                       //TODO: Impelment prestige in game_functions
-                      playerProgress.endPlayerRun(),
-                      GoRouter.of(context).go('/')
+                      playerController.endPlayerRun(),
+                      Get.offAllNamed('/')
                     },
                   ),
                 ),
@@ -113,17 +116,18 @@ class ProfessorsLab extends StatelessWidget {
     return labWidget;
   }
 
-  void starterSelected(
-      BuildContext context, PlayerProgress progress, Pokemon starterChoice) {
-    progress.setPlayerDex((starterChoice.name, DexStatus.caught));
-    progress.setPlayerTeam(starterChoice);
+  void starterSelected(BuildContext context, PlayerController playerController,
+      Pokemon starterChoice) {
+    playerController.setPlayerDex((starterChoice, DexStatus.caught));
+    playerController.setPlayerTeam(starterChoice);
     // if (progress.highestRoute < 1) {
     //   progress.setHighestRoute(1);
     // }
     //String rivalStarter = determineStarter(starterChoice.name);
 
-    progress.setRunInProgress(true);
-    GoRouter.of(context).go('/kanto/battle/1');
+    playerController.setRunInProgress(true);
+    Get.toNamed('/battle', arguments: {'battleNumber': 1});
+    //GoRouter.of(context).go('/kanto/battle/1');
   }
 
   String determineStarter(String starterChoice) {

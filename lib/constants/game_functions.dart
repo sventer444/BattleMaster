@@ -37,7 +37,7 @@ Pokemon setEncounterOpponent(List<Pokemon> encounterTable) {
 // it can attack multiple times
 List<Pokemon> determineAttackOrder(Pokemon opponent, List<Pokemon> playerTeam) {
   List<Pokemon> determinedOrder = List.empty(growable: true);
-  List<Pokemon> attackersList = playerTeam.toList();
+  List<Pokemon> attackersList = playerTeam;
   attackersList.add(opponent); // Attackers list has player team and opponent
 
   // Sorts attackers based on speed

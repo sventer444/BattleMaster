@@ -1,6 +1,8 @@
 import 'package:battle_master/constants/router.dart';
-import 'package:battle_master/controllers/page.dart';
+import 'package:battle_master/controllers/game.dart';
+import 'package:battle_master/controllers/player.dart';
 import 'package:battle_master/states/persistence/player/memory_player_persistence.dart';
+import 'package:battle_master/states/persistence/player/player_persistence.dart';
 import 'package:battle_master/states/persistence/settings/memory_settings_peristence.dart';
 import 'package:battle_master/styles/palette.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +49,9 @@ void main() {
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
   );
-
-  Get.put(ActivePageController());
+  PlayerProgressPersistence playerProg = MemoryOnlyPlayerProgressPersistence();
+  Get.put(PlayerController(playerProg));
+  Get.put(GameController());
 
 //   AdsController? adsController;
 //   if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {

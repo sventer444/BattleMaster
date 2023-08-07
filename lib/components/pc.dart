@@ -1,6 +1,9 @@
 import 'package:battle_master/components/team.dart';
 import 'package:battle_master/constants/animation_type.dart';
+import 'package:battle_master/controllers/game.dart';
+import 'package:battle_master/controllers/player.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../states/player_progress.dart';
@@ -12,12 +15,13 @@ class PlayerPc extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final playerProgress = context.watch<PlayerProgress>();
-
-    List<Pokemon> playerPc = playerProgress.playerPc;
+    final PlayerController playerController = Get.find();
+    final GameController gameController = Get.find();
+    List<Pokemon> playerPc = playerController.playerPc;
+    gameController.setTeamWidget(PlayerTeam());
 
     return Scaffold(
-      body: ResponsiveScreen(
+      body: ResponsiveWindow(
         rectangularMenuArea:
             const Text('This is where the pokemon you have caught are stored'),
         squarishMainArea: Column(
@@ -33,7 +37,7 @@ class PlayerPc extends StatelessWidget {
                   child: Column(
                 children: [
                   const Text('Current Team'),
-                  PlayerTeam(animation: AnimationType.none),
+                  gameController.teamWidget.value,
                   const SizedBox(
                     height: 100.0,
                   ),
