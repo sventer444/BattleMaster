@@ -3,7 +3,6 @@ import 'package:battle_master/controllers/game.dart';
 import 'package:battle_master/controllers/player.dart';
 import 'package:battle_master/states/persistence/player/memory_player_persistence.dart';
 import 'package:battle_master/states/persistence/player/player_persistence.dart';
-import 'package:battle_master/states/persistence/settings/memory_settings_peristence.dart';
 import 'package:battle_master/styles/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,6 @@ import 'package:get/get.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:logging/logging.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'components/base.dart';
 // import 'states/persistence/player/local_storage_player.dart';
 // import 'states/persistence/settings/local_storage_settings.dart';
 
@@ -39,7 +37,6 @@ import 'components/base.dart';
 //   guardedMain();
 // }
 
-//TODO: Rewrite using Get
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -91,15 +88,6 @@ void main() {
     initialRoute: '/',
     getPages: routes,
   )
-      // BasePage(
-      //   // in-memory used for testing
-      //   settingsPersistence:
-      //       MemoryOnlySettingsPersistence(), //LocalStorageSettingsPersistence(),
-      //   playerProgressPersistence:
-      //       MemoryOnlyPlayerProgressPersistence(), //LocalStoragePlayerProgressPersistence(),
-      //   // inAppPurchaseController: inAppPurchaseController,
-      //   // adsController: adsController,
-      //   // gamesServicesController: gamesServicesController,
       // ),
       );
 }

@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 import '../components/team.dart';
-import '../constants/animation_type.dart';
+import '../constants/mon.dart';
 
 class GameController extends GetxController {
-  Rx<PlayerTeam> teamWidget = PlayerTeam().obs;
+  //TODO: Implement opponent widget
+  Rx<PlayerTeam> teamWidget = const PlayerTeam().obs;
+  int highestRouteThisRun = 0;
+  int furthestLocationThisRun = 1;
+  String currentRegion = 'Kanto';
   // var page = 0.obs;
   // var controller = PageController().obs;
   // var fromController = ScrollController(initialScrollOffset: 0.0).obs;

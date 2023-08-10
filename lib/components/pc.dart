@@ -1,12 +1,9 @@
 import 'package:battle_master/components/team.dart';
-import 'package:battle_master/constants/animation_type.dart';
 import 'package:battle_master/controllers/game.dart';
 import 'package:battle_master/controllers/player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
-import '../states/player_progress.dart';
 import '../constants/mon.dart';
 import 'responsive_window.dart';
 
@@ -18,7 +15,7 @@ class PlayerPc extends StatelessWidget {
     final PlayerController playerController = Get.find();
     final GameController gameController = Get.find();
     List<Pokemon> playerPc = playerController.playerPc;
-    gameController.setTeamWidget(PlayerTeam());
+    gameController.setTeamWidget(const PlayerTeam());
 
     return Scaffold(
       body: ResponsiveWindow(

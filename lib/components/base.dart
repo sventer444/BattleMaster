@@ -1,17 +1,6 @@
-import 'package:battle_master/constants/router.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-import '../controllers/audio.dart';
 // import '../controllers/game_services.dart';
-import '../states/app_lifecycle.dart';
-import '../states/persistence/player/player_persistence.dart';
-import '../states/persistence/settings/settings_persistence.dart';
-import '../states/player_progress.dart';
-import '../states/settings.dart';
-import '../styles/palette.dart';
 
 class BasePage extends StatelessWidget {
   const BasePage({
@@ -34,10 +23,10 @@ class BasePage extends StatelessWidget {
   // static final GoRouter _router = AppRouter().router;
 
 //   final AdsController? adsController;
-
+  //TODO: Implment homepage with roaming pokemon from pc
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(

@@ -15,6 +15,8 @@ int selectedTeamIndex = -1;
 //       attackTime, (Timer t) => attackRound(playerProgress, context));
 // }
 
+//TODO: Transfer to game controller but keep static functions here
+
 // Returns an encounter from the given encounter Table
 Pokemon setEncounterOpponent(List<Pokemon> encounterTable) {
   int encounterIndex = Random().nextInt(encounterTable.length);
@@ -30,6 +32,21 @@ Pokemon setEncounterOpponent(List<Pokemon> encounterTable) {
       attack: encounter.attack,
       defense: encounter.defense,
       speed: encounter.speed);
+}
+
+// Given a starter list of grass, fire, water order
+// Determines the counter starter for the rival to take
+Pokemon determineRivalStarter(
+    String starterChoice, List<Pokemon> starterOptions) {
+  if (starterChoice == starterOptions.first.name) {
+    return starterOptions[1];
+  } //player chose grass
+  else if (starterChoice == starterOptions[1].name) {
+    return starterOptions[2];
+  } // player chose fire
+  else {
+    return starterOptions.first;
+  } // player chose water
 }
 
 // Determines the order of attacks for a round

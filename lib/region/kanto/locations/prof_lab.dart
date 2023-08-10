@@ -3,10 +3,7 @@ import 'package:battle_master/constants/dex_status.dart';
 import 'package:battle_master/controllers/player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-import '../../../states/player_progress.dart';
 import '../../../components/responsive_window.dart';
 
 class ProfessorsLab extends StatelessWidget {
@@ -28,7 +25,7 @@ class ProfessorsLab extends StatelessWidget {
   final String starterText = 'Welcome to the professors lab!';
 
   final String endChallengeText =
-      'You can choose to end your challenge and recieve any rewards you earned';
+      'You can choose to end your Battle Challenge and receive any rewards you earned';
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +98,7 @@ class ProfessorsLab extends StatelessWidget {
                   child: TextButton(
                     child: const Text('End Challenge'),
                     onPressed: () => {
-                      //TODO: Impelment prestige in game_functions
+                      //TODO: Impelment prestige
                       playerController.endPlayerRun(),
                       Get.offAllNamed('/')
                     },
@@ -126,19 +123,8 @@ class ProfessorsLab extends StatelessWidget {
     //String rivalStarter = determineStarter(starterChoice.name);
 
     playerController.setRunInProgress(true);
-    Get.toNamed('/battle', arguments: {'battleNumber': 1});
+    Get.offAndToNamed('/battle/${starterChoice.name}',
+        arguments: {'battleNumber': 1});
     //GoRouter.of(context).go('/kanto/battle/1');
-  }
-
-  String determineStarter(String starterChoice) {
-    switch (starterChoice) {
-      case 'Bulbasaur':
-        return 'Charmander';
-      case 'Squirtle':
-        return 'Bulbasaur';
-      case 'Charmander':
-        return 'Squirtle';
-    }
-    return '';
   }
 }

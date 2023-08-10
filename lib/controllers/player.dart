@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 
 import '../constants/dex_status.dart';
 import '../constants/mon.dart';

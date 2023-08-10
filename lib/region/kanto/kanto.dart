@@ -1,5 +1,7 @@
 import 'package:battle_master/components/battle.dart';
-
+import 'package:battle_master/controllers/game.dart';
+import 'package:get/get.dart';
+import '../../constants/game_functions.dart';
 import 'dex.dart';
 import 'package:flutter/widgets.dart';
 
@@ -13,6 +15,12 @@ final List<Pokemon> regionDex = dex;
 const String regionName = 'Kanto';
 
 const String rivalName = 'Nick';
+
+final List<Pokemon> starters = [
+  regionDex.first,
+  regionDex[3],
+  regionDex[6],
+];
 
 final List<(int, Pokemon)> route1Encounters = [
   (50, regionDex[15]),
@@ -29,17 +37,21 @@ final List<(String, String, Widget)> locations = [
     'Professors Lab',
     ProfessorsLab(
       name: 'Professors Lab',
-      choice1: regionDex.first,
-      choice2: regionDex[3],
-      choice3: regionDex[6],
+      choice1: starters[0],
+      choice2: starters[1],
+      choice3: starters[2],
     )
   )
 ];
-
-//TODO: Add battles list
-final List<Widget> battles = [
+final List<BattleWidget> battles = [
   BattleWidget(
     opponentName: rivalName,
-    opponentTeam: [regionDex[3]],
+    opponentTeam: [],
   )
 ];
+
+Widget setRivalStater(String playerStarter, int battlesIndex) {
+  Pokemon counterStarter = determineRivalStarter(playerStarter, starters);
+  battles[battlesIndex].opponentTeam.add(counterStarter);
+  return battles[battlesIndex];
+}

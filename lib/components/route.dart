@@ -9,10 +9,10 @@ import '../constants/mon.dart';
 import 'package:flutter/material.dart';
 
 import '../controllers/game.dart';
-import '../states/player_progress.dart';
 import 'responsive_window.dart';
 import '../constants/game_functions.dart';
 
+//TODO: Convert to stateless widget
 class MapRoute extends StatefulWidget {
   const MapRoute(
       {super.key, required this.routeEncounters, required this.routeName});
@@ -29,12 +29,11 @@ class _MapRouteState extends State<MapRoute> {
   _MapRouteState();
 
   var opponentWidget;
-  var playerTeamWidget = PlayerTeam();
+  var playerTeamWidget = const PlayerTeam();
   @override
   Widget build(BuildContext context) {
-    final PlayerController playerController = Get.find();
     final GameController gameController = Get.find();
-    gameController.setTeamWidget(PlayerTeam());
+    gameController.setTeamWidget(const PlayerTeam());
     List<Pokemon> encounterTable = setEncounterTable(widget.routeEncounters);
 
     return Scaffold(
@@ -107,7 +106,7 @@ class _MapRouteState extends State<MapRoute> {
 
     // TODO: Implement catching
 
-    var playerTeam = playerProgress.playerTeam.value;
+    var playerTeam = playerProgress.playerTeam;
     List<Pokemon> attackOrder =
         determineAttackOrder(currentOpponent, playerTeam);
     for (var mon in attackOrder) {

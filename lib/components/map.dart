@@ -1,10 +1,7 @@
+import 'package:battle_master/controllers/game.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-import '../controllers/player.dart';
-import '../states/player_progress.dart';
 import '../styles/delayed_appear.dart';
 import '../styles/palette.dart';
 import '../region/kanto/kanto.dart';
@@ -16,7 +13,7 @@ class RouteMap extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final playerProgress = context.watch<PlayerProgress>();
-    final PlayerController playerController = Get.find();
+    final GameController gameController = Get.find();
 
     return Scaffold(
       backgroundColor: Palette.bgGrey2,
@@ -29,7 +26,7 @@ class RouteMap extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Center(
-                  child: Text(playerController.farthestRegion.value),
+                  child: Text(gameController.currentRegion),
                 ),
               ),
             ),
@@ -41,14 +38,16 @@ class RouteMap extends StatelessWidget {
                 // This is the grid of locations
                 Column(
                   children: [
-                    for (var i = 0; i < locations.length; i++)
+                    for (var i = 0;
+                        i < gameController.furthestLocationThisRun;
+                        i++)
                       _LocationButton(i)
                   ],
                 ),
                 // This is the grid of routes
                 Column(
                   children: [
-                    for (var i = 0; i < mapRoutes.length; i++)
+                    for (var i = 0; i < gameController.highestRouteThisRun; i++)
                       _RouteButton(i + 1)
                   ],
                 )
@@ -102,8 +101,8 @@ class _RouteButton extends StatelessWidget {
       key: ValueKey(routeNumber),
       ms: ScreenDelays.second + (routeNumber - 1) * 70,
       child: TextButton(
-        onPressed: () =>
-            Get.toNamed('/route', arguments: {'routeNumber': routeNumber}),
+        onPressed: () => Get.offAndToNamed('/route',
+            arguments: {'routeNumber': routeNumber}),
         // child: SizedBox.expand(
         // child: Padding(
         //   padding: const EdgeInsets.all(8),
@@ -132,7 +131,7 @@ class _LocationButton extends StatelessWidget {
       ms: ScreenDelays.second + (locationIndex - 1) * 70,
       child: TextButton(
         onPressed: () =>
-            Get.toNamed('/location/${locations[locationIndex].$1}'),
+            Get.offAndToNamed('/location/${locations[locationIndex].$1}'),
         // child: SizedBox.expand(
         // child: Padding(
         //   padding: const EdgeInsets.all(8),
