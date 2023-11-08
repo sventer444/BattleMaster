@@ -18,5 +18,5 @@ BottomNavigationBar bottomNavBar = BottomNavigationBar(
 );
 
 navigate(int index) {
-  Get.offAndToNamed('/${navRoutingMap[index]}');
+  Get.toNamed('/${navRoutingMap[index]}');
 }

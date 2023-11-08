@@ -101,8 +101,8 @@ class _RouteButton extends StatelessWidget {
       key: ValueKey(routeNumber),
       ms: ScreenDelays.second + (routeNumber - 1) * 70,
       child: TextButton(
-        onPressed: () => Get.offAndToNamed('/route',
-            arguments: {'routeNumber': routeNumber}),
+        onPressed: () =>
+            Get.toNamed('/route', arguments: {'routeNumber': routeNumber}),
         // child: SizedBox.expand(
         // child: Padding(
         //   padding: const EdgeInsets.all(8),
@@ -131,7 +131,7 @@ class _LocationButton extends StatelessWidget {
       ms: ScreenDelays.second + (locationIndex - 1) * 70,
       child: TextButton(
         onPressed: () =>
-            Get.offAndToNamed('/location/${locations[locationIndex].$1}'),
+            Get.toNamed('/location/${locations[locationIndex].$1}'),
         // child: SizedBox.expand(
         // child: Padding(
         //   padding: const EdgeInsets.all(8),

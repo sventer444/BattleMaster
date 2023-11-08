@@ -55,7 +55,6 @@ class _MapRouteState extends State<MapRoute> {
                 // if (activeRound)
                 //attackRound(currentOpponent, playerProgress, context)
                 setState(() => opponentWidget = Opponent(
-                      animationType: AnimationType.wildEncounter,
                       currentOpponent: setEncounterOpponent(encounterTable),
                     ))
               },
@@ -141,7 +140,6 @@ class _MapRouteState extends State<MapRoute> {
               setState(() {
                 opponentWidget = Opponent(
                   currentOpponent: currentOpponent,
-                  animationType: AnimationType.none,
                 );
               });
               //setEncounterTimer();
@@ -150,7 +148,6 @@ class _MapRouteState extends State<MapRoute> {
               setState(() {
                 opponentWidget = Opponent(
                   currentOpponent: currentOpponent,
-                  animationType: AnimationType.takeDamage,
                 );
               });
             }

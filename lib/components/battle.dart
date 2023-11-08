@@ -7,6 +7,7 @@ import '../constants/animation_type.dart';
 import '../constants/mon.dart';
 import 'package:flutter/material.dart';
 
+import '../controllers/game.dart';
 import '../region/kanto/dex.dart';
 
 //TODO: Make stateless widget
@@ -18,14 +19,20 @@ class BattleWidget extends StatelessWidget {
 
   List<Pokemon> opponentTeam;
 
-  Opponent? opponentWidget;
   PlayerTeam playerTeamWidget = const PlayerTeam();
 
   //TODO: Implement battle logic
   @override
   Widget build(BuildContext context) {
+    //TODO: implement battle logic to sort team by most effective pokemon
+
     final PlayerController playerController = Get.find();
+    final GameController gameController = Get.find();
     var playerTeam = playerController.playerTeam;
+    var currentOpponent =
+        opponentTeam.firstWhere((element) => element.currentHp > 0);
+    gameController
+        .setOpponentWidget(Opponent(currentOpponent: currentOpponent));
 
     return Scaffold(
       body: ResponsiveWindow(
@@ -34,15 +41,14 @@ class BattleWidget extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Center(child: opponentWidget!),
+              child: Center(child: gameController.opponentWidget.value),
             ),
             Expanded(child: playerTeamWidget),
             TextButton(
               onPressed: () => {
                 // if (activeRound)
                 //attackRound(currentOpponent, playerProgress, context)
-                attackRound(
-                    playerTeam, opponentWidget!.currentOpponent, context)
+                gameController.attackRound(playerTeam)
               },
               child: const Text('Attack'),
             )
@@ -51,7 +57,4 @@ class BattleWidget extends StatelessWidget {
       ),
     );
   }
-
-  void attackRound(List<dynamic> playerTeam, Pokemon currentOpponent,
-      BuildContext context) {}
 }

@@ -20,6 +20,14 @@ class GlobalMiddleware extends GetMiddleware {
   @override
   GetPage? onPageCalled(GetPage? page) {
     if (page == null) {
+      // return GetPage(
+      //   name: 'scaffold',
+      //   page: () => Scaffold(
+      //     appBar: topBar,
+      //     body: const Text(''),
+      //     bottomNavigationBar: bottomNav,
+      //   ),
+      // );
       return null;
     } else {
       return GetPage(

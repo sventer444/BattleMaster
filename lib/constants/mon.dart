@@ -36,6 +36,8 @@ class Pokemon {
 
   int level;
 
+  Types? attackType;
+
   double experienceAmount = 0;
 
   int id = Random().nextInt(25600);

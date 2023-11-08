@@ -71,12 +71,8 @@ List<Pokemon> determineAttackOrder(Pokemon opponent, List<Pokemon> playerTeam) {
 
 // Applies damage from the source to the target
 void applyDamage(Pokemon target, Pokemon source) {
-  // TODO: Implement typings
+  int rawDamage = calcDamage(source, target);
 
-  // TODO: Adjust how defense is used?
-  double rawDamage = (source.attack - target.defense) < 0
-      ? 0
-      : (source.attack - target.defense);
   if ((target.currentHp - rawDamage) <= 0) {
     if (kDebugMode) {
       print(
@@ -90,6 +86,13 @@ void applyDamage(Pokemon target, Pokemon source) {
     }
     target.currentHp -= rawDamage;
   } // else apply the damage calc
+}
+
+int calcDamage(Pokemon source, Pokemon target) {
+  double targetDefenseDrop = (source.attack / (1 + (target.defense / 100)));
+  double rawDamage = source.attack - targetDefenseDrop;
+  //TODO: Implement typings
+  return (rawDamage > 0) ? rawDamage.round() : 1;
 }
 
 // Returns an encounter table for a route/location

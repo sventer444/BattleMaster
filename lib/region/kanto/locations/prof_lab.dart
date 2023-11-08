@@ -1,5 +1,6 @@
 import 'package:battle_master/constants/mon.dart';
 import 'package:battle_master/constants/dex_status.dart';
+import 'package:battle_master/controllers/game.dart';
 import 'package:battle_master/controllers/player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,6 +31,7 @@ class ProfessorsLab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlayerController playerController = Get.find();
+    GameController gameController = Get.find();
 
     Widget labWidget = const SizedBox(
       height: 10,
@@ -100,6 +102,7 @@ class ProfessorsLab extends StatelessWidget {
                     onPressed: () => {
                       //TODO: Impelment prestige
                       playerController.endPlayerRun(),
+                      gameController.resetGameController(),
                       Get.offAllNamed('/')
                     },
                   ),
@@ -123,8 +126,8 @@ class ProfessorsLab extends StatelessWidget {
     //String rivalStarter = determineStarter(starterChoice.name);
 
     playerController.setRunInProgress(true);
-    Get.offAndToNamed('/battle/${starterChoice.name}',
-        arguments: {'battleNumber': 1});
+    Get.toNamed('/battle/rival',
+        arguments: {'battleNumber': 1, 'starterChoice': starterChoice.name});
     //GoRouter.of(context).go('/kanto/battle/1');
   }
 }

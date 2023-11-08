@@ -6,6 +6,8 @@ import '../components/base.dart';
 import '../components/map.dart';
 import '../region/kanto/kanto.dart';
 
+// TODO: Stop pages from redirecting to null before correct routing
+
 // final _rootNavigatorKey = GlobalKey<NavigatorState>();
 // final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final middleware = GlobalMiddleware();
@@ -26,9 +28,9 @@ final routes = [
       //TODO: Remove middleware from battles, there is no running
       middlewares: [middleware]),
   GetPage(
-      name: '/battle/:starterChoice',
+      name: '/battle/rival',
       page: () => setRivalStater(
-          Get.parameters['starterChoice']!, Get.arguments['battleNumber'] - 1),
+          Get.arguments['starterChoice']!, Get.arguments['battleNumber'] - 1),
       //TODO: Remove middleware from battles, there is no running
       middlewares: [middleware]),
   GetPage(

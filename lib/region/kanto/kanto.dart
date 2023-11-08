@@ -52,6 +52,6 @@ final List<BattleWidget> battles = [
 
 Widget setRivalStater(String playerStarter, int battlesIndex) {
   Pokemon counterStarter = determineRivalStarter(playerStarter, starters);
-  battles[battlesIndex].opponentTeam.add(counterStarter);
+  battles[battlesIndex].opponentTeam = [counterStarter];
   return battles[battlesIndex];
 }
