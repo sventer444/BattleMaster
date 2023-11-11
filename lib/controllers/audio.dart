@@ -221,6 +221,8 @@ class AudioController {
             "or looping forever.");
         await _playFirstSongInPlaylist();
         break;
+      case PlayerState.disposed:
+        break;
     }
   }
 
