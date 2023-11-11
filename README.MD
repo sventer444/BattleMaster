@@ -54,11 +54,6 @@ Master
 - [ ] Starter choice
 - [ ] New Journey (Prestige)
 - [ ] Inverse Challenge (unlockable reverse path through region)
-### Resources
-[Flutter Game Example](https://github.com/filiph/tictactoe)
-[Flutter Get](https://pub.dev/packages/get)
-[Getx state management](https://blog.logrocket.com/ultimate-guide-getx-state-management-flutter/)
-
 
 
 #### Todo
@@ -66,3 +61,10 @@ Master
 - [ ] Retain player progress/state
 - [ ] Tutorial
 - [x] Split routes and special locations into individual map columns
+- [ ] Clean Readme, split out features list and development todos
+
+
+### Resources
+[Flutter Game Example](https://github.com/filiph/tictactoe)
+[Flutter Get](https://pub.dev/packages/get)
+[Getx state management](https://blog.logrocket.com/ultimate-guide-getx-state-management-flutter/)
