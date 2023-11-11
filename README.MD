@@ -18,8 +18,6 @@ Master
 -----------------
 
 
-
-
 #### Features
 - [ ] 6 member team max (additonal team for each region?)
 - [ ] Pc to swap team on the fly
@@ -56,6 +54,12 @@ Master
 - [ ] Inverse Challenge (unlockable reverse path through region)
 
 
+### Running The Game (Dev)
+1. Follow the 'Getting Started With Flutter' guide in the 'Resources' section
+2. Clone the main branch from the repository
+3. Run the command ``` flutter pub get ``` to install necessary dependencies
+4. With an emulator running, run the program in debug. In VSCode, Run -> 'Start Debugging' (F5)
+
 #### Todo
 - [ ] Starting screen
 - [ ] Retain player progress/state
@@ -65,6 +69,7 @@ Master
 
 
 ### Resources
+[Getting Started With Flutter](https://docs.flutter.dev/get-started/install/windows)
 [Flutter Game Example](https://github.com/filiph/tictactoe)
 [Flutter Get](https://pub.dev/packages/get)
 [Getx state management](https://blog.logrocket.com/ultimate-guide-getx-state-management-flutter/)
