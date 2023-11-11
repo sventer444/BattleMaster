@@ -21,37 +21,50 @@ Master
 
 
 #### Features
-- [ ] 6 member team max
+- [ ] 6 member team max (additonal team for each region?)
 - [ ] Pc to swap team on the fly
 - [ ] Type effectiveness
 - [ ] Multiple regions
 - [ ] Pokedex
 - [ ] Achievements
 - [ ] Quests/Challenges
+- [ ] Healing???
 - [ ] Pokemon stats are implemented
     - Speed: Increases attack per turn
     - Attack: Damage given per turn
     - Hp: Health
     - Defense: Damage reduction
+- [ ] Critical hits
+- [ ] Pokemon at front is targeted
 - [ ] National Dex
 - [ ] Level 100 Max
+- [ ] Moves? (phys / special split)
+- [ ] At 100 prestige levels, unlock a permenant passive ability
 - [ ] Evolution at normal levels?
-- [ ] Pokemon can faint, and need to be re-caught
+- [ ] Pokemon can faint, and need to be re-caught?
 - [ ] IVs for permenant upgrades to a pokemon
 - [ ] Shiny mechanics?
 - [ ] Make money from battling, can buy pokeballs to catch with
 - [ ] Map/Travel System?
 - [ ] Perm Evolution? 
-- [ ] Badge Mechanics (With Prestige?)
+- [ ] Badge Mechanics (With Level up?)
+- [ ] Reset progress at pokelab
+- [ ] Shadow pokemon?
+- [ ] Status effects?
 - [ ] Starter choice
 - [ ] New Journey (Prestige)
 - [ ] Inverse Challenge (unlockable reverse path through region)
-### Resources
-
-
 
 
 #### Todo
 - [ ] Starting screen
 - [ ] Retain player progress/state
 - [ ] Tutorial
+- [x] Split routes and special locations into individual map columns
+- [ ] Clean Readme, split out features list and development todos
+
+
+### Resources
+[Flutter Game Example](https://github.com/filiph/tictactoe)
+[Flutter Get](https://pub.dev/packages/get)
+[Getx state management](https://blog.logrocket.com/ultimate-guide-getx-state-management-flutter/)

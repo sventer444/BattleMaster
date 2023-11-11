@@ -1,32 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:battle_master/styles/icons.dart';
 
-class BottomNav {
-  late BuildContext appContext;
+import '../styles/palette.dart';
 
-  getNav(BuildContext context) {
-    appContext = context;
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
-        BottomNavigationBarItem(icon: Icon(Icons.computer), label: 'PC'),
-      ],
-      onTap: (index) => {navigate(index, appContext)},
-    );
-  }
-}
+// TODO: Implement Store?
 
-void navigate(int navigationIndex, BuildContext context) {
-  context.go(parsedRoute(navigationIndex));
-}
+const navRoutingMap = ['map', 'pc'];
 
-String parsedRoute(int index) {
-  switch (index) {
-    case 0:
-      return '/map';
-    case 1:
-      return '/pc';
-    default:
-      return '/';
-  }
+BottomNavigationBar bottomNavBar = BottomNavigationBar(
+  backgroundColor: Palette.trueWhite,
+  items: const [
+    BottomNavigationBarItem(icon: GameIcons.mapIcon, label: 'Map'),
+    BottomNavigationBarItem(icon: GameIcons.pcIcon, label: 'PC'),
+  ],
+  onTap: (index) => {navigate(index)},
+);
+
+navigate(int index) {
+  Get.toNamed('/${navRoutingMap[index]}');
 }

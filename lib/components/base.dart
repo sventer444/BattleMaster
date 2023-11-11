@@ -1,115 +1,108 @@
 import 'package:flutter/material.dart';
-import 'package:battle_master/states/game_state.dart';
 
-class BasePage extends StatefulWidget {
-  const BasePage({super.key, required this.child});
+// import '../controllers/game_services.dart';
 
-  final Widget child;
+class BasePage extends StatelessWidget {
+  const BasePage({
+    super.key,
+    // required this.playerProgressPersistence,
+    // required this.settingsPersistence,
+    // required this.inAppPurchaseController,
+//     required this.adsController,
+    // required this.gamesServicesController,
+  });
 
+  // final PlayerProgressPersistence playerProgressPersistence;
+
+  // final SettingsPersistence settingsPersistence;
+
+  // final GamesServicesController? gamesServicesController;
+
+  // final InAppPurchaseController? inAppPurchaseController;
+
+  // static final GoRouter _router = AppRouter().router;
+
+//   final AdsController? adsController;
+  //TODO: Implment homepage with roaming pokemon from pc
   @override
-  State<BasePage> createState() => GameState();
+  Widget build(BuildContext context) {
+    return const Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text('Home Page')],
+        )
+      ],
+    );
+    // AppLifecycleObserver(
+    //   child: MultiProvider(
+    //     providers: [
+    //       ChangeNotifierProvider(
+    //         create: (context) {
+    //           var progress = PlayerProgress(playerProgressPersistence);
+    //           progress.getLatestFromStore();
+    //           return progress;
+    //         },
+    //       ),
+    //       // Provider<GamesServicesController?>.value(
+    //       //     value: gamesServicesController),
+    //       // Provider<AdsController?>.value(value: adsController),
+    //       // ChangeNotifierProvider<InAppPurchaseController?>.value(
+    //       //     value: inAppPurchaseController),
+    //       Provider<SettingsController>(
+    //         lazy: false,
+    //         create: (context) => SettingsController(
+    //           persistence: settingsPersistence,
+    //         )..loadStateFromPersistence(),
+    //       ),
+    //       ProxyProvider2<SettingsController, ValueNotifier<AppLifecycleState>,
+    //           AudioController>(
+    //         // Ensures that the AudioController is created on startup,
+    //         // and not "only when it's needed", as is default behavior.
+    //         // This way, music starts immediately.
+    //         lazy: false,
+    //         create: (context) => AudioController()..initialize(),
+    //         update: (context, settings, lifecycleNotifier, audio) {
+    //           if (audio == null) throw ArgumentError.notNull();
+    //           audio.attachSettings(settings);
+    //           audio.attachLifecycleNotifier(lifecycleNotifier);
+    //           return audio;
+    //         },
+    //         dispose: (context, audio) => audio.dispose(),
+    //       ),
+    //     ],
+    //     child:
+
+    //   return   Builder(builder: (context) {
+    //   return MaterialApp.router(
+    //     title: 'Battle Master',
+    //     theme: ThemeData.from(
+    //       colorScheme: ColorScheme.fromSeed(
+    //         seedColor: Palette.ink,
+    //         background: Palette.bgGrey2,
+    //       ),
+    //     ),
+    //     debugShowCheckedModeBanner: false,
+    //     routeInformationProvider: _router.routeInformationProvider,
+    //     routeInformationParser: _router.routeInformationParser,
+    //     routerDelegate: _router.routerDelegate,
+    //   );
+    // });
+    // ),
+    // );
+
+    // @override
+    // Widget build(BuildContext context) {
+    //   return MaterialApp.router(
+    //       title: 'Battle Master',
+    //       theme: ThemeData(
+    //         colorScheme: ColorScheme.fromSeed(
+    //             brightness: Brightness.dark, seedColor: Colors.red),
+    //         useMaterial3: true,
+    //       ),
+    //       routerConfig: AppRouter().router,
+    //       debugShowCheckedModeBanner: false);
+    // }
+  }
 }
-
-
-
-
-
-
-
-// class ScaffoldWithNavBar extends StatefulWidget {
-//   String location;
-//   ScaffoldWithNavBar({super.key, required this.child, required this.location});
-
-//   final Widget child;
-
-//   @override
-//   State<ScaffoldWithNavBar> createState() => _ScaffoldWithNavBarState();
-// }
-
-// class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
-//   int _currentIndex = 0;
-
-//   static const List<MyCustomBottomNavBarItem> tabs = [
-//     MyCustomBottomNavBarItem(
-//       icon: Icon(Icons.home),
-//       activeIcon: Icon(Icons.home),
-//       label: 'HOME',
-//       initialLocation: '/',
-//     ),
-//     MyCustomBottomNavBarItem(
-//       icon: Icon(Icons.explore_outlined),
-//       activeIcon: Icon(Icons.explore),
-//       label: 'DISCOVER',
-//       initialLocation: '/discover',
-//     ),
-//     MyCustomBottomNavBarItem(
-//       icon: Icon(Icons.storefront_outlined),
-//       activeIcon: Icon(Icons.storefront),
-//       label: 'SHOP',
-//       initialLocation: '/shop',
-//     ),
-//     MyCustomBottomNavBarItem(
-//       icon: Icon(Icons.account_circle_outlined),
-//       activeIcon: Icon(Icons.account_circle),
-//       label: 'MY',
-//       initialLocation: '/login',
-//     ),
-//   ];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     const labelStyle = TextStyle(fontFamily: 'Roboto');
-//     return Scaffold(
-//       body: SafeArea(child: widget.child),
-//       bottomNavigationBar: BottomNavigationBar(
-//         selectedLabelStyle: labelStyle,
-//         unselectedLabelStyle: labelStyle,
-//         selectedItemColor: const Color(0xFF434343),
-//         selectedFontSize: 12,
-//         unselectedItemColor: const Color(0xFF838383),
-//         showUnselectedLabels: true,
-//         type: BottomNavigationBarType.fixed,
-//         onTap: (int index) {
-//           _goOtherTab(context, index);
-//         },
-//         currentIndex: widget.location == '/'
-//             ? 0
-//             : widget.location == '/discover'
-//                 ? 1
-//                 : widget.location == '/shop'
-//                     ? 2
-//                     : 3,
-//         items: tabs,
-//       ),
-//     );
-//   }
-
-//   void _goOtherTab(BuildContext context, int index) {
-//     if (index == _currentIndex) return;
-//     GoRouter router = GoRouter.of(context);
-//     String location = tabs[index].initialLocation;
-
-//     setState(() {
-//       _currentIndex = index;
-//     });
-//     if (index == 3) {
-//       context.push('/login');
-//     } else {
-//       router.go(location);
-//     }
-//   }
-// }
-
-// class MyCustomBottomNavBarItem extends BottomNavigationBarItem {
-//   final String initialLocation;
-
-//   const MyCustomBottomNavBarItem(
-//       {required this.initialLocation,
-//       required Widget icon,
-//       String? label,
-//       Widget? activeIcon})
-//       : super(icon: icon, label: label, activeIcon: activeIcon ?? icon);
-// }
-
-
-
