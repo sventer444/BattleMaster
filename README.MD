@@ -69,7 +69,7 @@ Master
 
 
 ### Resources
-[Getting Started With Flutter](https://docs.flutter.dev/get-started/install/windows)
-[Flutter Game Example](https://github.com/filiph/tictactoe)
-[Flutter Get](https://pub.dev/packages/get)
+[Getting Started With Flutter](https://docs.flutter.dev/get-started/install/windows) \
+[Flutter Game Example](https://github.com/filiph/tictactoe) \
+[Flutter Get](https://pub.dev/packages/get) \
 [Getx state management](https://blog.logrocket.com/ultimate-guide-getx-state-management-flutter/)
