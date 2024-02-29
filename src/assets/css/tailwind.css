@@ -1,0 +1,33 @@
+/* src/assets/css/tailwind.css */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+  background-color: #212121; /* Dark gray background */
+  color: #f4f4f4; /* Light text color */
+}
+
+.bg-pokemon-dark {
+  background-color: #212121; /* Dark gray background */
+}
+
+.bg-pokemon-dark-shaded {
+  background-color: #1a1a1a; /* Slightly darker shade of gray */
+}
+
+.bg-pokemon-red {
+  background-color: #f44336; /* Red background */
+}
+
+.bg-pokemon-red-shaded {
+  background-color: #d32f2f; /* Slightly darker shade of red */
+}
+
+.text-pokemon-red {
+  color: #f44336; /* Red text color */
+}
+
+.text-pokemon-red-dark {
+  color: #d32f2f; /* Darker shade of red text color */
+}
