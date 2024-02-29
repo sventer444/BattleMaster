@@ -3,7 +3,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { usePlayerInfoStore } from '@/store/playerinfo';
 import Login from '@/views/LoginView.vue';
-import UserInfo from '@/views/UserInfo.vue';
+import UserInfo from '@/components/UserInfo.vue';
 import PcWindow from '@/components/PcWindow.vue'; // Import PcWindow component
 
 const routes = [
