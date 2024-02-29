@@ -2,6 +2,7 @@ import 'package:battle_master/components/opponent.dart';
 import 'package:battle_master/components/responsive_window.dart';
 import 'package:battle_master/components/team.dart';
 import 'package:battle_master/controllers/player.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import '../constants/animation_type.dart';
 import '../constants/mon.dart';
@@ -48,7 +49,8 @@ class BattleWidget extends StatelessWidget {
               onPressed: () => {
                 // if (activeRound)
                 //attackRound(currentOpponent, playerProgress, context)
-                gameController.attackRound(playerTeam)
+                gameController.attackRound(playerTeam),
+                print('${gameController.currentOpponent!.currentHp}'),
               },
               child: const Text('Attack'),
             )
