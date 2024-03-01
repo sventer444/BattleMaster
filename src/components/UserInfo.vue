@@ -5,7 +5,7 @@
       <p v-else class="text-lg">Please log in to view this page.</p>
 
       <!-- Display the rareCandy count with appropriate styling -->
-      <p class="text-xl mt-4">Rare Candy Count: {{ rareCandy }}</p>
+      <p class="text-xl mt-4">Rare Candies: {{ rareCandy }}</p>
     </div>
   </div>
 </template>
