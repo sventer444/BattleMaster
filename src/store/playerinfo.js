@@ -5,9 +5,16 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
   state: () => ({
     isAuthenticated: false,
     username: null,
-    password: null, // Add password property to store the password
-    rareCandy: 0, // Initialize rareCandy count at 0
+    password: null,
+    rareCandy: 0,
+    badges: [false, false, false, false, false, false, false, false], // Initialize badges array
   }),
+
+  getters: {
+    badgeCase() {
+      return this.badges; // Return the badges array
+    },
+  },
 
   actions: {
     login(username, password) {

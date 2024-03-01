@@ -10,9 +10,15 @@ export const usePokedexStore = defineStore({
     pokedex: [], // Array to store Pokemon names in the Pokedex
   }),
 
+  getters: {
+    accessPokedex() {
+      return this.pokedex; // Return the players pokedex array
+    },
+  },
+
   actions: {
     // Fetch details for a single Pokemon by ID
-    async fetchPokemonDetailsById(pokemonId) {
+    async pokedexPokemonDetailsById(pokemonId) {
       try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
         return response.data;
@@ -36,7 +42,7 @@ export const usePokedexStore = defineStore({
     },
 
     // Log the current Pokemon list
-    logPokemonList() {
+    logPokedex() {
       console.log('Current Pokemon List:', this.pokedex);
     },
   },

@@ -4,7 +4,7 @@
     <top-navbar :showTopNavbar="showTopNavbar" @toggle-menu="toggleMenu" @show-user-info="showUserInfo" />
 
     <!-- Body Content -->
-    <div class="flex-grow flex items-center justify-center">
+    <div class="flex-grow flex flex-col items-center justify-center">
       <!-- Dynamic component based on the route -->
       <router-view></router-view>
     </div>
@@ -17,6 +17,7 @@
 <script>
 import TopNavbar from './components/TopNavbar.vue';
 import BottomNavbar from './components/BottomNavbar.vue';
+import { useRegionStore } from './store/region';
 
 export default {
   name: 'App',
@@ -53,6 +54,10 @@ export default {
       // For example, you can navigate to the UserInfo route
       this.$router.push('/user-info');
     },
+  },
+  created() {
+    // Fetch region names when the application starts
+    useRegionStore().fetchRegions();
   },
 };
 </script>

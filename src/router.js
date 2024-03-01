@@ -1,10 +1,9 @@
-// src/router.js
-
 import { createRouter, createWebHistory } from 'vue-router';
 import { usePlayerInfoStore } from '@/store/playerinfo';
 import Login from '@/views/LoginView.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import PcWindow from '@/components/PcWindow.vue'; // Import PcWindow component
+import RegionMap from '@/components/RegionMap.vue'; // Import RegionMap component
 
 const routes = [
   {
@@ -28,6 +27,14 @@ const routes = [
     component: PcWindow,
     meta: { requiresAuth: true },
   },
+  {
+    path: '/region/:regionName',
+    name: 'RegionMap',
+    props: true, // Correct way to pass params as props
+    component: RegionMap,
+    meta: { requiresAuth: true },
+  },
+  
 ];
 
 const router = createRouter({
