@@ -6,7 +6,6 @@ export const useRegionStore = defineStore({
   id: 'region',
 
   state: () => ({
-    currentRegion: '', // Current Region
     regions: [], // Array to store Pokémon region names
   }),
 
@@ -34,6 +33,10 @@ export const useRegionStore = defineStore({
           // Fetch additional details for each region, including locations
           try {
             const regionResponse = await axios.get(region.url);
+
+            // Extract Pokedex URL from the region response
+            const pokedexUrl = regionResponse.data.pokedexes[0].url;
+
             const locationsPromises = regionResponse.data.locations.map(async (location) => {
               // Fetch additional details for each location
               try {
@@ -51,10 +54,11 @@ export const useRegionStore = defineStore({
             // Wait for all location details to be fetched
             const locations = (await Promise.all(locationsPromises)).filter(Boolean);
 
-            // Combine initialLocations with fetched locations
+            // Combine initialLocations with fetched locations and add Pokedex URL
             const regionData = {
               name: region.name,
               locations: initialLocations.concat(locations),
+              regionDexUrl: pokedexUrl,
             };
 
             return regionData;

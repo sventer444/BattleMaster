@@ -8,7 +8,7 @@
     </div>
     
     <!-- Computer Icon (Replace with your actual computer icon) -->
-    <div class="pr-4">
+    <div class="pr-4 cursor-pointer" @click="goToPCWindow">
       <i class="fas fa-desktop text-2xl"></i>
     </div>
   </div>
@@ -19,6 +19,11 @@ export default {
   props: {
     showBottomNavbar: Boolean,
   },
+  methods: {
+    goToPCWindow() {
+      // Use this.$router.push to navigate to the PC window
+      this.$router.push('/pc-window');
+    },
+  },
 };
 </script>
-

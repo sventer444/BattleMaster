@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-center h-screen bg-pokemon-dark">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-white text-center max-w-md">
+    <div class="bg-pokemon-dark-shaded p-8 rounded-lg shadow-lg text-white text-center max-w-md">
       <h1 v-if="isAuthenticated" class="text-3xl font-semibold mb-4">Trainer Card</h1>
       <p v-else class="text-lg">Please log in to view this page.</p>
 

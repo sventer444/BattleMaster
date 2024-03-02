@@ -9,6 +9,8 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
     rareCandy: 0,
     badges: [false, false, false, false, false, false, false, false], // Initialize badges array
     locationsWhitelist: ['Professors Lab'], // Initialize with Professor's Lab
+    playerTeam: [],
+    playerPc: [],
   }),
 
   getters: {
