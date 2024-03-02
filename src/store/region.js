@@ -22,16 +22,39 @@ export const useRegionStore = defineStore({
         const response = await axios.get('https://pokeapi.co/api/v2/region');
         const regionPromises = response.data.results.map(async (region) => {
           // Fetch additional details for each region, including locations
-          const regionResponse = await axios.get(region.url);
-          const regionData = {
-            name: region.name,
-            locations: regionResponse.data.locations,
-          };
-          return regionData;
+          try {
+            const regionResponse = await axios.get(region.url);
+            const locationsPromises = regionResponse.data.locations.map(async (location) => {
+              // Fetch additional details for each location
+              try {
+                const locationResponse = await axios.get(location.url);
+                return {
+                  name: location.name,
+                  details: locationResponse.data, // Adjust this based on the actual structure of the data
+                };
+              } catch (error) {
+                console.error(`Error fetching details for ${location.name}:`, error);
+                return null;
+              }
+            });
+
+            // Wait for all location details to be fetched
+            const locations = (await Promise.all(locationsPromises)).filter(Boolean);
+
+            const regionData = {
+              name: region.name,
+              locations,
+            };
+
+            return regionData;
+          } catch (error) {
+            console.error(`Error fetching details for ${region.name}:`, error);
+            return null;
+          }
         });
 
         // Wait for all region details to be fetched
-        this.regions = await Promise.all(regionPromises);
+        this.regions = (await Promise.all(regionPromises)).filter(Boolean);
       } catch (error) {
         console.error('Error fetching Pokémon region names:', error);
       }

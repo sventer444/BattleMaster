@@ -1,15 +1,20 @@
 <template>
     <div class="flex items-center justify-center bg-pokemon-dark">
-      <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-white text-center max-w-md max-h-screen overflow-y-auto">
-        <h1 class="text-3xl font-semibold mb-4">Region Map - {{ regionName }}</h1>
-        <p class="text-lg mb-4">Explore the Pokémon world in the {{ regionName }} region!</p>
+      <div class="map-container-wrapper w-full flex items-center justify-center">
+        <div class="map-container bg-gray-800 p-8 rounded-lg shadow-lg text-white text-center max-w-full max-h-screen overflow-y-auto">
+          <h1 class="text-3xl font-semibold mb-4">{{ capitalizedRegionName }}</h1>
+          <p class="text-lg mb-4">Select a location</p>
   
-        <!-- Display locations in three columns -->
-        <div class="flex justify-center mt-4">
-          <div v-for="(column, columnIndex) of columns" :key="columnIndex" class="mx-4">
-            <ul>
-              <li v-for="(location, index) in column" :key="index" class="text-lg">{{ location.name }}</li>
-            </ul>
+          <!-- Display locations in three columns -->
+          <div class="flex justify-center mt-4">
+            <div v-for="(column, columnIndex) of columns" :key="columnIndex" class="mx-8">
+              <ul>
+                <!-- Add left and right margin to each list item -->
+                <li v-for="(location, index) in column" :key="index" class="text-lg py-3 mx-12">
+                  {{ getDisplayName(location) }}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -44,12 +49,21 @@
   
         return columns;
       },
+      // Capitalize the first letter of the region name
+      capitalizedRegionName() {
+        return this.regionName.charAt(0).toUpperCase() + this.regionName.slice(1);
+      },
     },
     methods: {
       // Get region data from the region store based on regionName
       getRegionData() {
         const regions = useRegionStore().getRegions;
         return regions.find(region => region.name === this.regionName);
+      },
+      // Get the display name for a location
+      getDisplayName(location) {
+        const enName = location.details.names.find(name => name.language.name === 'en');
+        return enName ? enName.name : location.name;
       },
     },
   };
@@ -117,6 +131,11 @@
   /* Set a maximum height for the container */
   .max-h-screen {
     max-height: calc(100vh - 120px); /* Adjust as needed based on the height of top and bottom navbars */
+  }
+  
+  /* Additional styling for the map container wrapper */
+  .map-container-wrapper {
+    width: 100%; /* Take up the full width of its parent */
   }
   
   /* Enable vertical scrolling when needed */
