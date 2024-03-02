@@ -41,8 +41,6 @@ export const usePokedexStore = defineStore({
         // Extract Pokemon names from the entries and add to the regionDex array
         const pokemonNames = pokemonEntries.map(entry => entry.pokemon_species.name);
         this.regionDex = pokemonNames;
-
-        console.log(`Region Dex for ${regionDexUrl}:`, this.regionDex);
       } catch (error) {
         console.error(`Error fetching region dex for ${regionDexUrl}:`, error);
       }
