@@ -10,7 +10,7 @@
             <div v-for="(column, columnIndex) of columns" :key="columnIndex" class="mx-8">
               <ul>
                 <!-- Add left and right margin to each list item -->
-                <li v-for="(location, index) in column" :key="index" class="text-lg py-3 mx-12">
+                <li v-for="(location, index) in column" :key="index" class="text-lg py-2 mx-12">
                   {{ getDisplayName(location) }}
                 </li>
               </ul>
@@ -23,6 +23,7 @@
   
   <script>
   import { useRegionStore } from '../store/region';
+  import { usePlayerInfoStore } from '../store/playerinfo';
   
   export default {
     props: {
@@ -32,23 +33,37 @@
       },
     },
     computed: {
-      // Calculate columns based on the locations in the region
-      columns() {
-        const regionData = this.getRegionData();
-        const locations = regionData ? regionData.locations : [];
-  
-        // Split locations into three columns
-        const columnSize = Math.ceil(locations.length / 3);
-        const columns = [];
-  
-        for (let i = 0; i < 3; i++) {
-          const start = i * columnSize;
-          const end = start + columnSize;
-          columns.push(locations.slice(start, end));
-        }
-  
-        return columns;
-      },
+      // Update the columns computed property to filter locations based on the whitelist
+    columns() {
+      const regionData = this.getRegionData();
+      const locations = regionData ? regionData.locations : [];
+
+      // Separate route locations based on name containing "Route"
+      const routeLocations = locations.filter(location => this.locationContainsRoute(location));
+
+      // Filter the route locations based on the whitelist
+      const filteredRoutes = routeLocations.filter(route => this.isLocationInWhitelist(route));
+
+      // Filter locations based on the whitelist
+      const filteredLocations = locations.filter(location => this.isLocationInWhitelist(location));
+
+      // Split filtered locations into two columns
+      const columnSize = Math.ceil(filteredLocations.length / 2);
+      const columns = [];
+
+      for (let i = 0; i < 2; i++) {
+        const start = i * columnSize;
+        const end = start + columnSize;
+        columns.push(filteredLocations.slice(start, end));
+      }
+
+      // Add a third column for route locations if they exist
+      if (filteredRoutes.length > 0) {
+        columns.push(filteredRoutes);
+      }
+
+      return columns;
+    },
       // Capitalize the first letter of the region name
       capitalizedRegionName() {
         return this.regionName.charAt(0).toUpperCase() + this.regionName.slice(1);
@@ -62,8 +77,17 @@
       },
       // Get the display name for a location
       getDisplayName(location) {
-        const enName = location.details.names.find(name => name.language.name === 'en');
+        const enName = location.details?.names?.find(name => name.language.name === 'en');
         return enName ? enName.name : location.name;
+      },
+      // Check if a location name contains the string "Route"
+      locationContainsRoute(location) {
+        return location.name.toLowerCase().includes('route');
+      },
+      // Check if a location is in the player's whitelist
+      isLocationInWhitelist(location) {
+        const playerStore = usePlayerInfoStore();
+        return playerStore.locationsWhitelist.includes(this.getDisplayName(location));
       },
     },
   };

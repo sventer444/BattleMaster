@@ -19,6 +19,16 @@ export const useRegionStore = defineStore({
   actions: {
     async fetchRegions() {
       try {
+        // Initialize with "Professors Lab" location
+        const initialLocations = [
+          {
+            name: 'Professors Lab',
+            details: {
+              // Add relevant details for the Professors Lab
+            },
+          },
+        ];
+
         const response = await axios.get('https://pokeapi.co/api/v2/region');
         const regionPromises = response.data.results.map(async (region) => {
           // Fetch additional details for each region, including locations
@@ -41,9 +51,10 @@ export const useRegionStore = defineStore({
             // Wait for all location details to be fetched
             const locations = (await Promise.all(locationsPromises)).filter(Boolean);
 
+            // Combine initialLocations with fetched locations
             const regionData = {
               name: region.name,
-              locations,
+              locations: initialLocations.concat(locations),
             };
 
             return regionData;
