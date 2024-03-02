@@ -28,7 +28,7 @@
     computed: {
       getRegions() {
         // Retrieve the first Pokémon regions from the Region store and trim the list
-        return useRegionStore().getRegions.slice(0, 3).map(region => region.name);
+        return useRegionStore().getRegions.slice(0, 2).map(region => region.name);
       },
     },
     methods: {

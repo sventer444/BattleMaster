@@ -12,7 +12,7 @@
           <div v-for="(column, columnIndex) of columns" :key="columnIndex" class="mx-8">
             <ul>
               <!-- Add left and right margin to each list item -->
-              <li v-for="(location, index) in column" :key="index" class="text-lg py-2 mx-12">
+              <li v-for="(location, index) in column" :key="index" @click="navigateToLocation(location)" class="text-lg py-2 mx-12 cursor-pointer">
                 {{ getDisplayName(location) }}
               </li>
             </ul>
@@ -77,6 +77,11 @@ export default {
     getRegionData() {
       const regions = useRegionStore().getRegions;
       return regions.find(region => region.name === this.regionName);
+    },
+    // Method to navigate to a location when it's clicked
+    navigateToLocation(location) {
+      // Use the $router.push method to navigate to the location's route
+      this.$router.push({ name: location.name });
     },
     // Get the display name for a location
     getDisplayName(location) {

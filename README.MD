@@ -26,6 +26,7 @@ Master
 - [ ] Pokedex
 - [ ] Achievements
 - [ ] Quests/Challenges
+- [ ] Catch bonus for mon during individual runs?
 - [ ] Healing???
 - [ ] Pokemon stats are implemented
     - Speed: Increases attack per turn

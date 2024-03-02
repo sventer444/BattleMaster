@@ -4,6 +4,7 @@ import Login from '@/views/LoginView.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import PcWindow from '@/components/PcWindow.vue'; // Import PcWindow component
 import RegionMap from '@/components/RegionMap.vue'; // Import RegionMap component
+import ProfessorsLab from '@/components/locations/ProfessorsLab.vue';
 
 const routes = [
   {
@@ -32,6 +33,12 @@ const routes = [
     name: 'RegionMap',
     props: true, // Correct way to pass params as props
     component: RegionMap,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/location/prof-lab',
+    name: 'Professors Lab',
+    component: ProfessorsLab,
     meta: { requiresAuth: true },
   },
   
