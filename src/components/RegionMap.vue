@@ -50,14 +50,17 @@ export default {
       // Filter locations based on the whitelist
       const filteredLocations = locations.filter(location => this.isLocationInWhitelist(location));
 
+      // Remove route locations from filteredLocations
+      const filteredLocationsWithoutRoutes = filteredLocations.filter(location => !this.locationContainsRoute(location));
+
       // Split filtered locations into two columns
-      const columnSize = Math.ceil(filteredLocations.length / 2);
+      const columnSize = Math.ceil(filteredLocationsWithoutRoutes.length / 2);
       const columns = [];
 
       for (let i = 0; i < 2; i++) {
         const start = i * columnSize;
         const end = start + columnSize;
-        columns.push(filteredLocations.slice(start, end));
+        columns.push(filteredLocationsWithoutRoutes.slice(start, end));
       }
 
       // Add a third column for route locations if they exist
@@ -81,12 +84,28 @@ export default {
     // Method to navigate to a location when it's clicked
     navigateToLocation(location) {
       // Use the $router.push method to navigate to the location's route
-      this.$router.push({ name: location.name });
+      (this.locationContainsRoute(location)) ? 
+      this.navigateToRoute(location)
+      : this.$router.push({ name: location.name });
+      
+    },
+    
+    navigateToRoute(route) {
+      // Parse the route number from the route name
+      const routeNumber = this.parseRouteNumber(route.name);
+
+      // Use the $router.push method to navigate to the route's name with route number as param
+      this.$router.push({ name: 'Route', params: { routeNumber: routeNumber } });
     },
     // Get the display name for a location
     getDisplayName(location) {
       const enName = location.details?.names?.find(name => name.language.name === 'en');
       return enName ? enName.name : location.name;
+    },
+    parseRouteNumber(routeName) {
+      // Assuming the route name is in the format "Route <number>"
+      const matches = routeName.match(/\d+/);
+      return matches ? parseInt(matches[0]) : null;
     },
     // Check if a location name contains the string "Route"
     locationContainsRoute(location) {

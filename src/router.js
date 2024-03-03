@@ -5,6 +5,7 @@ import UserInfo from '@/components/UserInfo.vue';
 import PcWindow from '@/components/PcWindow.vue'; // Import PcWindow component
 import RegionMap from '@/components/RegionMap.vue'; // Import RegionMap component
 import ProfessorsLab from '@/components/locations/ProfessorsLab.vue';
+import Route from '@/components/locations/RouteLocation.vue';
 
 const routes = [
   {
@@ -39,6 +40,13 @@ const routes = [
     path: '/location/prof-lab',
     name: 'Professors Lab',
     component: ProfessorsLab,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/location/route/:routeNumber',
+    name: 'Route',
+    props: true,
+    component: Route,
     meta: { requiresAuth: true },
   },
   
