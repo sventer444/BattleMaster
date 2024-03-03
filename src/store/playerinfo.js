@@ -10,7 +10,7 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
     badges: [false, false, false, false, false, false, false, false], // Initialize badges array
     locationsWhitelist: ['Professors Lab'], // Initialize with Professor's Lab
     playerTeam: [],
-    playerPc: [],
+    playerPc: {},
   }),
 
   getters: {
@@ -56,13 +56,18 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
       this.rareCandy = 0;
       this.badges = [false, false, false, false, false, false, false, false];
       this.locationsWhitelist = ['Professors Lab'];
-      this.playerTeam = [];
-      this.playerPc = [];
+      this.playerTeam = {};
+      this.playerPc = {};
     },
 
     addToPlayerTeam(pokemonDetails) {
+      
+      // Check if the Pokémon is not already in the PC before adding
+      const availableSlots = Object.keys(this.playerTeam);
+      const slot = availableSlots.length > 0 ? availableSlots.length + 1 : 1;
+
       // Check if the Pokémon is not already in the team before adding
-      if (!this.playerTeam.some((pokemon) => pokemon.id === pokemonDetails.id)) {
+      if (!this.playerTeam[slot]) {
         const newPokemon = {
           id: pokemonDetails.id,
           name: pokemonDetails.name,
@@ -117,7 +122,8 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
           }
         }
         console.log('Player has caught ', newPokemon);
-        this.playerTeam.push(newPokemon);
+        
+        this.playerTeam[slot] = newPokemon;
       }
     },
 
@@ -127,21 +133,25 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
         this.locationsWhitelist.push(locationName);
       }
     },
-
     addToPlayerPc(pokemonDetails) {
       // Check if the Pokémon is not already in the PC before adding
-      if (!this.playerPc.some((pokemon) => pokemon.id === pokemonDetails.id)) {
-        this.playerPc.push(pokemonDetails);
+      const availableSlots = Object.keys(this.playerPc);
+      const slot = availableSlots.length > 0 ? Math.max(...availableSlots) + 1 : 0;
+
+      if (!this.playerPc[slot]) {
+        // If the slot is not occupied, add the PokemonDetails
+        this.playerPc[slot] = pokemonDetails;
       }
     },
     initializeTestData() {
       // Clear existing data
       // this.resetPlayerState();
-
+    
       // Add sample data
       this.rareCandy = 10;
       this.badges = [true, true, true, true, true, true, true, false];
       this.locationsWhitelist = ['Professors Lab', 'Route 1', 'Viridian City'];
+    
       // Add sample Pokémon to player team
       this.playerTeam = [{
         id: 1,
@@ -158,22 +168,25 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
           { base_stat: 45, stat: { name: 'speed' } },
         ],
       }];
+    
       // Add sample Pokémon to player PC
-      this.playerPc = [{
-        id: 4,
-        name: 'Charmander',
-        sprites: { front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png' },
-        icon: { front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-viii/icons/4.png' },
-        types: [{ type: { name: 'fire' } }],
-        stats: [
-          { base_stat: 39, stat: { name: 'hp' } },
-          { base_stat: 52, stat: { name: 'attack' } },
-          { base_stat: 43, stat: { name: 'defense' } },
-          { base_stat: 60, stat: { name: 'special-attack' } },
-          { base_stat: 50, stat: { name: 'special-defense' } },
-          { base_stat: 65, stat: { name: 'speed' } },
-        ],
-      }];
+      this.playerPc = {
+        0: {
+          id: 4,
+          name: 'Charmander',
+          sprites: { front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png' },
+          icon: { front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-viii/icons/4.png' },
+          types: [{ type: { name: 'fire' } }],
+          stats: [
+            { base_stat: 39, stat: { name: 'hp' } },
+            { base_stat: 52, stat: { name: 'attack' } },
+            { base_stat: 43, stat: { name: 'defense' } },
+            { base_stat: 60, stat: { name: 'special-attack' } },
+            { base_stat: 50, stat: { name: 'special-defense' } },
+            { base_stat: 65, stat: { name: 'speed' } },
+          ],
+        },
+      };
     },
   },
 });
