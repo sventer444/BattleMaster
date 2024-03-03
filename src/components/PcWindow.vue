@@ -1,21 +1,17 @@
-<!-- src/components/PcWindow.vue -->
-
 <template>
-  <div class="bg-pokemon-dark-shaded text-white p-8 rounded shadow-md">
-    <h1 class="text-4xl mb-4">Welcome to the Pokémon World!</h1>
-    <p class="text-lg">Explore the regions and catch 'em all!</p>
-    <p class="text-lg mt-4">Pokédex Count: {{ pokedexCount }}</p>
+  <div class="bg-pokemon-dark text-white p-8 rounded">
+    <!-- Display the PlayerTeam.vue component -->
+    <PlayerTeam />
   </div>
 </template>
 
 <script>
-import { usePokedexStore } from '../store/pokedex';
+// Import the PlayerTeam.vue component
+import PlayerTeam from '@/components/PlayerTeam.vue';
 
 export default {
-  computed: {
-    pokedexCount() {
-      return usePokedexStore().accessPokedex.length;
-    },
+  components: {
+    PlayerTeam,
   },
 };
 </script>

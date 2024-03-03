@@ -27,6 +27,7 @@ Master
 - [ ] Achievements
 - [ ] Quests/Challenges
 - [ ] Catch bonus for mon during individual runs?
+- [ ] No limit to EVs during a run?
 - [ ] Healing???
 - [ ] Pokemon stats are implemented
     - Speed: Increases attack per turn
@@ -41,7 +42,7 @@ Master
 - [ ] At 100 prestige levels, unlock a permenant passive ability
 - [ ] Evolution at normal levels?
 - [ ] Pokemon can faint, and need to be re-caught?
-- [ ] IVs for permenant upgrades to a pokemon
+- [ ] IVs for permenant upgrades to a pokemon?
 - [ ] Shiny mechanics?
 - [ ] Make money from battling, can buy pokeballs to catch with
 - [ ] Map/Travel System?
