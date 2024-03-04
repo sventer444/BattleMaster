@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { usePlayerInfoStore } from '@/store/playerinfo';
+import { usePlayerInfoStore } from '@/store/playerInfo';
 import Login from '@/views/LoginView.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import PcWindow from '@/components/PcWindow.vue'; // Import PcWindow component

@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import { useRegionStore } from '../store/region';
-import { usePlayerInfoStore } from '../store/playerinfo';
-import { usePokedexStore } from '../store/pokedex';
+import { useRegionStore } from '@/store/region';
+import { usePlayerInfoStore } from '@/store/playerInfo';
+import { usePokedexStore } from '@/store/pokedex';
 
 export default {
   props: {

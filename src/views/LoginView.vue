@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { usePlayerInfoStore } from '../store/playerinfo';
+import { usePlayerInfoStore } from '@/store/playerInfo';
 
 export default {
   data() {

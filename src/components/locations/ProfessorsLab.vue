@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import { usePokedexStore } from '../../store/pokedex';
-import { usePlayerInfoStore } from '../../store/playerinfo';
+import { usePokedexStore } from '@/store/pokedex';
+import { usePlayerInfoStore } from '@/store/playerInfo';
 
 export default {
   data() {

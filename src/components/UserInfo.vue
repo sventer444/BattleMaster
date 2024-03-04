@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { usePlayerInfoStore } from '../store/playerinfo';
+import { usePlayerInfoStore } from '../store/playerInfo/index';
 import { usePokedexStore } from '../store/pokedex';
 
 export default {

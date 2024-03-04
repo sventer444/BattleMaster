@@ -1,0 +1,9 @@
+// store/playerInfo/getters.js
+export default {
+    badgeCase: (state) => state.badges,
+    getPlayerTeam: (state) => state.playerTeam,
+    getPlayerPc: (state) => state.playerPc,
+    getSelectedPokemon1: (state) => state.selectedPokemon1,
+    getSelectedPokemon2: (state) => state.selectedPokemon2,
+  };
+  
