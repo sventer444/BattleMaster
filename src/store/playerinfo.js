@@ -59,7 +59,48 @@ export const usePlayerInfoStore = defineStore('playerInfo', {
       this.playerTeam = {};
       this.playerPc = {};
     },
+    swapPokemonSlots(pokemon1, pokemon2 ) {
+      const state = this;
+      // Function to swap slots between two objects
+      const swapSlots = (obj1, obj2, key1, key2) => {
+        const temp = obj1[key1];
+        obj1[key1] = obj2[key2];
+        obj2[key2] = temp;
+      };
 
+      // Check if both Pokémon are in the player's team or both are in the PC
+      const bothInTeam = state.playerTeam.includes(pokemon1) && state.playerTeam.includes(pokemon2);
+      const bothInPc = state.playerPc[pokemon1] && state.playerPc[pokemon2];
+
+      if (bothInTeam || bothInPc) {
+        if (bothInTeam) {
+          // Swap slots in the player's team
+          const index1 = state.playerTeam.indexOf(pokemon1);
+          const index2 = state.playerTeam.indexOf(pokemon2);
+          swapSlots(state.playerTeam, state.playerTeam, index1, index2);
+        } else {
+          // Swap slots in the player's PC
+          swapSlots(state.playerPc, state.playerPc, pokemon1, pokemon2);
+        }
+      } else {
+        // Check if one Pokémon is in the player's team and the other is in the PC
+        const inTeamAndPc = state.playerTeam.includes(pokemon1) && state.playerPc[pokemon2];
+        const inPcAndTeam = state.playerPc[pokemon1] && state.playerTeam.includes(pokemon2);
+
+        if (inTeamAndPc || inPcAndTeam) {
+          // Swap slots between player's team and PC
+          if (inTeamAndPc) {
+            const index = state.playerTeam.indexOf(pokemon1);
+            state.playerTeam[index] = state.playerPc[pokemon2];
+            delete state.playerPc[pokemon2];
+          } else {
+            const index = state.playerTeam.indexOf(pokemon2);
+            state.playerTeam[index] = state.playerPc[pokemon1];
+            delete state.playerPc[pokemon1];
+          }
+        }
+      }
+    },
     addToPlayerTeam(pokemonDetails) {
       
       // Check if the Pokémon is not already in the PC before adding

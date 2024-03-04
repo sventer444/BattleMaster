@@ -35,7 +35,8 @@ Master
     - Hp: Health
     - Defense: Damage reduction
 - [ ] Critical hits
-- [ ] Pokemon at front is targeted
+- [ ] Party Added Per Region
+- [ ] Pokemon at front is targeted?
 - [ ] National Dex
 - [ ] Level 100 Max
 - [ ] Moves? (phys / special split)

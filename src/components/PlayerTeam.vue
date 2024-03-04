@@ -23,6 +23,7 @@
 
 <script>
 import { usePlayerInfoStore } from '../store/playerinfo';
+import { reactive } from 'vue';
 
 export default {
   computed: {
@@ -48,18 +49,25 @@ export default {
   methods: {
     selectSlot(index) {
       // Toggle slot selection
-      // Log the selected Pokémon when two slots are selected
-      const selectedSlotIndex = this.selectedSlots.length;
-      if (selectedSlotIndex < 2) {
+      const indexInSelected = this.selectedSlots.indexOf(index);
+      if (indexInSelected === -1) {
+        // If not already selected, add to the array
         this.selectedSlots.push(index);
+      } else {
+        // If already selected, remove from the array
+        this.selectedSlots.splice(indexInSelected, 1);
       }
 
-      if (selectedSlotIndex === 1) {
+      // Log the selected Pokémon when two slots are selected
+      if (this.selectedSlots.length === 2) {
         const selectedPokemon1 = this.displayedTeam[this.selectedSlots[0]];
         const selectedPokemon2 = this.displayedTeam[this.selectedSlots[1]];
-        console.log('Selected Pokémon:', selectedPokemon1, selectedPokemon2);
 
-        // Reset selected slots and borders
+        // Call the store action to swap the selected Pokémon
+        const playerStore = usePlayerInfoStore();
+        playerStore.swapPokemonSlots(selectedPokemon1, selectedPokemon2);
+
+        // Reset selected slots
         this.selectedSlots = [];
       }
     },
@@ -67,10 +75,10 @@ export default {
       return this.selectedSlots.includes(index);
     },
   },
-  data() {
-    return {
-      selectedSlots: [],
-    };
+  setup() {
+    const selectedSlots = reactive([]);
+
+    return { selectedSlots };
   },
 };
 </script>
