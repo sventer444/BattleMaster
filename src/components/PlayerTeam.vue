@@ -1,12 +1,14 @@
 <template>
-  <div class="player-team bg-pokemon-dark p-8 text-white text-center max-w-full max-h-screen overflow-y-auto">
-    <h2 class="text-3xl font-semibold mb-2">Current Team</h2>
+  <div class="player-team bg-pokemon-dark p-8 text-white text-center max-w-full">
+    <h2 class="text-3xl font-semibold mb-2">Current Party</h2>
     <!-- Display Pokémon team names in 1 row, 6 column maximum format -->
     <div class="flex items-center justify-center flex-wrap space-x-4">
       <div
         v-for="(pokemonDetails, slot) in displayedTeam"
         :key="slot"
-        class="w-36 h-36 p-2 border-2 mb-4"
+        :class="{ 'selected-slot': isSelected(slot) }"
+        @click="selectSlot(slot)"
+        class="w-36 h-36 p-2 border-2 mb-4 cursor-pointer"
       >
         <img
           v-if="pokemonDetails"
@@ -18,7 +20,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import { usePlayerInfoStore } from '../store/playerinfo';
@@ -44,6 +45,33 @@ export default {
       return teamArray;
     },
   },
+  methods: {
+    selectSlot(index) {
+      // Toggle slot selection
+      // Log the selected Pokémon when two slots are selected
+      const selectedSlotIndex = this.selectedSlots.length;
+      if (selectedSlotIndex < 2) {
+        this.selectedSlots.push(index);
+      }
+
+      if (selectedSlotIndex === 1) {
+        const selectedPokemon1 = this.displayedTeam[this.selectedSlots[0]];
+        const selectedPokemon2 = this.displayedTeam[this.selectedSlots[1]];
+        console.log('Selected Pokémon:', selectedPokemon1, selectedPokemon2);
+
+        // Reset selected slots and borders
+        this.selectedSlots = [];
+      }
+    },
+    isSelected(index) {
+      return this.selectedSlots.includes(index);
+    },
+  },
+  data() {
+    return {
+      selectedSlots: [],
+    };
+  },
 };
 </script>
 
@@ -60,9 +88,7 @@ export default {
   line-height: 1.5;
   padding-left: 2rem;
   padding-right: 2rem;
-  max-width: 100%;
-  max-height: calc(100vh - 120px); /* Adjust as needed based on the height of top and bottom navbars */
-  overflow-y: auto;
+  margin-top: calc(50vh - 120px); /* Adjust as needed based on the height of top and bottom navbars */
 }
 
 .text-3xl {
@@ -99,5 +125,17 @@ export default {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.selected-slot {
+  border-color: #3498db !important; /* Blue border color for selected slots */
+}
+
+body {
+  overflow: hidden; /* Disable scrolling for the entire page */
 }
 </style>
