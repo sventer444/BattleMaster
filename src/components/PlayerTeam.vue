@@ -23,9 +23,13 @@
 
 <script>
 import { usePlayerInfoStore } from '../store/playerInfo/index';
-import { reactive } from 'vue';
 
 export default {
+    data() {
+      return {
+        selectedSlots: [],
+      };
+    },
   computed: {
     playerTeam() {
       const playerStore = usePlayerInfoStore();
@@ -48,37 +52,21 @@ export default {
   },
   methods: {
     selectSlot(index) {
-      // Toggle slot selection
-      const indexInSelected = this.selectedSlots.indexOf(index);
-      if (indexInSelected === -1) {
-        // If not already selected, add to the array
-        this.selectedSlots.push(index);
-      } else {
-        // If already selected, remove from the array
-        this.selectedSlots.splice(indexInSelected, 1);
-      }
+        // Toggle slot selection
+          this.selectedSlots.push(index);
+          var selectMon = this.displayedTeam[index];
+          if(selectMon == null) selectMon = 'Empty Team Slot'
+          console.log('Selected from party ', selectMon);
+          usePlayerInfoStore().setSelectedPokemon(selectMon, index);
 
-      // Log the selected Pokémon when two slots are selected
-      if (this.selectedSlots.length === 2) {
-        const selectedPokemon1 = this.displayedTeam[this.selectedSlots[0]];
-        const selectedPokemon2 = this.displayedTeam[this.selectedSlots[1]];
-
-        // Call the store action to swap the selected Pokémon
-        const playerStore = usePlayerInfoStore();
-        playerStore.swapPokemonSlots(selectedPokemon1, selectedPokemon2);
-
-        // Reset selected slots
-        this.selectedSlots = [];
-      }
+        if (this.selectedSlots.length === 2) {
+          this.selectedSlots = [];
+        }
+      
     },
     isSelected(index) {
       return this.selectedSlots.includes(index);
     },
-  },
-  setup() {
-    const selectedSlots = reactive([]);
-
-    return { selectedSlots };
   },
 };
 </script>

@@ -75,7 +75,7 @@
         if (this.selectedSlots.length === 2) {
           const selectedPokemon1 = this.pcDisplay[this.selectedSlots[0]];
           const selectedPokemon2 = this.pcDisplay[this.selectedSlots[1]];
-          console.log('Selected Pokémon:', selectedPokemon1, selectedPokemon2);
+          console.log('Selected Pokémon from Pc:', selectedPokemon1, selectedPokemon2);
   
           // Reset selected slots and borders
           this.selectedSlots = [];

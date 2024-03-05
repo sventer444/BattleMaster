@@ -5,6 +5,12 @@ export const getNextAvailableSlot = (slotArray) => {
       return availableSlots.length > 0 ? Math.max(...availableSlots) + 1 : 0;
 };
 
+export const swapPokemonSlots = (obj1, obj2, key1, key2) => {
+    const temp = obj1[key1];
+    obj1[key1] = obj2[key2];
+    obj2[key2] = temp;
+  };
+
 export const createPokemonObject = (pokemonDetails) => {
     const newPokemon = {
       id: pokemonDetails.id,
@@ -63,5 +69,5 @@ export const createPokemonObject = (pokemonDetails) => {
     return newPokemon;
   };
   
-  export default { createPokemonObject, getNextAvailableSlot };
+  export default { createPokemonObject, getNextAvailableSlot, swapPokemonSlots };
   

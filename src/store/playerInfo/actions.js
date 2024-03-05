@@ -1,6 +1,6 @@
 // store/playerInfo/actions.js
 import createState from './state';
-import { createPokemonObject, getNextAvailableSlot } from './pokemonUtils';
+import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from './pokemonUtils';
 import { validateUser } from './loginUtils';
 
 
@@ -34,16 +34,50 @@ export default {
       // New action to set selected Pokémon
       setSelectedPokemon(pokemon, slot) {
         if (this.selectedPokemon1 === null) {
-          this.selectedPokemon1 = { pokemon, slot };
+          this.selectedPokemon1 = {pokemon: pokemon, slot: slot};
         } else if (this.selectedPokemon2 === null) {
-          this.selectedPokemon2 = { pokemon, slot };
+          this.selectedPokemon2 = {pokemon: pokemon, slot: slot};
           this.swapSelectedPokemon();
-        } else {
-          // If two Pokémon are already selected, reset the selection
+        } 
+      },
+      // New action to swap the selected Pokémon
+      swapSelectedPokemon() {
+        if (this.selectedPokemon1 && this.selectedPokemon2) {
+        const {pokemon: pokemon1, slot: slot1} = this.selectedPokemon1;
+        const {pokemon: pokemon2, slot: slot2} = this.selectedPokemon2;
+          console.log('attempting to swap ', pokemon1, ' and ', pokemon2);
+
+          const bothInTeam = this.playerTeam.includes(pokemon1) && this.playerTeam.includes(pokemon2);
+          const bothInPc = this.playerPc[pokemon1] && this.playerPc[pokemon2];
+          const inTeamAndPc = this.playerTeam.includes(pokemon1) && this.playerPc[pokemon2];
+          const inPcAndTeam = this.playerPc[pokemon1] && this.playerTeam.includes(pokemon2);
+          if (pokemon1 != 'Empty Team Slot' && pokemon2 !='Empty Team Slot'){
+            if (bothInTeam) {
+              // Call the utility function to swap Pokémon slots if both in player team
+              swapPokemonSlots(this.playerTeam, this.playerTeam, slot1, slot2);
+            } else if (bothInPc) {
+              // Call the utility function to swap Pokémon slots if both in PC
+              swapPokemonSlots(this.playerPc, this.playerPc, slot1, slot2);
+            } else if (inTeamAndPc) {
+              // Call the utility function to swap Pokémon slots if both in PC
+              swapPokemonSlots(this.playerTeam, this.playerPc, slot1, slot2);
+            } else if (inPcAndTeam) {
+              // Call the utility function to swap Pokémon slots if both in PC
+              swapPokemonSlots(this.playerPc, this.playerTeam, slot1, slot2);
+            }
+        }
+        else{
+          if (pokemon1 == 'Empty Team Slot') this.playerTeam[slot1] = pokemon2;
+          else if (pokemon2 == 'Empty Team Slot') this.playerTeam[slot2] = pokemon1;
+          else if (pokemon1 == 'Empty Pc Slot') this.playerPc[slot1] = pokemon2;
+          else if (pokemon2 == 'Empty Pc Slot') this.playerPc[slot2] = pokemon1;
+          else console.log('The pokemon were not set', pokemon1, pokemon2);
+         }
+          console.log('New swapped arrays: ', this.playerTeam, this.playerPc);
+          // Reset selected Pokémon
           this.resetSelectedPokemon();
         }
       },
-  
       // New action to reset selected Pokémon
       resetSelectedPokemon() {
         this.selectedPokemon1 = null;
