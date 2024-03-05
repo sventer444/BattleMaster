@@ -12,7 +12,7 @@
       >
         <img
           v-if="pokemonDetails"
-          :src="pokemonDetails.icon.front_default"
+          :src="pokemonDetails?.icon.front_default"
           :alt="pokemonDetails?.name"
           class="w-full h-full"
         />
@@ -25,11 +25,6 @@
 import { usePlayerInfoStore } from '../store/playerInfo/index';
 
 export default {
-  data() {
-    return {
-      selectedSlots: this.initializeSelectedSlots(),
-    };
-  },
   computed: {
     playerTeam() {
       const playerStore = usePlayerInfoStore();
@@ -49,6 +44,9 @@ export default {
 
       return teamArray;
     },
+    selectedSlots() {
+      return this.initializeSelectedSlots();
+    },
   },
   methods: {
     initializeSelectedSlots() {
@@ -58,14 +56,13 @@ export default {
       
       const selectedSlots = [];
 
-      if (selectedPokemon1 !== null) {
+      if (selectedPokemon1 !== null && selectedPokemon1.type == "Team" ) {
         selectedSlots.push(selectedPokemon1.slot);
       }
 
-      if (selectedPokemon2 !== null) {
+      if (selectedPokemon2 !== null && selectedPokemon2.type == "Team" ) {
         selectedSlots.push(selectedPokemon2.slot);
       }
-      console.log('initialized selected slots ', selectedSlots);
 
       return selectedSlots;
     },
@@ -74,7 +71,7 @@ export default {
           this.selectedSlots.push(index);
           var selectMon = this.displayedTeam[index];
           if(selectMon == null) selectMon = 'Empty Team Slot'
-          usePlayerInfoStore().setSelectedPokemon(selectMon, index);
+          usePlayerInfoStore().setSelectedPokemon(selectMon, index, 'Team');
 
         if (this.selectedSlots.length === 2) {
           console.log('Emptying selection slots', this.selectedSlots);

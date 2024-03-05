@@ -4,8 +4,8 @@ export default (isTest = false) => {
       rareCandy: 10,
       badges: [true, true, true, true, true, true, true, false],
       locationsWhitelist: ['Professors Lab', 'Route 1', 'Viridian City'],
-      playerTeam: [
-        {
+      playerTeam: {
+        0: {
           id: 1,
           name: 'Bulbasaur',
           sprites: {
@@ -24,7 +24,7 @@ export default (isTest = false) => {
             { base_stat: 45, stat: { name: 'speed' } },
           ],
         },
-      ],
+      },
       playerPc: {
         0: {
           id: 4,
@@ -57,7 +57,7 @@ export default (isTest = false) => {
     rareCandy: 0,
     badges: [false, false, false, false, false, false, false, false],
     locationsWhitelist: ['Professors Lab'],
-    playerTeam: [],
+    playerTeam: {},
     playerPc: {},
     selectedPokemon1: null,
     selectedPokemon2: null,

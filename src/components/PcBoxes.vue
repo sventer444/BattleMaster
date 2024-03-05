@@ -12,7 +12,7 @@
           <img
             v-if="pokemonDetails"
             :src="pokemonDetails.icon.front_default"
-            :alt="pokemonDetails.name"
+            :alt="pokemonDetails?.name"
             class="w-full h-full"
           />
         </div>
@@ -34,7 +34,6 @@
       return {
         itemsPerPage: 30,
         currentPage: 1,
-        selectedSlots:  this.initializeSelectedSlots(),
       };
     },
     computed: {
@@ -56,6 +55,9 @@
         const totalSlots = Object.keys(usePlayerInfoStore().getPlayerPc).length;
         return this.currentPage * this.itemsPerPage < totalSlots;
       },
+      selectedSlots() {
+        return this.initializeSelectedSlots();
+      },
     },
     methods: {
       initializeSelectedSlots() {
@@ -65,11 +67,11 @@
       
       const selectedSlots = [];
 
-      if (selectedPokemon1 !== null) {
+      if (selectedPokemon1 !== null && selectedPokemon1.type == "Pc" ) {
         selectedSlots.push(selectedPokemon1.slot);
       }
 
-      if (selectedPokemon2 !== null) {
+      if (selectedPokemon2 !== null && selectedPokemon2.type == "Pc" ) {
         selectedSlots.push(selectedPokemon2.slot);
       }
 
@@ -83,7 +85,7 @@
           this.selectedSlots.push(index);
           var selectMon = this.pcDisplay[index];
           if(selectMon == null) selectMon = 'Empty Pc Slot'
-          usePlayerInfoStore().setSelectedPokemon(selectMon, index);
+          usePlayerInfoStore().setSelectedPokemon(selectMon, index, 'Pc');
 
         if (this.selectedSlots.length === 2) {
           this.selectedSlots = [];

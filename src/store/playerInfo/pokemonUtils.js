@@ -7,9 +7,12 @@ export const getNextAvailableSlot = (slotArray) => {
 
 export const swapPokemonSlots = (obj1, obj2, key1, key2) => {
     const temp = obj1[key1];
+    delete obj1[key1];
     obj1[key1] = obj2[key2];
+    delete obj2[key2];
     obj2[key2] = temp;
   };
+
 
 export const createPokemonObject = (pokemonDetails) => {
     const newPokemon = {
