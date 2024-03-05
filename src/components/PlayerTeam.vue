@@ -65,6 +65,7 @@ export default {
       if (selectedPokemon2 !== null) {
         selectedSlots.push(selectedPokemon2.slot);
       }
+      console.log('initialized selected slots ', selectedSlots);
 
       return selectedSlots;
     },
@@ -76,8 +77,9 @@ export default {
           usePlayerInfoStore().setSelectedPokemon(selectMon, index);
 
         if (this.selectedSlots.length === 2) {
+          console.log('Emptying selection slots', this.selectedSlots);
           this.selectedSlots = [];
-          this.initializeSelectedSlots();
+          // this.initializeSelectedSlots();
         }
       
     },

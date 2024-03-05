@@ -87,7 +87,7 @@
 
         if (this.selectedSlots.length === 2) {
           this.selectedSlots = [];
-          this.initializeSelectedSlots();
+          // this.initializeSelectedSlots();
         }
       
     },
