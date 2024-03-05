@@ -10,7 +10,7 @@
           class="w-20 h-20 p-2 border-2 border-black cursor-pointer"
         >
           <img
-            v-if="!isEmptySlot(pokemonDetails)"
+            v-if="pokemonDetails"
             :src="pokemonDetails.icon.front_default"
             :alt="pokemonDetails.name"
             class="w-full h-full"
@@ -34,18 +34,18 @@
       return {
         itemsPerPage: 30,
         currentPage: 1,
-        selectedSlots: [],
+        selectedSlots:  this.initializeSelectedSlots(),
       };
     },
     computed: {
       pcDisplay() {
         const playerStore = usePlayerInfoStore();
         const playerPc = playerStore.getPlayerPc;
-        const pcArray = Array(30).fill({}); // Adjusted to 5x6 grid
+        const pcArray = Array(30).fill(null); // Adjusted to 5x6 grid
   
         Object.keys(playerPc).forEach((slot) => {
-          const index = parseInt(slot, 10);
-          if (!isNaN(index) && index >= 0 && index < 30) {
+          const index = parseInt(slot);
+          if (index >= 0 && index < 30) {
             pcArray[index] = playerPc[slot];
           }
         });
@@ -58,32 +58,42 @@
       },
     },
     methods: {
+      initializeSelectedSlots() {
+      const playerStore = usePlayerInfoStore();
+      const selectedPokemon1 = playerStore.getSelectedPokemon1;
+      const selectedPokemon2 = playerStore.getSelectedPokemon2;
+      
+      const selectedSlots = [];
+
+      if (selectedPokemon1 !== null) {
+        selectedSlots.push(selectedPokemon1.slot);
+      }
+
+      if (selectedPokemon2 !== null) {
+        selectedSlots.push(selectedPokemon2.slot);
+      }
+
+      return selectedSlots;
+    },
       displayNextPage() {
         this.currentPage++;
       },
-      isEmptySlot(pokemonDetails) {
-        // Check if the slot is empty
-        return !pokemonDetails || Object.keys(pokemonDetails).length === 0;
-      },
       selectSlot(index) {
         // Toggle slot selection
-        if (this.selectedSlots.length < 2) {
           this.selectedSlots.push(index);
-        }
-  
-        // Log the selected Pokémon when two slots are selected
+          var selectMon = this.pcDisplay[index];
+          if(selectMon == null) selectMon = 'Empty Pc Slot'
+          usePlayerInfoStore().setSelectedPokemon(selectMon, index);
+
         if (this.selectedSlots.length === 2) {
-          const selectedPokemon1 = this.pcDisplay[this.selectedSlots[0]];
-          const selectedPokemon2 = this.pcDisplay[this.selectedSlots[1]];
-          console.log('Selected Pokémon from Pc:', selectedPokemon1, selectedPokemon2);
-  
-          // Reset selected slots and borders
           this.selectedSlots = [];
+          this.initializeSelectedSlots();
         }
-      },
-      isSelected(index) {
-        return this.selectedSlots.includes(index);
-      },
+      
+    },
+    isSelected(index) {
+      return this.selectedSlots.includes(index);
+    },
     },
   };
   </script>

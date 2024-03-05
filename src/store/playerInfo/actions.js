@@ -45,7 +45,7 @@ export default {
         if (this.selectedPokemon1 && this.selectedPokemon2) {
         const {pokemon: pokemon1, slot: slot1} = this.selectedPokemon1;
         const {pokemon: pokemon2, slot: slot2} = this.selectedPokemon2;
-          console.log('attempting to swap ', pokemon1, ' and ', pokemon2);
+        console.log('swapping ', pokemon1, pokemon2);
 
           const bothInTeam = this.playerTeam.includes(pokemon1) && this.playerTeam.includes(pokemon2);
           const bothInPc = this.playerPc[pokemon1] && this.playerPc[pokemon2];
@@ -67,13 +67,20 @@ export default {
             }
         }
         else{
-          if (pokemon1 == 'Empty Team Slot') this.playerTeam[slot1] = pokemon2;
-          else if (pokemon2 == 'Empty Team Slot') this.playerTeam[slot2] = pokemon1;
-          else if (pokemon1 == 'Empty Pc Slot') this.playerPc[slot1] = pokemon2;
-          else if (pokemon2 == 'Empty Pc Slot') this.playerPc[slot2] = pokemon1;
-          else console.log('The pokemon were not set', pokemon1, pokemon2);
+          if (pokemon1 == 'Empty Team Slot'){
+          this.playerTeam[slot1] = pokemon2;
+          this.playerTeam[slot2] = null;
+            }
+          else if (pokemon2 == 'Empty Team Slot'){
+             this.playerTeam[slot2] = pokemon1;
+             this.playerTeam[slot1] = null;}
+          else if (pokemon1 == 'Empty Pc Slot'){ this.playerPc[slot1] = pokemon2;
+            this.playerPc[slot2] = null;}
+          else if (pokemon2 == 'Empty Pc Slot'){ this.playerPc[slot2] = pokemon1;
+            this.playerPc[slot1] = null;}
+          else {console.log('The pokemon were not set', pokemon1, pokemon2);}
          }
-          console.log('New swapped arrays: ', this.playerTeam, this.playerPc);
+         console.log('Array after swap', this.playerPc);
           // Reset selected Pokémon
           this.resetSelectedPokemon();
         }

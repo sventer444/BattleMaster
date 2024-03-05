@@ -25,11 +25,11 @@
 import { usePlayerInfoStore } from '../store/playerInfo/index';
 
 export default {
-    data() {
-      return {
-        selectedSlots: [],
-      };
-    },
+  data() {
+    return {
+      selectedSlots: this.initializeSelectedSlots(),
+    };
+  },
   computed: {
     playerTeam() {
       const playerStore = usePlayerInfoStore();
@@ -51,16 +51,33 @@ export default {
     },
   },
   methods: {
+    initializeSelectedSlots() {
+      const playerStore = usePlayerInfoStore();
+      const selectedPokemon1 = playerStore.getSelectedPokemon1;
+      const selectedPokemon2 = playerStore.getSelectedPokemon2;
+      
+      const selectedSlots = [];
+
+      if (selectedPokemon1 !== null) {
+        selectedSlots.push(selectedPokemon1.slot);
+      }
+
+      if (selectedPokemon2 !== null) {
+        selectedSlots.push(selectedPokemon2.slot);
+      }
+
+      return selectedSlots;
+    },
     selectSlot(index) {
         // Toggle slot selection
           this.selectedSlots.push(index);
           var selectMon = this.displayedTeam[index];
           if(selectMon == null) selectMon = 'Empty Team Slot'
-          console.log('Selected from party ', selectMon);
           usePlayerInfoStore().setSelectedPokemon(selectMon, index);
 
         if (this.selectedSlots.length === 2) {
           this.selectedSlots = [];
+          this.initializeSelectedSlots();
         }
       
     },
