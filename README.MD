@@ -2,24 +2,46 @@
 Battle Master
 ==================
 
-Fight to become the very best! \
-In a world full of conflict, battling is a way of life. However, it has been over 500 years since the last Battle Master emerged on top. Many doubt that such a thing is achievable, do you have what it takes to be the very best like no one ever was?
+Fight to become the very best!
 
 
 Battle
 -----------
+- Player team add damage left to right, using the left type for effectiveness
+- With multiple player teams, each of their damage is added flatly to each other
+- Pokemon from the Pokedex add their damage at the end flatly?
+- Two attack buttons, Physical and Special to choose between
+- Opponents pokemon gets stat boosts depending on player team size
+- Player can equip pokemon abilities?
+- Speed increases crit chance?
+- Hp is added flatly from team
+- Defeating a wild pokemon adds it at level 1 to the pokedex
+
 
 
 Train
 -------------
+- Pokemon team gains exp during a run
+- Pokemon reset to the state captured in the pokedex after a run ends
+- Rare candy let a trainer permenantly level up a pokemon
+- Infinite Evs during a run
+- Infinite Ivs for permenant power up
+- Only shiny pokemon are carried over between runs, otherwise a player must catch the pokemon first
 
 
 Master
 -----------------
-
+- Pokemon caught are stored in the pokedex for permenant progress between runs
+- Challenge runs are available and completing them earns multiplier bonuses
+- When a pokemon reaches level 100 in the pokedex, it can prestige
+- Prestige resets to level 1 but keeps the stats. It also rolls a 35% of it becoming shiny
+- Shiny pokemon get a 50% boost to stat gains?
+- Prestige unlocks the pokemons ability for the player to equip? Only unlocked after reaching region 2?
+- Prestige can happen during a run, but if a pokemon is prestiged in the dex it is unlocked from the start
+- Game Corner lets you roll for items during a run in exchange for badges
 
 #### Features
-- [ ] 6 member team max (additonal team for each region?)
+- [ ] 6 member team max (additional team for each region?)
 - [ ] Pc to swap team on the fly
 - [ ] Type effectiveness
 - [ ] Multiple regions

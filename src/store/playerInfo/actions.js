@@ -93,7 +93,6 @@ resetSelectedPokemon() {
         this.selectedPokemon2 = null;
 },
   
-  
     addToPlayerTeam(pokemonDetails) {
       const nextAvailableSlot = getNextAvailableSlot(this.playerTeam);
       if (nextAvailableSlot < 6){
