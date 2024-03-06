@@ -6,6 +6,7 @@ import PcWindow from '@/components/PcWindow.vue'; // Import PcWindow component
 import RegionMap from '@/components/RegionMap.vue'; // Import RegionMap component
 import ProfessorsLab from '@/components/locations/ProfessorsLab.vue';
 import Route from '@/components/locations/RouteLocation.vue';
+import PokedexBrowser from './components/PokedexBrowser.vue';
 
 const routes = [
   {
@@ -21,6 +22,12 @@ const routes = [
     path: '/user-info',
     name: 'UserInfo',
     component: UserInfo,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/pokedex',
+    name: 'Pokedex',
+    component: PokedexBrowser,
     meta: { requiresAuth: true },
   },
   {

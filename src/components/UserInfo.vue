@@ -9,7 +9,11 @@
 
       <!-- Badge Progress -->
       <div v-if="isAuthenticated" class="flex items-center justify-center mt-4">
-        <div v-for="(badge, index) in badgeProgress" :key="index" :class="{ 'badge-icon': true, 'filled': badge, 'gym-badge': true }"></div>
+        <div
+          v-for="(badge, index) in badgeProgress"
+          :key="index"
+          class="badge-icon filled gym-badge"
+        ></div>
       </div>
 
       <!-- Pokedex Count -->
