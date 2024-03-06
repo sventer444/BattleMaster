@@ -1,7 +1,9 @@
 <template>
   <div class="bg-pokemon-dark text-white p-8 rounded max-h-full overflow-hidden flex flex-col items-center">
     <!-- Display the PlayerTeam.vue component at the top -->
-    <PlayerTeam class="mb-4 mt-2" />
+    
+    <!-- <h2 class="text-3xl font-semibold mt-2 mb-2">Current Party</h2> -->
+    <PlayerTeam class="mb-4 mt-2"  :isPcWindow="true"/>
 
     <!-- Display the PcBoxes component with adjusted spacing -->
     <PcBoxes class="mt-4 mb-4" />

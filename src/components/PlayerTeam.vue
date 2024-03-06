@@ -1,6 +1,5 @@
 <template>
   <div class="player-team bg-pokemon-dark p-8 text-white text-center max-w-full">
-    <h2 class="text-3xl font-semibold mb-2">Current Party</h2>
     <!-- Display Pokémon team names in 1 row, 6 column maximum format -->
     <div class="flex items-center justify-center flex-wrap space-x-4">
       <div
@@ -8,11 +7,12 @@
         :key="slot"
         :class="{ 'selected-slot': isSelected(slot) }"
         @click="selectSlot(slot)"
+        :style="{ borderColor: isPcWindow ? '#000' : '#212121' }"
         class="w-36 h-36 p-2 border-2 mb-4 cursor-pointer"
       >
         <img
           v-if="pokemonDetails"
-          :src="pokemonDetails?.icon.front_default"
+          :src="getSpriteSource(pokemonDetails)"
           :alt="pokemonDetails?.name"
           class="w-full h-full"
         />
@@ -25,6 +25,12 @@
 import { usePlayerInfoStore } from '../store/playerInfo/index';
 
 export default {
+  props: {
+    isPcWindow: {
+      type: Boolean,
+      default: false,
+    },
+  },
   computed: {
     playerTeam() {
       const playerStore = usePlayerInfoStore();
@@ -53,35 +59,38 @@ export default {
       const playerStore = usePlayerInfoStore();
       const selectedPokemon1 = playerStore.getSelectedPokemon1;
       const selectedPokemon2 = playerStore.getSelectedPokemon2;
-      
+
       const selectedSlots = [];
 
-      if (selectedPokemon1 !== null && selectedPokemon1.type == "Team" ) {
+      if (selectedPokemon1 !== null && selectedPokemon1.type == "Team") {
         selectedSlots.push(selectedPokemon1.slot);
       }
 
-      if (selectedPokemon2 !== null && selectedPokemon2.type == "Team" ) {
+      if (selectedPokemon2 !== null && selectedPokemon2.type == "Team") {
         selectedSlots.push(selectedPokemon2.slot);
       }
 
       return selectedSlots;
     },
     selectSlot(index) {
-        // Toggle slot selection
-          this.selectedSlots.push(index);
-          var selectMon = this.displayedTeam[index];
-          if(selectMon == null) selectMon = 'Empty Team Slot'
-          usePlayerInfoStore().setSelectedPokemon(selectMon, index, 'Team');
+      // Toggle slot selection
+      this.selectedSlots.push(index);
+      var selectMon = this.displayedTeam[index];
+      if (selectMon == null) selectMon = 'Empty Team Slot';
+      usePlayerInfoStore().setSelectedPokemon(selectMon, index, 'Team');
 
-        if (this.selectedSlots.length === 2) {
-          console.log('Emptying selection slots', this.selectedSlots);
-          this.selectedSlots = [];
-          // this.initializeSelectedSlots();
-        }
-      
+      // if (this.selectedSlots.length === 2) {
+      //   console.log('Emptying selection slots', this.selectedSlots);
+      //   this.selectedSlots = [];
+      //   // this.initializeSelectedSlots();
+      // }
+
     },
     isSelected(index) {
       return this.selectedSlots.includes(index);
+    },
+    getSpriteSource(pokemonDetails) {
+      return this.isPcWindow ?  pokemonDetails?.icon.front_default : pokemonDetails?.sprites.back_default;
     },
   },
 };
@@ -132,7 +141,7 @@ export default {
 .h-36 {
   width: 9rem;
   height: 9rem;
-  border: 2px solid #000; /* Black border */
+  border: 2px solid; /* Black border */
 }
 
 .p-2 {

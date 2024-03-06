@@ -47,7 +47,6 @@ swapSelectedPokemon() {
   if (this.selectedPokemon1 && this.selectedPokemon2) {
     const { pokemon: pokemon1, slot: slot1, type: type1 } = this.selectedPokemon1;
     const { pokemon: pokemon2, slot: slot2, type: type2 } = this.selectedPokemon2;
-    console.log('Swapping ', pokemon1, ' and ', pokemon2);
 
     // If neither pokemon is a string
     if (!(typeof pokemon1 === 'string') && !(typeof pokemon2 === 'string')){
@@ -76,10 +75,8 @@ swapSelectedPokemon() {
     } else {
       // Handle cases where one or both Pokémon are in empty slots
       if (typeof pokemon2 === 'string' && type2 == 'Team') {
-        console.log('Pokemon 2 is an empty team slot');
         this.playerTeam[slot2] = pokemon1;
       } else if (typeof pokemon2 === 'string' && type2 == 'Pc') {
-        console.log('Pokemon 2 is an empty pc slot');
         this.playerPc[slot2] = pokemon1;
       } else {
         console.log('The pokemon were not set', pokemon1, pokemon2);
@@ -87,7 +84,6 @@ swapSelectedPokemon() {
       // Clean up old pokemon
       (type1 == 'Team')? delete this.playerTeam[slot1] : delete this.playerPc[slot1];
     }
-    console.log('Pc Array after swap', this.playerPc, 'Player Team after swap', this.playerTeam);
     // Reset selected Pokémon
     this.resetSelectedPokemon();
   }
