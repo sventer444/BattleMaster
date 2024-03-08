@@ -2,6 +2,7 @@
 import createState from './state';
 import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from './pokemonUtils';
 import { validateUser } from './loginUtils';
+import { usePokedexStore } from '../pokedex';
 
 
 export default {
@@ -95,13 +96,13 @@ resetSelectedPokemon() {
   
     addToPlayerTeam(pokemonDetails) {
       const nextAvailableSlot = getNextAvailableSlot(this.playerTeam);
+      const newPokemon = createPokemonObject(pokemonDetails);
+      usePokedexStore().addToPokedex(newPokemon);
       if (nextAvailableSlot < 6){
-        const newPokemon = createPokemonObject(pokemonDetails);
-
         this.playerTeam[nextAvailableSlot] = newPokemon;
       }
       else{
-        this.addToPlayerPc(pokemonDetails);
+        this.addToPlayerPc(newPokemon);
       }
       this.resetSelectedPokemon(); // Reset selected Pokémon after adding
     },

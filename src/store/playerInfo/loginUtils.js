@@ -1,11 +1,8 @@
 //loginUtils.js
 
-export const validateUser = (username, password) => {
-    if (username.toLowerCase() == 'god') return true;
+export const validateUser = (username) => {
+    return (username.toLowerCase() === 'god');
 
-    const passwordVal = username.trim() !== '' && password.trim() !== '';
-
-    return passwordVal;
   };
 
 export default { validateUser };

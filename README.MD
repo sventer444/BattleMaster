@@ -79,18 +79,15 @@ Master
 - [ ] Inverse Challenge (unlockable reverse path through region)
 
 
+### Bugs
+- Able to move last pokemon from team to pc
+- Badges arent showing on trainer card
+
 ### Running The Game (Dev)
-1. Follow the 'Getting Started With Flutter' guide in the 'Resources' section
-2. Clone the main branch from the repository
-3. Run the command ``` flutter pub get ``` to install necessary dependencies
-4. With an emulator running, run the program in debug. In VSCode, Run -> 'Start Debugging' (F5)
+
 
 #### Todo
-- [ ] Starting screen
-- [ ] Retain player progress/state
-- [ ] Tutorial
-- [x] Split routes and special locations into individual map columns
-- [ ] Clean Readme, split out features list and development todos
+
 
 
 ### Resources

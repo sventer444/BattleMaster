@@ -47,9 +47,9 @@ export const usePokedexStore = defineStore({
     },
 
     // Add Pokemon to the Pokedex
-    addToPokedex(pokemonName) {
-      if (!this.pokedex.includes(pokemonName)) {
-        this.pokedex.push(pokemonName);
+    addToPokedex(pokemonDetails) {
+      if (!this.pokedex.includes(pokemonDetails.name)) {
+        this.pokedex.push(pokemonDetails);
       }
     },
 

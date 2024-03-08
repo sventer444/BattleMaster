@@ -34,7 +34,7 @@ export default {
 
       if (isValidUser) {
         usePlayerInfoStore().login(this.username, this.password);
-        this.$router.push('/pc-window'); // Update route to '/pc-window'
+        this.$router.push('/region/kanto'); // Update route to '/pc-window'
       } else {
         alert('Invalid username or password. Please try again.');
       }

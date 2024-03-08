@@ -12,7 +12,7 @@
         :key="index"
         :src="pokemonDetails?.sprites?.front_default"
         :alt="pokemonDetails?.name"
-        class="w-44 h-44"
+        class="w-44 h-44 cursor-pointer"
         @click="selectStarter(pokemonDetails?.name)"
       />
     </div>

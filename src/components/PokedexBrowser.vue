@@ -1,17 +1,17 @@
 <template>
   <div class="pokedex-container bg-pokemon-dark p-4 text-white text-center max-w-full overflow-hidden">
     <!-- Display Pokémon icons in a 5x12 grid -->
-    <div class="grid grid-cols-12 gap-2 bg-pokemon-dark-shaded p-5" style="max-height: 700px; overflow-y: auto;">
+    <div class="grid grid-cols-9 gap-2 bg-pokemon-dark-shaded p-5" style="max-height: 700px; overflow-y: auto;">
       <div
-        v-for="(pokemonDetails, index) in pcDisplay"
+        v-for="(pokemonDetails, index) in pokedexDisplay"
         :key="index"
-        class="w-10 h-10 p-2 border-2 border-black cursor-pointer"
+        class="w-20 h-20 p-2 border-2 border-black"
       >
         <img
           v-if="pokemonDetails"
           :src="pokemonDetails.icon.front_default"
           :alt="pokemonDetails?.name"
-          class="w-full h-full"
+          class="w-full h-full cursor-pointer"
         />
       </div>
     </div>
@@ -23,7 +23,7 @@ import { usePokedexStore } from '@/store/pokedex';
 
 export default {
   computed: {
-    pcDisplay() {
+    pokedexDisplay() {
       const pokedexStore = usePokedexStore();
       const playerDex = pokedexStore.accessPokedex;
       const numSlots = 151;
