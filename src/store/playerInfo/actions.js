@@ -122,6 +122,7 @@ resetSelectedPokemon() {
 
     initializeTestData() {
         this.resetPlayerState();
+        const playerDex = usePokedexStore();
     
         // Retrieve the test data from the state
         const testData = createState(true);
@@ -129,8 +130,12 @@ resetSelectedPokemon() {
         this.rareCandy = testData.rareCandy;
         this.badges = [...testData.badges];
         this.locationsWhitelist = [...testData.locationsWhitelist];
-        this.playerTeam = { ...testData.playerTeam};
-        this.playerPc = { ...testData.playerPc };
+        testData.playerDex.map((pokemon) => {
+          playerDex.fetchPokemonDetailsByName(pokemon)
+          .then((pokemonDetails) => {
+            this.addToPlayerTeam(pokemonDetails)
+          })
+        });
       },
   };
   

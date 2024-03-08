@@ -7,7 +7,7 @@ export const usePokedexStore = defineStore({
   id: 'pokedex',
 
   state: () => ({
-    pokedex: [], // Array to store Pokemon names in the Pokedex
+    pokedex: {}, // Array to store Pokemon names in the Pokedex
     regionDex: [],
   }),
 
@@ -48,8 +48,9 @@ export const usePokedexStore = defineStore({
 
     // Add Pokemon to the Pokedex
     addToPokedex(pokemonDetails) {
-      if (!this.pokedex.includes(pokemonDetails.name)) {
-        this.pokedex.push(pokemonDetails);
+      const pokemonIndex = pokemonDetails.id - 1;
+      if (!this.pokedex[pokemonIndex]) {
+        this.pokedex[pokemonIndex] = pokemonDetails;
       }
     },
 
