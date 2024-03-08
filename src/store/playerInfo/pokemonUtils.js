@@ -21,10 +21,11 @@ export const createPokemonObject = (pokemonDetails) => {
       sprites: pokemonDetails?.sprites,
       icon: pokemonDetails?.sprites?.versions['generation-viii'].icons,
       types: pokemonDetails?.types,
+      status: 'none',
+      shiny: false,
+      level: 1,
+      experience: 0,
       stats: {
-        status: 'none',
-        level: 1,
-        experience: 0,
         hp: 1,
         attack: 1,
         specialAttack: 1,
@@ -56,6 +57,10 @@ export const createPokemonObject = (pokemonDetails) => {
         case 'special-attack':
           newPokemon.stats.specialAttack = stat.base_stat;
           newPokemon.base_stats.specialAttack = stat.base_stat;
+          break;
+        case 'defense':
+          newPokemon.stats.defense = stat.base_stat;
+          newPokemon.base_stats.defense = stat.base_stat;
           break;
         case 'special-defense':
           newPokemon.stats.specialDefense = stat.base_stat;

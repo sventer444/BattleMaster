@@ -4,7 +4,7 @@ export default (isTest = false) => {
       rareCandy: 50,
       badges: [true, true, true, true, true, true, true, false],
       locationsWhitelist: ['Professors Lab', 'Route 1', 'Viridian City'],
-      playerDex: ['bulbasaur', 'charmander', 'squirtle'],
+      playerDex: ['mew', 'bulbasaur', 'charmander', 'squirtle'],
     };
   }
 
