@@ -1,33 +1,50 @@
+//pokedex browser
+
 <template>
-  <div class="pokedex-container bg-pokemon-dark p-4 text-white text-center max-w-full overflow-hidden">
-    <!-- Display Pokémon icons in a 5x12 grid -->
-    <div class="grid grid-cols-9 gap-2 bg-pokemon-dark-shaded p-5" style="max-height: 700px; overflow-y: auto;">
-      <div
-        v-for="(pokemonDetails, index) in pokedexDisplay"
-        :key="index"
-        class="w-20 h-20 p-2 border-2 border-black"
-      >
-        <img
-          v-if="pokemonDetails"
-          :src="pokemonDetails.icon.front_default"
-          :alt="pokemonDetails?.name"
-          class="w-full h-full cursor-pointer"
-        />
+  <div>
+    <!-- Display Pokedex or PokemonInfo based on whether a Pokemon is selected -->
+    <div v-if="!selectedPokemon">
+      <!-- Display Pokémon icons in a grid -->
+      <div class="pokedex-container bg-pokemon-dark p-4 text-white text-center max-w-full overflow-hidden">
+        <div class="grid grid-cols-9 gap-2 bg-pokemon-dark-shaded p-5" style="max-height: 700px; overflow-y: auto;">
+          <div
+            v-for="(pokemonDetails, index) in pokedexDisplay"
+            :key="index"
+            class="w-20 h-20 p-2 border-2 border-black cursor-pointer"
+            @click="selectPokemon(pokemonDetails)"
+          >
+            <img
+              v-if="pokemonDetails"
+              :src="pokemonDetails.icon.front_default"
+              :alt="pokemonDetails?.name"
+              class="w-full h-full cursor-pointer"
+            />
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Display PokemonInfo when a Pokemon is selected -->
+    <PokemonInfo v-if="selectedPokemon" :pokemonDetails="selectedPokemon" @close="deselectPokemon" />
   </div>
 </template>
 
 <script>
 import { usePokedexStore } from '@/store/pokedex';
+import PokemonInfo  from '@/components/PokemonInfo.vue';
 
 export default {
+  data() {
+    return {
+      selectedPokemon: null,
+    };
+  },
   computed: {
     pokedexDisplay() {
       const pokedexStore = usePokedexStore();
       const playerDex = pokedexStore.accessPokedex;
       const numSlots = 151;
-      const dexArray = Array(numSlots).fill(null); // Adjusted to 12 column grid
+      const dexArray = Array(numSlots).fill(null);
 
       Object.keys(playerDex).forEach((slot) => {
         const index = parseInt(slot);
@@ -38,6 +55,17 @@ export default {
 
       return dexArray;
     },
+  },
+  methods: {
+    selectPokemon(pokemonDetails) {
+      this.selectedPokemon = pokemonDetails;
+    },
+    deselectPokemon() {
+      this.selectedPokemon = null;
+    },
+  },
+  components: {
+    PokemonInfo,
   },
 };
 </script>

@@ -82,6 +82,7 @@ Master
 ### Bugs
 - Able to move last pokemon from team to pc
 - Badges arent showing on trainer card
+- Query one region at a time rather than all
 
 ### Running The Game (Dev)
 
