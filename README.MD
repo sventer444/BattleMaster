@@ -88,6 +88,18 @@ Master
 
 
 #### Todo
+- [ ] Implement giving Ivs/Rare Candies to pokedex pokemon
+- [ ] Logic for displaying pokemons stats during a run? From pc vs from pokedex browser
+- [ ] Logic for ending a run at the professors lab
+- [ ] Dialogue directing player to professors lab when they have no pokemon
+- [ ] Add items to playerstore
+- [ ] Add a battle store
+- [ ] Add a battle component
+- [ ] Implement rival battle after prof lab
+- [ ] Add Game Corner view
+- [ ] Handle evolution during a run
+- [ ] Implement exp logic for pokemon during runs
+- [ ] Add shiny boolean to pokemon object, handle displaying shiny sprites
 
 
 

@@ -1,7 +1,7 @@
 <template>
   <div class="pokemon-info p-4 text-white text-center relative">
     <!-- Close button -->
-    <button @click="$emit('close')" class="absolute top-0 right-0 m-4 text-gray-300 hover:text-white focus:outline-none">
+    <button @click="$emit('close')" class="bg-pokemon-dark-shaded w-10 h-10 absolute top-0 right-0 m-4 text-gray-300 hover:text-white focus:outline-none">
       <i class="fas fa-times"></i>
     </button>
 
