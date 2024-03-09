@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { usePokedexStore } from '@/store/pokedex';
+import { useGameInfoStore } from '@/store/gameInfo';
 import PokemonInfo  from '@/components/PokemonInfo.vue';
 
 export default {
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     pokedexDisplay() {
-      const pokedexStore = usePokedexStore();
+      const pokedexStore = useGameInfoStore();
       const playerDex = pokedexStore.accessPokedex;
       const numSlots = 151;
       const dexArray = Array(numSlots).fill(null);

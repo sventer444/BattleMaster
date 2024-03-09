@@ -83,6 +83,9 @@ Master
 - Able to move last pokemon from team to pc
 - Badges arent showing on trainer card
 - Query one region at a time rather than all
+- Can add a pokemon to the team already there
+- Single entries in region list are off center
+- test account location whitelist isnt intializing
 
 ### Running The Game (Dev)
 
@@ -100,11 +103,11 @@ Master
 - [ ] Handle evolution during a run
 - [ ] Implement exp logic for pokemon during runs
 - [ ] Add shiny boolean to pokemon object, handle displaying shiny sprites
+- [ ] Split the stores into playerInfo and gameInfo stores
 
 
 
 ### Resources
-[Getting Started With Flutter](https://docs.flutter.dev/get-started/install/windows) \
-[Flutter Game Example](https://github.com/filiph/tictactoe) \
-[Flutter Get](https://pub.dev/packages/get) \
-[Getx state management](https://blog.logrocket.com/ultimate-guide-getx-state-management-flutter/)
+ChatGpt
+PokeApi
+Vue

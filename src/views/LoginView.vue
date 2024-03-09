@@ -30,19 +30,12 @@ export default {
 
   methods: {
     login() {
-      const isValidUser = this.validateUser(this.username, this.password);
-
-      if (isValidUser) {
-        usePlayerInfoStore().login(this.username, this.password);
-        this.$router.push('/region/kanto'); // Update route to '/pc-window'
-      } else {
-        alert('Invalid username or password. Please try again.');
-      }
+      usePlayerInfoStore().login(this.username, this.password)
+      .then(() => {
+        this.$router.push('/region/kanto'); 
+      });
     },
 
-    validateUser(username, password) {
-      return username.trim() !== '' && password.trim() !== '';
-    },
   },
 };
 </script>

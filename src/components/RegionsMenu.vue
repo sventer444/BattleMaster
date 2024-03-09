@@ -17,7 +17,7 @@
   </template>
   
   <script>
-  import { useRegionStore } from '../store/region';
+  import { useGameInfoStore } from '@/store/gameInfo';
   
   export default {
     data() {
@@ -28,7 +28,10 @@
     computed: {
       getRegions() {
         // Retrieve the first Pokémon regions from the Region store and trim the list
-        return useRegionStore().getRegions.slice(0, 1).map(region => region.name);
+        // return useGameInfoStore().getRegions.slice(0, 1).map(region => region.name);
+        const regionData =  useGameInfoStore().getRegions;
+        const regionName = (regionData.length == 0) ? ['polling regions..'] : regionData.map(region => region.name);
+        return regionName;
       },
     },
     methods: {
@@ -36,6 +39,7 @@
         this.isMenuOpen = !this.isMenuOpen;
       },
       navigateToRegion(region) {
+        useGameInfoStore().setRegionDex(region);
         this.$router.push({ name: 'RegionMap', params: { regionName: region } });
         this.isMenuOpen = false; // Close the menu after selecting a tab
       },

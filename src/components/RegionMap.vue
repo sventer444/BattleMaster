@@ -24,9 +24,8 @@
 </template>
 
 <script>
-import { useRegionStore } from '@/store/region';
+import { useGameInfoStore } from '@/store/gameInfo';
 import { usePlayerInfoStore } from '@/store/playerInfo';
-import { usePokedexStore } from '@/store/pokedex';
 
 export default {
   props: {
@@ -78,7 +77,7 @@ export default {
   methods: {
     // Get region data from the region store based on regionName
     getRegionData() {
-      const regions = useRegionStore().getRegions;
+      const regions = useGameInfoStore().getRegions;
       return regions.find(region => region.name === this.regionName);
     },
     // Method to navigate to a location when it's clicked
@@ -116,16 +115,6 @@ export default {
       const playerStore = usePlayerInfoStore();
       return playerStore.locationsWhitelist.includes(this.getDisplayName(location));
     },
-  },
-  mounted() {
-    // Fetch the region dex URL from the region store
-    const regionData = this.getRegionData();
-    const regionDexUrl = regionData ? regionData.regionDexUrl : null;
-
-    // Call the setRegionDex method from the pokedex store with the region dex URL
-    if (regionDexUrl) {
-      usePokedexStore().setRegionDex(regionDexUrl);
-    }
   },
 };
 </script>

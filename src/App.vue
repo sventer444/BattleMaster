@@ -17,7 +17,8 @@
 <script>
 import TopNavbar from './components/TopNavbar.vue';
 import BottomNavbar from './components/BottomNavbar.vue';
-import { useRegionStore } from './store/region';
+import { useGameInfoStore } from '@/store/gameInfo';
+import { usePlayerInfoStore } from './store/playerInfo';
 
 export default {
   name: 'App',
@@ -57,7 +58,9 @@ export default {
   },
   created() {
     // Fetch region names when the application starts
-    useRegionStore().fetchRegions();
+    const gameInfo = useGameInfoStore();
+    const playerInfo = usePlayerInfoStore();
+    playerInfo.getUnlockedRegions.map(regionNumber => { gameInfo.setRegion(regionNumber)});
   },
 };
 </script>

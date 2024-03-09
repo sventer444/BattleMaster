@@ -1,17 +1,15 @@
 <!-- RouteLocation.vue -->
 
 <template>
-
-<PlayerTeam />
+  <BattleWindow />
 </template>
 
 <script>
-// Import the PlayerTeam.vue and PcBoxes.vue components
-import PlayerTeam from '@/components/PlayerTeam.vue';
+import BattleWindow from '../BattleWindow.vue';
 
 export default {
   components: {
-    PlayerTeam,
+    BattleWindow,
   },
 };
-</script>>
+</script>

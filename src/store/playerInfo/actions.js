@@ -1,14 +1,15 @@
 // store/playerInfo/actions.js
 import createState from './state';
-import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from './pokemonUtils';
-import { validateUser } from './loginUtils';
-import { usePokedexStore } from '../pokedex';
+import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
+import { validateUser } from '../utilities/loginUtils';
+import { useGameInfoStore } from '../gameInfo';
 
 
 export default {
-    login(username, password) {
+    async login(username, password) {
       const isTestUser = validateUser(username, password);
-  
+      await useGameInfoStore().setRegionDex('kanto')
+      
       if (isTestUser) {
         this.initializeTestData();
       }
@@ -29,6 +30,7 @@ export default {
       this.locationsWhitelist = ['Professors Lab'];
       this.playerTeam = {};
       this.playerPc = {};
+      this.unlockedRegions = ['1'];
       
       this.resetSelectedPokemon();
     },
@@ -70,10 +72,7 @@ swapSelectedPokemon() {
         swapPokemonSlots(this.playerPc, this.playerTeam, slot1, slot2);
       } 
     }
-    //if both slots are empty then chill
-    else if ((typeof pokemon1 === 'string') && (typeof pokemon2 === 'string')) {
-      console.log("Two Empty Slots Chillin");
-    } else {
+    else if ((typeof pokemon1 != 'string') ^ (typeof pokemon2 != 'string')){
       // Handle cases where one or both Pokémon are in empty slots
       if (typeof pokemon2 === 'string' && type2 == 'Team') {
         this.playerTeam[slot2] = pokemon1;
@@ -97,7 +96,7 @@ resetSelectedPokemon() {
     addToPlayerTeam(pokemonDetails) {
       const nextAvailableSlot = getNextAvailableSlot(this.playerTeam);
       const newPokemon = createPokemonObject(pokemonDetails);
-      usePokedexStore().addToPokedex(newPokemon);
+      useGameInfoStore().addToPokedex(newPokemon);
       if (nextAvailableSlot < 6){
         this.playerTeam[nextAvailableSlot] = newPokemon;
       }
@@ -122,19 +121,21 @@ resetSelectedPokemon() {
 
     initializeTestData() {
         this.resetPlayerState();
-        const pokedexStore = usePokedexStore();
+        const gameInfo = useGameInfoStore();
     
         // Retrieve the test data from the state
         const testData = createState(true);
     
         this.rareCandy = testData.rareCandy;
         this.badges = [...testData.badges];
+        this.unlockedRegions = [...testData.unlockedRegions];
         this.locationsWhitelist = [...testData.locationsWhitelist];
         testData.playerDex.map((pokemon) => {
-          pokedexStore.fetchPokemonDetailsByName(pokemon)
-          .then((pokemonDetails) => {
-            this.addToPlayerTeam(pokemonDetails)
-          })
+          gameInfo.getPokemonDetails(pokemon)
+            .then((pokemonDetails) => {
+              this.addToPlayerTeam(pokemonDetails);
+            })
+            
         });
       },
   };

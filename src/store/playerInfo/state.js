@@ -4,7 +4,8 @@ export default (isTest = false) => {
       rareCandy: 50,
       badges: [true, true, true, true, true, true, true, false],
       locationsWhitelist: ['Professors Lab', 'Route 1', 'Viridian City'],
-      playerDex: ['mew', 'bulbasaur', 'charmander', 'squirtle'],
+      playerDex: ['charmander', 'squirtle', 'bulbasaur', 'mew',],
+      unlockedRegions: ['1'],
     };
   }
 
@@ -16,6 +17,7 @@ export default (isTest = false) => {
     rareCandy: 0,
     badges: [false, false, false, false, false, false, false, false],
     locationsWhitelist: ['Professors Lab'],
+    unlockedRegions: ['1'],
     playerTeam: {},
     playerPc: {},
     selectedPokemon1: null,

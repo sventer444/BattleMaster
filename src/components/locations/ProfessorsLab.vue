@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { usePokedexStore } from '@/store/pokedex';
+import { useGameInfoStore } from '@/store/gameInfo';
 import { usePlayerInfoStore } from '@/store/playerInfo';
 
 export default {
@@ -34,11 +34,11 @@ export default {
   },
   methods: {
     async selectStarter(starterName) {
-      const pokedexStore = usePokedexStore();
+      const gameStore = useGameInfoStore();
       const playerStore = usePlayerInfoStore();
 
       try {
-        const pokemonDetails = await pokedexStore.fetchPokemonDetailsByName(starterName);
+        const pokemonDetails = await gameStore.fetchPokemonDetailsByName(starterName);
 
         if (pokemonDetails) {
           // Add selected Pokémon to the player's team
@@ -58,14 +58,14 @@ export default {
     },
   },
   async mounted() {
-    const pokedexStore = usePokedexStore();
+    const gameStore = useGameInfoStore();
 
     for (let arrayIndex = 0; arrayIndex < this.selectedPokemonIndices.length; arrayIndex++) {
       const index = this.selectedPokemonIndices[arrayIndex];
 
       try {
-        const pokemonDetails = await pokedexStore.fetchPokemonDetailsByName(pokedexStore.getRegionDex[index]);
-
+        const pokemonDetails = await gameStore.getPokemonDetails(gameStore.getRegionDex[index]);
+        console.log(pokemonDetails)
         if (pokemonDetails) {
           this.selectedPokemonDetails[arrayIndex] = pokemonDetails;
         } else {

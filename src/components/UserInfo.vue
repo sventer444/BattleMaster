@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import { usePlayerInfoStore } from '../store/playerInfo/index';
-import { usePokedexStore } from '../store/pokedex';
+import { usePlayerInfoStore } from '@/store/playerInfo';
+import { useGameInfoStore } from '@/store/gameInfo';
 
 export default {
   computed: {
@@ -44,7 +44,7 @@ export default {
       return usePlayerInfoStore().badgeCase;
     },
     pokedexCount() {
-      return usePokedexStore().accessPokedex.length;
+      return useGameInfoStore().accessPokedex.length;
     },
   },
 };
