@@ -2,22 +2,23 @@
 
 <template>
   <div class="location-details bg-pokemon-dark p-8 text-white text-center max-w-full max-h-screen overflow-y-auto">
-    <p v-if="isPlayerTeamEmpty" class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their Pokémon journey.</p>
-    <p v-else class="text-lg mb-4">Take your pokemon out and explore the region.
-      Try to earn as many Gym Badges as you can!</p>
+    <p class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their challenge.
+    </p>
     
-
     <!-- Conditionally display sprites only when the player's team is empty -->
-    <div v-if="isPlayerTeamEmpty" class="flex items-center justify-center space-x-4">
-      <img
+    <div v-if="canSelectStarter.length > 0">
+      <p>Select a starter pokemon!</p>
+      <br>
+      <div class="flex items-center justify-center space-x-4">
+        <img
         v-for="(pokemonDetails, index) in selectedPokemonDetails"
         :key="index"
         :src="pokemonDetails?.sprites?.front_default"
         :alt="pokemonDetails?.name"
         class="w-44 h-44 cursor-pointer"
         @click="selectStarter(pokemonDetails?.name)"
-      />
-      <p class="text-lg mt-4">Select your starter Pokémon!</p>
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -29,7 +30,6 @@ import { usePlayerInfoStore } from '@/store/playerInfo';
 export default {
   data() {
     return {
-      selectedPokemonIndices: [0, 3, 6],
       selectedPokemonDetails: Array(3).fill(null),
     };
   },
@@ -37,6 +37,19 @@ export default {
     isPlayerTeamEmpty() {
       const playerStore = usePlayerInfoStore();
       return playerStore.getPlayerTeam.length === 0;
+    },
+    isActiveRun() {
+      const playerStore = usePlayerInfoStore();
+      return playerStore.isActiveRun;
+    },
+    canSelectStarter() {
+      const gameStore = useGameInfoStore();
+      const pokedex = gameStore.accessPokedex;
+      const uncaughtStarters = [0, 3, 6]
+      .filter((indexNumber) => {
+        return (typeof pokedex[indexNumber]) != 'object';
+      });
+      return uncaughtStarters;
     },
   },
   methods: {
@@ -68,9 +81,10 @@ export default {
   async mounted() {
     const gameStore = useGameInfoStore();
     const regionDex = Object.keys(gameStore.getRegionDex);
+    const selectionIndexes = this.canSelectStarter;
 
-    for (let arrayIndex = 0; arrayIndex < this.selectedPokemonIndices.length; arrayIndex++) {
-      const index = this.selectedPokemonIndices[arrayIndex];
+    for (let arrayIndex = 0; arrayIndex < selectionIndexes.length; arrayIndex++) {
+      const index = selectionIndexes[arrayIndex];
 
       try {
         const pokemonDetails = await gameStore.getPokemonDetails(regionDex[index]);
@@ -84,15 +98,12 @@ export default {
         console.error(`Error fetching details for Pokemon ${index}:`, error);
       }
     }
+
+    this.selectedPokemonDetails = this.selectedPokemonDetails.filter((detail) => { return detail != null });
+    console.log(this.selectedPokemonDetails);
   },
 };
 </script>
-
-<style scoped>
-/* Apply global Tailwind CSS styles */
-/* ... (existing styles) */
-</style>
-
 
 <style scoped>
 /* Apply global Tailwind CSS styles */

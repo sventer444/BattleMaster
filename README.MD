@@ -106,6 +106,7 @@ Master
 - [ ] Add shiny boolean to pokemon object, handle displaying shiny sprites
 - [x] Split the stores into playerInfo and gameInfo stores
 - [ ] Dynamically center the pokemon on the team during battle
+- [ ] give maushold to god
 
 
 
