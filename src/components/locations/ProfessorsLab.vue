@@ -36,9 +36,10 @@ export default {
     async selectStarter(starterName) {
       const gameStore = useGameInfoStore();
       const playerStore = usePlayerInfoStore();
+      const regionDex = gameStore.getRegionDex;
 
       try {
-        const pokemonDetails = await gameStore.fetchPokemonDetailsByName(starterName);
+        const pokemonDetails = regionDex[starterName];
 
         if (pokemonDetails) {
           // Add selected Pokémon to the player's team
@@ -59,13 +60,14 @@ export default {
   },
   async mounted() {
     const gameStore = useGameInfoStore();
+    const regionDex = Object.keys(gameStore.getRegionDex);
 
     for (let arrayIndex = 0; arrayIndex < this.selectedPokemonIndices.length; arrayIndex++) {
       const index = this.selectedPokemonIndices[arrayIndex];
 
       try {
-        const pokemonDetails = await gameStore.getPokemonDetails(gameStore.getRegionDex[index]);
-        console.log(pokemonDetails)
+        const pokemonDetails = await gameStore.getPokemonDetails(regionDex[index]);
+        // console.log(pokemonDetails)
         if (pokemonDetails) {
           this.selectedPokemonDetails[arrayIndex] = pokemonDetails;
         } else {
