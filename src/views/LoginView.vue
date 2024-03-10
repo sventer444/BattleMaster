@@ -32,7 +32,7 @@ export default {
     login() {
       usePlayerInfoStore().login(this.username, this.password)
       .then(() => {
-        this.$router.push('/region/kanto'); 
+        this.$router.push('/pc-window'); 
       });
     },
 

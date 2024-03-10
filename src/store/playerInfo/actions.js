@@ -31,6 +31,7 @@ export default {
       this.playerTeam = {};
       this.playerPc = {};
       this.unlockedRegions = ['1'];
+      this.activeRun = false;
       
       this.resetSelectedPokemon();
     },
@@ -120,12 +121,11 @@ resetSelectedPokemon() {
     },
 
     initializeTestData() {
-        this.resetPlayerState();
         const gameInfo = useGameInfoStore();
-    
+        this.activeRun = true;
         // Retrieve the test data from the state
         const testData = createState(true);
-    
+
         this.rareCandy = testData.rareCandy;
         this.badges = [...testData.badges];
         this.unlockedRegions = [...testData.unlockedRegions];

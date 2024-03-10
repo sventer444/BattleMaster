@@ -12,6 +12,7 @@ export default (isTest = false) => {
   // Default data
   return {
     isAuthenticated: false,
+    activeRun: false,
     username: null,
     password: null,
     rareCandy: 0,

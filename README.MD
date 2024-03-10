@@ -77,15 +77,16 @@ Master
 - [ ] Starter choice
 - [ ] New Journey (Prestige)
 - [ ] Inverse Challenge (unlockable reverse path through region)
+    - Inverse Challenge gets harder the more badges the player has spent in Game Corner?
 
 
 ### Bugs
-- Able to move last pokemon from team to pc
-- Badges arent showing on trainer card
-- Query one region at a time rather than all
-- Can add a pokemon to the team already there
-- Single entries in region list are off center
-- test account location whitelist isnt intializing
+- [ ] Able to move last pokemon from team to pc
+- [ ] Badges arent showing on trainer card
+- [ ] Query one region at a time rather than all
+- [ ] Can add a pokemon to the team already there
+- [ ] Single entries in region list are off center
+- [x] Location whitelist isnt working
 
 ### Running The Game (Dev)
 
@@ -103,7 +104,8 @@ Master
 - [ ] Handle evolution during a run
 - [ ] Implement exp logic for pokemon during runs
 - [ ] Add shiny boolean to pokemon object, handle displaying shiny sprites
-- [ ] Split the stores into playerInfo and gameInfo stores
+- [x] Split the stores into playerInfo and gameInfo stores
+- [ ] Dynamically center the pokemon on the team during battle
 
 
 

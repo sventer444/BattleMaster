@@ -71,22 +71,19 @@ export const fetchRegionDataByUrl = async (regionUrl) => {
     // Extract Pokedex URL from the region response
     const pokedexUrl = regionResponse.data.pokedexes[0].url;
     const regionName = regionResponse.data.name;
-
     const locationsPromises = regionResponse.data.locations.map(async (location) => {
       // Fetch additional details for each location
-      await fetchLocationDataByUrl(location.url);
+      return await fetchLocationDataByUrl(location.url);
     });
 
     // Wait for all location details to be fetched
     const locations = (await Promise.all(locationsPromises)).filter(Boolean);
-
     // Combine initialLocations with fetched locations and add Pokedex URL
     const regionData = {
       name: regionName,
       locations: initialLocation.concat(locations),
       regionDexUrl: pokedexUrl,
     };
-
     return regionData;
   } catch (error) {
     console.error(`Error fetching details for ${regionUrl}:`, error);
@@ -98,12 +95,9 @@ export const fetchLocationDataByUrl = async (locationUrl) => {
   // Fetch additional details for each location
   try {
     const locationResponse = await axios.get(locationUrl);
-    return {
-      name: location.name,
-      details: locationResponse.data, // Adjust this based on the actual structure of the data
-    };
+    return locationResponse.data
   } catch (error) {
-    console.error(`Error fetching details for ${location.name}:`, error);
+    console.error(`Error fetching details for ${locationUrl}:`, error);
     return null;
   }
 };

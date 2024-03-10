@@ -98,7 +98,7 @@ export default {
     },
     // Get the display name for a location
     getDisplayName(location) {
-      const enName = location.details?.names?.find(name => name.language.name === 'en');
+      const enName = location.names?.find(name => name.language.name === 'en');
       return enName ? enName.name : location.name;
     },
     parseRouteNumber(routeName) {

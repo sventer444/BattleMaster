@@ -2,11 +2,13 @@
 
 <template>
   <div class="location-details bg-pokemon-dark p-8 text-white text-center max-w-full max-h-screen overflow-y-auto">
-    <h2 class="text-3xl font-semibold mb-4">Professor's Lab</h2>
-    <p class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their Pokémon journey.</p>
+    <p v-if="isPlayerTeamEmpty" class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their Pokémon journey.</p>
+    <p v-else class="text-lg mb-4">Take your pokemon out and explore the region.
+      Try to earn as many Gym Badges as you can!</p>
+    
 
-    <!-- Display front_default sprites of the first, fourth, and seventh Pokémon (0, 3, and 6) -->
-    <div class="flex items-center justify-center space-x-4">
+    <!-- Conditionally display sprites only when the player's team is empty -->
+    <div v-if="isPlayerTeamEmpty" class="flex items-center justify-center space-x-4">
       <img
         v-for="(pokemonDetails, index) in selectedPokemonDetails"
         :key="index"
@@ -15,9 +17,8 @@
         class="w-44 h-44 cursor-pointer"
         @click="selectStarter(pokemonDetails?.name)"
       />
+      <p class="text-lg mt-4">Select your starter Pokémon!</p>
     </div>
-
-    <p class="text-lg mt-4">Select your starter Pokémon!</p>
   </div>
 </template>
 
@@ -31,6 +32,12 @@ export default {
       selectedPokemonIndices: [0, 3, 6],
       selectedPokemonDetails: Array(3).fill(null),
     };
+  },
+  computed: {
+    isPlayerTeamEmpty() {
+      const playerStore = usePlayerInfoStore();
+      return playerStore.getPlayerTeam.length === 0;
+    },
   },
   methods: {
     async selectStarter(starterName) {
@@ -80,6 +87,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Apply global Tailwind CSS styles */
+/* ... (existing styles) */
+</style>
+
 
 <style scoped>
 /* Apply global Tailwind CSS styles */
