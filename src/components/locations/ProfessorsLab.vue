@@ -1,7 +1,7 @@
 <!-- ProfessorsLab.vue -->
 
 <template>
-  <div class="location-details bg-pokemon-dark p-8 text-white text-center max-w-full max-h-screen overflow-y-auto">
+  <div class="location-details bg-pokemon-dark p-8 text-white text-center max-w-full max-h-screen">
     <p v-if="!isActiveRun" class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their challenge.
     </p>
     
@@ -23,7 +23,7 @@
       <p class="text-lg mb-4">Now that you have your first pokemon, let's start your first battle.
         I've simulated a rival for you to battle against.
       </p>
-      <div>
+      <div class="overflow-hidden" v-if="rivalData">
         <BattleWindow :opponentDetails="rivalData"/>
       </div>
     </div>
@@ -41,18 +41,13 @@ export default {
     return {
       selectedPokemonDetails: Array(3).fill(null),
       rivalBattle: false,
+      rivalData: null,
     };
   },
   components: {
     BattleWindow
   },
   computed: {
-    rivalData() {
-      const gameStore = useGameInfoStore();
-      const rival = gameStore.getOpponentDetails("rival");
-      console.log(rival)
-      return rival;
-    },
     isPlayerTeamEmpty() {
       const playerStore = usePlayerInfoStore();
       return playerStore.getPlayerTeam.length === 0;
@@ -96,9 +91,14 @@ export default {
         console.error(`Error fetching details for Pokemon ${starterName}:`, error);
       }
     },
+    async fetchRivalData() {
+      const gameStore = useGameInfoStore();
+      this.rivalData = await gameStore.getOpponentDetails("rival");
+    },
   },
   async mounted() {
     const gameStore = useGameInfoStore();
+    this.fetchRivalData();
     const regionDex = Object.keys(gameStore.getRegionDex);
     const selectionIndexes = this.canSelectStarter;
 

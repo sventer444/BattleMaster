@@ -1,13 +1,16 @@
 // battlewindow.vue
 
 <template>
-    <div class="battle-window p-4 text-white text-center">
-      <!-- Display opponent at the top -->
-      <div class="opponent-team mb-4">
-        <h3 class="text-xl font-bold mb-2">Opponent Name</h3>
-        <!-- Placeholder text for opponent's team -->
-        <p>{{ opponentDetails?.team[0] }} </p>
-      </div>
+    <div class="battle-window p-4 text-white text-center overflow-hidden">
+      <!-- Display the opponent's front sprite -->
+    <div class="flex items-center justify-center mb-4 overflow-hidden">
+      <img
+        :src="opponentDetails.team[0].sprites.front_default"
+        :alt="opponentDetails.team[0].name"
+        class="w-32 h-32"
+      />
+    </div>
+
   
       <!-- Divider between opponent and player team -->
       <!-- <div class="divider my-4"></div> -->

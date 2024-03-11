@@ -31,16 +31,16 @@ export default {
       const opponentDetails = opponentData[opponentName];
       const opponentTeamSlots = Object.keys(opponentDetails.team);
     
-      const promisedOpponentTeam = Promise.all(opponentTeamSlots.map(async (key) => {
-        const pokemonDetails = await this.getPokemonDetails(opponentDetails.team[key]);
-        const pokemonObject = createPokemonObject(pokemonDetails);
-        return pokemonObject;
-      }));
+      const promisedOpponentTeam = Promise.all(
+        opponentTeamSlots.map(async (key) => {
+          const pokemonDetails = await this.getPokemonDetails(opponentDetails.team[key]);
+          return pokemonDetails && createPokemonObject(pokemonDetails);
+        })
+      );
     
-      opponentDetails.team = await promisedOpponentTeam;
+      opponentDetails.team = (await promisedOpponentTeam).filter(Boolean);
       return opponentDetails;
-    },
-    
+    },   
 
     // Add Pokemon to the Pokedex
     addToPokedex(pokemonDetails) {
