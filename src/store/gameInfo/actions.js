@@ -1,6 +1,6 @@
 // store/gameInfo/actions.js
-
-import { fetchPokemonDetailsByName, fetchRegionDexByUrl, fetchRegionDataByUrl } from '../utilities/pokemonUtils';
+import { opponentData } from '../utilities/opponentUtils';
+import { fetchPokemonDetailsByName, fetchRegionDexByUrl, fetchRegionDataByUrl, createPokemonObject,  } from '../utilities/pokemonUtils';
 
 
 export default {
@@ -27,6 +27,20 @@ export default {
         return this.regionDex[pokemonName];
       }
     },
+    async getOpponentDetails(opponentName) {
+      const opponentDetails = opponentData[opponentName];
+      const opponentTeamSlots = Object.keys(opponentDetails.team);
+    
+      const promisedOpponentTeam = Promise.all(opponentTeamSlots.map(async (key) => {
+        const pokemonDetails = await this.getPokemonDetails(opponentDetails.team[key]);
+        const pokemonObject = createPokemonObject(pokemonDetails);
+        return pokemonObject;
+      }));
+    
+      opponentDetails.team = await promisedOpponentTeam;
+      return opponentDetails;
+    },
+    
 
     // Add Pokemon to the Pokedex
     addToPokedex(pokemonDetails) {

@@ -2,11 +2,10 @@
 
 <template>
   <div class="location-details bg-pokemon-dark p-8 text-white text-center max-w-full max-h-screen overflow-y-auto">
-    <p class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their challenge.
+    <p v-if="!isActiveRun" class="text-lg mb-4">Welcome to the Professor's Lab! This is where Trainers begin their challenge.
     </p>
     
-    <!-- Conditionally display sprites only when the player's team is empty -->
-    <div v-if="canSelectStarter.length > 0">
+    <div v-if="(canSelectStarter.length > 0) && !isActiveRun">
       <p>Select a starter pokemon!</p>
       <br>
       <div class="flex items-center justify-center space-x-4">
@@ -20,10 +19,20 @@
         />
       </div>
     </div>
+    <div v-if="rivalBattle">
+      <p class="text-lg mb-4">Now that you have your first pokemon, let's start your first battle.
+        I've simulated a rival for you to battle against.
+      </p>
+      <div>
+        <BattleWindow :opponentDetails="rivalData"/>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
+import BattleWindow from '@/components/BattleWindow.vue';
 import { useGameInfoStore } from '@/store/gameInfo';
 import { usePlayerInfoStore } from '@/store/playerInfo';
 
@@ -31,9 +40,19 @@ export default {
   data() {
     return {
       selectedPokemonDetails: Array(3).fill(null),
+      rivalBattle: false,
     };
   },
+  components: {
+    BattleWindow
+  },
   computed: {
+    rivalData() {
+      const gameStore = useGameInfoStore();
+      const rival = gameStore.getOpponentDetails("rival");
+      console.log(rival)
+      return rival;
+    },
     isPlayerTeamEmpty() {
       const playerStore = usePlayerInfoStore();
       return playerStore.getPlayerTeam.length === 0;
@@ -67,9 +86,9 @@ export default {
 
           // Add 'Route 1' to the player's location whitelist
           playerStore.addToLocationWhitelist('Route 1');
+          playerStore.startRun();
 
-          // Navigate back to the previous route
-          this.$router.back();
+          this.rivalBattle = true;
         } else {
           console.error(`Details not found for Pokemon ${starterName}`);
         }
@@ -99,8 +118,9 @@ export default {
       }
     }
 
-    this.selectedPokemonDetails = this.selectedPokemonDetails.filter((detail) => { return detail != null });
-    console.log(this.selectedPokemonDetails);
+    this.selectedPokemonDetails = this.selectedPokemonDetails.filter((detail) => {
+      return detail != null
+    });
   },
 };
 </script>

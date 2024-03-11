@@ -45,6 +45,9 @@ export default {
           this.swapSelectedPokemon();
         } 
       },
+  startRun(){
+    this.activeRun = true;
+  },
       
 // New action to swap the selected Pokémon
 swapSelectedPokemon() {
@@ -122,7 +125,7 @@ resetSelectedPokemon() {
 
     initializeTestData() {
         const gameInfo = useGameInfoStore();
-        this.activeRun = true;
+        this.activeRun = false;
         // Retrieve the test data from the state
         const testData = createState(true);
 

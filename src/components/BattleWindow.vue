@@ -6,7 +6,7 @@
       <div class="opponent-team mb-4">
         <h3 class="text-xl font-bold mb-2">Opponent Name</h3>
         <!-- Placeholder text for opponent's team -->
-        <p>Opponent Pokemon</p>
+        <p>{{ opponentDetails?.team[0] }} </p>
       </div>
   
       <!-- Divider between opponent and player team -->
@@ -24,6 +24,12 @@
   import PlayerTeam from '@/components/PlayerTeam.vue';
   
   export default {
+  props: {
+    opponentDetails: {
+      type: Object,
+      required: true,
+    },
+  },
     components: {
       PlayerTeam,
     },
