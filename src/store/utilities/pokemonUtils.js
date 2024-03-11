@@ -109,7 +109,7 @@ export const createPokemonObject = (pokemonDetails) => {
       sprites: pokemonDetails?.sprites,
       icon: pokemonDetails?.sprites?.versions['generation-viii'].icons,
       types: pokemonDetails?.types,
-      status: 'none',
+      currentHp: 1,
       shiny: false,
       level: 1,
       experience: 0,
@@ -141,6 +141,7 @@ export const createPokemonObject = (pokemonDetails) => {
         case 'hp':
           newPokemon.stats.hp = stat.base_stat;
           newPokemon.base_stats.hp = stat.base_stat;
+          newPokemon.currentHp = newPokemon.stats.hp;
           break;
         case 'special-attack':
           newPokemon.stats.specialAttack = stat.base_stat;

@@ -31,3 +31,8 @@ body {
 .text-pokemon-red-dark {
   color: #d32f2f; /* Darker shade of red text color */
 }
+
+/* Prevent overflow on inner components */
+.overflow-hidden > * {
+  overflow: hidden;
+}

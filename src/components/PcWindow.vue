@@ -71,9 +71,4 @@ export default {
 .max-h-full {
   max-height: calc(100vh - 120px); /* Adjust as needed based on the height of top and bottom navbars */
 }
-
-/* Prevent overflow on inner components */
-.overflow-hidden > * {
-  overflow: hidden;
-}
 </style>

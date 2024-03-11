@@ -1,23 +1,56 @@
 <template>
-  <div class="player-team bg-pokemon-dark p-8 text-white text-center max-w-full">
-    <!-- Display Pokémon team names in 1 row, 6 column maximum format -->
-    <div class="flex items-center justify-center flex-wrap space-x-4">
+  <div class="player-team bg-pokemon-dark p-8 text-white text-center">
+    <!-- PcWindow Team View -->
+    <div v-if="isPcWindow" class="pc-style flex items-center justify-center flex-wrap space-x-4">
       <div
         v-for="(pokemonDetails, slot) in displayedTeam"
         :key="slot"
         :class="{ 'selected-slot': isSelected(slot) }"
         @click="selectSlot(slot)"
-        :style="{ borderColor: isPcWindow ? '#000' : '#212121' }"
-        class="w-36 h-36 p-2 border-2 mb-4 cursor-pointer"
+        :style="{ borderColor: '#000' }"
+        class="w-32 h-32 p-2 border-2 mb-2 cursor-pointer"
       >
         <img
           v-if="pokemonDetails"
-          :src="getSpriteSource(pokemonDetails)"
+          :src="pokemonDetails?.icon.front_default"
           :alt="pokemonDetails?.name"
           class="w-full h-full"
         />
       </div>
     </div>
+
+   <!-- Battle Team View -->
+  <div v-else class="flex items-center justify-center flex-wrap space-x-4 battle-style">
+    <div
+      v-for="(pokemonDetails, slot) in displayedTeam.filter(Boolean)"
+      :key="slot"
+      :class="{ 'selected-slot': isSelected(slot) }"
+      @click="selectSlot(slot)"
+      :style="{ borderColor: '#212121' }"
+      class="w-32 h-32 p-2 border-2 mb-4 cursor-pointer"
+    >
+      <!-- Health styled above the Pokemon sprite -->
+      <div class="flex items-center justify-center mb-2">
+        <div class="bg-green-500 rounded-full px-9 py-1 text-xs font-bold">{{ pokemonDetails.currentHp }}</div>
+      </div>
+      <!-- Capitalized name and level below the health -->
+      <div class="text-lg font-bold">
+        {{ capitalizeFirstLetter(pokemonDetails.name) }}
+      </div>
+      <div class="text-lg font-bold">
+        Lv. {{ pokemonDetails.level }}
+      </div>
+      <!-- Pokemon sprite -->
+      <img
+        :src="pokemonDetails.sprites.back_default"
+        :alt="pokemonDetails.name"
+        class="size-32"
+      />
+
+    </div>
+  </div>
+
+
   </div>
 </template>
 
@@ -47,7 +80,6 @@ export default {
           teamArray[index] = teamObject[slot];
         }
       });
-
       return teamArray;
     },
     selectedSlots() {
@@ -79,18 +111,12 @@ export default {
       if (selectMon == null) selectMon = 'Empty Team Slot';
       usePlayerInfoStore().setSelectedPokemon(selectMon, index, 'Team');
 
-      // if (this.selectedSlots.length === 2) {
-      //   console.log('Emptying selection slots', this.selectedSlots);
-      //   this.selectedSlots = [];
-      //   // this.initializeSelectedSlots();
-      // }
-
     },
     isSelected(index) {
       return this.selectedSlots.includes(index);
     },
-    getSpriteSource(pokemonDetails) {
-      return this.isPcWindow ?  pokemonDetails?.icon.front_default : pokemonDetails?.sprites.back_default;
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     },
   },
 };
@@ -104,16 +130,23 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  color: #ecf0f1; /* White text color */
-  font-size: 1.125rem; /* 18px */
+  color: #ecf0f1;
+  font-size: 1.125rem;
   line-height: 1.5;
   padding-left: 2rem;
   padding-right: 2rem;
-  margin-top: calc(50vh - 120px); /* Adjust as needed based on the height of top and bottom navbars */
+}
+
+.battle-style {
+  margin-bottom: 10vh;
+}
+
+.pc-style {
+  margin-top: 20vh;
 }
 
 .text-3xl {
-  font-size: 1.875rem; /* 30px */
+  font-size: 1.875rem;
 }
 
 .mb-4 {
@@ -136,14 +169,6 @@ export default {
   margin-left: 1rem;
 }
 
-/* Adjust the border styling for the player team slots */
-.w-36,
-.h-36 {
-  width: 9rem;
-  height: 9rem;
-  border: 2px solid; /* Black border */
-}
-
 .p-2 {
   padding: 0.5rem;
 }
@@ -153,10 +178,12 @@ export default {
 }
 
 .selected-slot {
-  border-color: #3498db !important; /* Blue border color for selected slots */
+  border-color: #3498db !important;
 }
 
 body {
-  overflow: hidden; /* Disable scrolling for the entire page */
+  overflow: hidden;
 }
+
+
 </style>

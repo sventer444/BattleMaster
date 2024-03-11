@@ -23,7 +23,7 @@
       <p class="text-lg mb-4">Now that you have your first pokemon, let's start your first battle.
         I've simulated a rival for you to battle against.
       </p>
-      <div class="overflow-hidden" v-if="rivalData">
+      <div v-if="rivalData">
         <BattleWindow :opponentDetails="rivalData"/>
       </div>
     </div>
@@ -133,22 +133,21 @@ export default {
   align-items: center;
   justify-content: center;
   border-radius: 0.5rem;
-  color: #ecf0f1; /* White text color */
-  font-size: 1.125rem; /* 18px */
+  color: #ecf0f1;
+  font-size: 1.125rem;
   line-height: 1.5;
   padding-left: 2rem;
   padding-right: 2rem;
   max-width: 100%;
-  max-height: calc(100vh - 120px); /* Adjust as needed based on the height of top and bottom navbars */
-  overflow-y: auto;
+  max-height: calc(100vh - 76px); /* Adjust as needed based on the height of the navbar */
 }
 
 .text-3xl {
-  font-size: 1.875rem; /* 30px */
+  font-size: 1.875rem;
 }
 
 .text-lg {
-  font-size: 1.125rem; /* 18px */
+  font-size: 1.125rem;
   line-height: 1.5;
   margin-bottom: 1rem;
 }
@@ -171,5 +170,15 @@ export default {
 
 .space-x-4 > * + * {
   margin-left: 1rem;
+}
+
+.w-44,
+.h-44 {
+  width: 11rem;
+  height: 11rem;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>

@@ -1,87 +1,91 @@
-// battlewindow.vue
-
 <template>
-    <div class="battle-window p-4 text-white text-center overflow-hidden">
-      <!-- Display the opponent's front sprite -->
-    <div class="flex items-center justify-center mb-4 overflow-hidden">
-      <img
-        :src="opponentDetails.team[0].sprites.front_default"
-        :alt="opponentDetails.team[0].name"
-        class="w-32 h-32"
-      />
+  <div class="battle-window p-2 text-white text-center flex flex-col justify-between">
+      <!-- Container for opponent's information -->
+      <div class="flex flex-col items-center">
+      <!-- Health styled above the Pokemon sprite -->
+      <div class="flex items-center justify-center mb-1">
+        <div class="bg-green-500 rounded-full px-9 py-1 text-xs font-bold">{{ opponentDetails.team[0].currentHp }}</div>
+      </div>
+        <!-- Pokemon sprite -->
+        <img
+          :src="opponentDetails.team[0].sprites.front_default"
+          :alt="opponentDetails.team[0].name"
+          class="w-32 h-32"
+        />
+      </div>
+
+    <!-- Spacer to push player team to the bottom -->
+    <div class="flex-grow"></div>
+
+    <!-- Display player team at the bottom -->
+    <div class="player-team mt-2">
+      <PlayerTeam />
     </div>
 
-  
-      <!-- Divider between opponent and player team -->
-      <!-- <div class="divider my-4"></div> -->
-  
-      <!-- Display player team at the bottom -->
-      <div class="player-team mt-4">
-        <PlayerTeam />
-      </div>
+    <!-- Buttons for Physical and Special -->
+    <div class="flex items-center justify-center space-x-5 mt-4">
+      <button class="bg-orange-500 text-white px-4 py-2 rounded-full">Physical</button>
+      <button class="bg-purple-500 text-white px-4 py-2 rounded-full">Special</button>
     </div>
-  </template>
-  
-  <script>
-  // Import the PlayerTeam.vue and PcBoxes.vue components
-  import PlayerTeam from '@/components/PlayerTeam.vue';
-  
-  export default {
+  </div>
+</template>
+
+<script>
+import PlayerTeam from '@/components/PlayerTeam.vue';
+
+export default {
   props: {
     opponentDetails: {
       type: Object,
       required: true,
     },
   },
-    components: {
-      PlayerTeam,
+  methods: {
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     },
-  };
-  </script>
-  
-  <style scoped>
-  /* Apply global Tailwind CSS styles */
-  .battle-window {
-    border-radius: 0.5rem;
-    color: #ecf0f1;
-    font-size: 1rem;
-    line-height: 1.5;
-    max-width: 100%;
-  }
-  
-  .text-xl {
-    font-size: 1.75rem; /* 28px */
-  }
-  
-  .font-bold {
-    font-weight: bold;
-  }
-  
-  .mb-2 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .my-4 {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-  
-  .mt-4 {
-    margin-top: 1rem;
-  }
-  
-  /* Additional styling for the opponent and player teams */
-  .opponent-team {
-    /* Add any specific styling for the opponent team */
-  }
-  
-  .player-team {
-    /* Add any specific styling for the player team */
-  }
-  
-  /* Divider styling */
-  .divider {
-    border-bottom: 2px solid #4a5568; /* Tailwind CSS gray-700 color */
-  }
-  </style>
-  
+  },
+  components: {
+    PlayerTeam,
+  },
+};
+</script>
+
+<style scoped>
+/* Apply global Tailwind CSS styles */
+.battle-window {
+  border-radius: 0.5rem;
+  color: #ecf0f1;
+  font-size: 1rem;
+  line-height: 1.5;
+  max-width: 100%;
+  height: calc(80vh - 60px); /* Adjust based on the height of your navbars */
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.text-xl {
+  font-size: 1.75rem;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+/* Adjust the size of the opponent sprite */
+.w-32,
+.h-32 {
+  width: 8rem;
+  height: 8rem;
+}
+
+</style>

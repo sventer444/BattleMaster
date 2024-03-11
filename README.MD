@@ -87,6 +87,7 @@ Master
 - [ ] Can add a pokemon to the team already there
 - [ ] Single entries in region list are off center
 - [x] Location whitelist isnt working
+- [ ] Check team/pc for starter choice rather than pokedex
 
 ### Running The Game (Dev)
 
@@ -107,6 +108,8 @@ Master
 - [x] Split the stores into playerInfo and gameInfo stores
 - [ ] Dynamically center the pokemon on the team during battle
 - [ ] give maushold to god
+- [ ] Rival starter logic
+- [ ] Add logic to color the healthbar green/yellow/red based on current health
 
 
 
