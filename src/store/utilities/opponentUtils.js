@@ -7,33 +7,18 @@ export const opponentData = {
     }
 };
 
-export const calculateTeamPhysicalDamage = (playerTeam, opponent) => {
-    const teamKeys = Object.keys(playerTeam);
-    const teamDamage = teamKeys.map((teamKey) =>{
-        const pokemon = playerTeam[teamKey];
-        const levelDamage = (((2*pokemon.level)/5)+2);
-        const rawDamage = ((levelDamage * (pokemon.stats.attack / opponent.stats.defense))/50)+2;
-        const randomValue = (Math.floor(Math.random() * (100 - 85 + 1) + 85) / 100);
-        const totalDamage = rawDamage * randomValue;
-        console.log('Calculating raw damage', totalDamage);
-        return Math.floor(totalDamage);
-    });
-    return teamDamage;
+export const calculateDamage = (level, attack, defense) => {
+    
+    const levelDamage = (((2*level)/5)+2);
+    const rawDamage = ((levelDamage * (attack / defense))/50)+2;
+    const randomValue = (Math.floor(Math.random() * (100 - 85 + 1) + 85) / 100);
+    const totalDamage = rawDamage * randomValue;
+    return Math.round(totalDamage);
 };
 
-export const calculateTeamSpecialDamage = (playerTeam, opponent) => {
-    const teamKeys = Object.keys(playerTeam);
-    const teamDamage = teamKeys.map((teamKey) =>{
-        const pokemon = playerTeam[teamKey];
-        const levelDamage = (((2*pokemon.level)/5)+2);
-        const rawDamage = ((levelDamage * (pokemon.stats.specialAttack / opponent.stats.specialDefense))/50)+2;
-        const randomValue = (Math.floor(Math.random() * (100 - 85 + 1) + 85) / 100);
-        const totalDamage = rawDamage * randomValue;
-        console.log('Calculating raw damage', totalDamage);
-        return Math.floor(totalDamage);
-    });
-    return teamDamage;
+export const calculateTypeBonus = (attackerTypes, targetTypes) => {
+    console.log('attacker type', attackerTypes, 'opponent type', targetTypes);
+    return 1;
 };
 
-
-export default { opponentData, calculateTeamPhysicalDamage, calculateTeamSpecialDamage };
+export default { opponentData, calculateDamage, calculateTypeBonus };

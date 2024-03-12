@@ -3,7 +3,7 @@ import createState from './state';
 import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
 import { validateUser } from '../utilities/loginUtils';
 import { useGameInfoStore } from '../gameInfo';
-import { calculateTeamPhysicalDamage, calculateTeamSpecialDamage } from '../utilities/opponentUtils';
+import { calculateDamage, calculateTypeBonus } from '../utilities/opponentUtils';
 
 
 export default {
@@ -126,13 +126,26 @@ resetSelectedPokemon() {
 
     calculateAndApplyDamage(damageType, opponentDetails) {
       console.log('Damage type', damageType, 'To opponent', opponentDetails);
-      if(damageType == 'physical'){
-        this.playerTeamAttackDamage = calculateTeamPhysicalDamage(this.playerTeam, opponentDetails);
-      }
-      else{
-        this.playerTeamAttackDamage = calculateTeamSpecialDamage(this.playerTeam, opponentDetails);
-      }
-      opponentDetails.currentHp = opponentDetails.currentHp - 10;
+      const teamKeys = Object.keys(this.playerTeam);
+      const teamDamage = teamKeys.map((key) => {
+        const pokemon = this.playerTeam[key];
+        const attackStat = (damageType == 'physical') ? pokemon.stats.attack
+        : pokemon.stats.specialAttack;
+        const defenseStat = (damageType == 'physical') ? opponentDetails.stats.defense
+        : pokemon.stats.specialDefense;
+        // TODO implement crits
+
+        const typeBonus = calculateTypeBonus(pokemon.types, opponentDetails.types);
+        const damage = {
+          damage: calculateDamage(pokemon.level, attackStat, defenseStat)*typeBonus,
+          efficacy: typeBonus,
+        }
+
+        return damage;
+      });
+      this.playerTeamAttackDamage = teamDamage;
+      // Ensure opponent's current HP is not less than 0
+      opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp -10);
     },
 
     initializeTestData() {

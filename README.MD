@@ -88,6 +88,8 @@ Master
 - [ ] Single entries in region list are off center
 - [x] Location whitelist isnt working
 - [ ] Check team/pc for starter choice rather than pokedex
+- [ ] Spamming attacks can crash
+- [ ] cache type details so they arent pulled every time a new pokemon is made
 
 ### Running The Game (Dev)
 
@@ -110,6 +112,7 @@ Master
 - [ ] Rival starter logic
 - [ ] Implement critical hits
 - [ ] Prestige a pokemon during a run?
+- [ ] Battle opponent apply special/physical depending on which deals more
 - [ ] Color/Bold pokemon team boxes based on damage
 - [ ] Buff opponents stats based on player
 - [ ] Add a popup to confirm when running from a battle

@@ -47,7 +47,7 @@
         class="size-32"
       />
       <div v-if="this.displayedDamage[slot] != null" class="text-lg font-bold">
-        {{ this.displayedDamage[slot] }}
+        {{ this.displayedDamage[slot].damage }}
       </div>
     </div>
   </div>
@@ -86,7 +86,15 @@ export default {
     },
     displayedDamage() {
       const attackDamage = usePlayerInfoStore().getAttackDamage;
-      return attackDamage;
+      const displayDamage = Array(6).fill(null);
+      // Convert object to array for rendering in the template
+      Object.keys(attackDamage).forEach((slot) => {
+        const index = parseInt(slot);
+        if (index >= 0 && index < 6) {
+          displayDamage[index] = attackDamage[slot];
+        }
+      });
+      return displayDamage;
     },
     selectedSlots() {
       return this.initializeSelectedSlots();

@@ -1,6 +1,8 @@
 //pokemonUtils.js
 import axios from 'axios';
 
+const typeCache = {};
+
 export const getNextAvailableSlot = (slotArray) => {
       const availableSlots = Object.keys(slotArray);
       return availableSlots.length > 0 ? Math.max(...availableSlots) + 1 : 0;
@@ -13,17 +15,50 @@ export const swapPokemonSlots = (obj1, obj2, key1, key2) => {
     delete obj2[key2];
     obj2[key2] = temp;
   };
-
 // Fetch details for a single Pokemon by Name
 export const fetchPokemonDetailsByName = async (pokemonName) => {
   try {
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+    const types = response.data.types;
+
+    // Use Promise.all to wait for all type fetches
+    const typePromises = types.map(async (type) => {
+      const typeUrl = type.type.url;
+      const typeData = await fetchPokemonTypeDetails(typeUrl);
+      return typeData;
+    });
+
+    // Wait for all type promises to resolve
+    response.data.types = await Promise.all(typePromises);
+
     return response.data;
   } catch (error) {
     console.error(`Error fetching details for Pokemon ID ${pokemonName}:`, error);
     return null;
   }
 };
+
+// Fetch pokemon type info with caching
+export const fetchPokemonTypeDetails = async (pokemonTypeUrl) => {
+  try {
+    // Check if type data is already cached
+    if (typeCache[pokemonTypeUrl]) {
+      return typeCache[pokemonTypeUrl];
+    }
+
+    // If not cached, make the API request
+    const response = await axios.get(`${pokemonTypeUrl}`);
+    
+    // Cache the fetched type data
+    typeCache[pokemonTypeUrl] = response.data;
+
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching details for type ${pokemonTypeUrl}:`, error);
+    return null;
+  }
+};
+
 
 // Fetch pokemon listed in regions dex
 export const fetchRegionDexByUrl = async (regionUrl) => {
