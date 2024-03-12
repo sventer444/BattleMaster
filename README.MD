@@ -83,7 +83,7 @@ Master
 ### Bugs
 - [ ] Able to move last pokemon from team to pc
 - [ ] Badges arent showing on trainer card
-- [ ] Query one region at a time rather than all
+- [x] Query one region at a time rather than all
 - [ ] Can add a pokemon to the team already there
 - [ ] Single entries in region list are off center
 - [x] Location whitelist isnt working
@@ -96,20 +96,26 @@ Master
 - [ ] Implement giving Ivs/Rare Candies to pokedex pokemon
 - [ ] Logic for displaying pokemons stats during a run? From pc vs from pokedex browser
 - [ ] Logic for ending a run at the professors lab
-- [ ] Dialogue directing player to professors lab when they have no pokemon
+- [x] Dialogue directing player to professors lab when they have no pokemon
 - [ ] Add items to playerstore
-- [ ] Add a battle store
-- [ ] Add a battle component
+- [x] Add a battle component
 - [ ] Implement rival battle after prof lab
 - [ ] Add Game Corner view
 - [ ] Handle evolution during a run
 - [ ] Implement exp logic for pokemon during runs
 - [ ] Add shiny boolean to pokemon object, handle displaying shiny sprites
 - [x] Split the stores into playerInfo and gameInfo stores
-- [ ] Dynamically center the pokemon on the team during battle
+- [x] Dynamically center the pokemon on the team during battle
 - [ ] give maushold to god
 - [ ] Rival starter logic
-- [ ] Add logic to color the healthbar green/yellow/red based on current health
+- [ ] Implement critical hits
+- [ ] Prestige a pokemon during a run?
+- [ ] Color/Bold pokemon team boxes based on damage
+- [ ] Buff opponents stats based on player
+- [ ] Add a popup to confirm when running from a battle
+- [ ] Add logic to handle multiple pokemon in opponents team
+- [ ] Add battle victory logic
+- [ ] Add logic to color the healthbar green/yellow/red and size based on current health
 
 
 

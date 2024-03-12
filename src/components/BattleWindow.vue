@@ -1,18 +1,18 @@
 <template>
   <div class="battle-window p-2 text-white text-center flex flex-col justify-between">
-      <!-- Container for opponent's information -->
-      <div class="flex flex-col items-center">
+    <!-- Container for opponent's information -->
+    <div class="flex flex-col items-center">
       <!-- Health styled above the Pokemon sprite -->
       <div class="flex items-center justify-center mb-1">
-        <div class="bg-green-500 rounded-full px-9 py-1 text-xs font-bold">{{ opponentDetails.team[0].currentHp }}</div>
+        <div class="bg-green-500 rounded-full px-9 py-1 text-xs font-bold">{{ displayedOpponent.currentHp }}</div>
       </div>
-        <!-- Pokemon sprite -->
-        <img
-          :src="opponentDetails.team[0].sprites.front_default"
-          :alt="opponentDetails.team[0].name"
-          class="w-32 h-32"
-        />
-      </div>
+      <!-- Pokemon sprite -->
+      <img
+        :src="displayedOpponent.sprites.front_default"
+        :alt="displayedOpponent.name"
+        class="w-32 h-32"
+      />
+    </div>
 
     <!-- Spacer to push player team to the bottom -->
     <div class="flex-grow"></div>
@@ -24,14 +24,15 @@
 
     <!-- Buttons for Physical and Special -->
     <div class="flex items-center justify-center space-x-5 mt-4">
-      <button class="bg-orange-500 text-white px-4 py-2 rounded-full">Physical</button>
-      <button class="bg-purple-500 text-white px-4 py-2 rounded-full">Special</button>
+      <button @click="handleAttack('physical')" class="bg-orange-500 text-white px-4 py-2 rounded-full">Physical</button>
+      <button @click="handleAttack('special')" class="bg-purple-500 text-white px-4 py-2 rounded-full">Special</button>
     </div>
   </div>
 </template>
 
 <script>
 import PlayerTeam from '@/components/PlayerTeam.vue';
+import { usePlayerInfoStore } from '@/store/playerInfo';
 
 export default {
   props: {
@@ -40,9 +41,17 @@ export default {
       required: true,
     },
   },
+  computed: {
+    displayedOpponent() {
+      return this.opponentDetails.team.find(pokemon => pokemon.currentHp > 0) || {};
+    },
+  },
   methods: {
     capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
+    },
+    handleAttack(damageType) {
+      usePlayerInfoStore().calculateAndApplyDamage(damageType, this.displayedOpponent);
     },
   },
   components: {
@@ -87,5 +96,4 @@ export default {
   width: 8rem;
   height: 8rem;
 }
-
 </style>

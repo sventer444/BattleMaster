@@ -7,5 +7,6 @@ export default {
     getUnlockedRegions: (state) => state.unlockedRegions,
     getSelectedPokemon1: (state) => state.selectedPokemon1,
     getSelectedPokemon2: (state) => state.selectedPokemon2,
+    getAttackDamage: (state) => state.playerTeamAttackDamage
   };
   

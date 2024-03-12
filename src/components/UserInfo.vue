@@ -7,15 +7,6 @@
       <!-- Trainer's Name -->
       <p v-if="isAuthenticated" class="text-2xl font-semibold">{{ username }}</p>
 
-      <!-- Badge Progress -->
-      <div v-if="isAuthenticated" class="flex items-center justify-center mt-4">
-        <div
-          v-for="(badge, index) in badgeProgress"
-          :key="index"
-          class="badge-icon filled gym-badge"
-        ></div>
-      </div>
-
       <!-- Pokedex Count -->
       <p v-if="isAuthenticated" class="text-xl mt-4">Pokédex Count: {{ pokedexCount }}</p>
 
@@ -39,9 +30,6 @@ export default {
     },
     rareCandy() {
       return usePlayerInfoStore().rareCandy;
-    },
-    badgeProgress() {
-      return usePlayerInfoStore().badgeCase;
     },
     pokedexCount() {
       return useGameInfoStore().accessPokedex.length;

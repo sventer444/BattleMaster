@@ -3,6 +3,7 @@ import createState from './state';
 import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
 import { validateUser } from '../utilities/loginUtils';
 import { useGameInfoStore } from '../gameInfo';
+import { calculateTeamPhysicalDamage, calculateTeamSpecialDamage } from '../utilities/opponentUtils';
 
 
 export default {
@@ -93,8 +94,8 @@ swapSelectedPokemon() {
   }
 },
 resetSelectedPokemon() {
-        this.selectedPokemon1 = null;
-        this.selectedPokemon2 = null;
+    this.selectedPokemon1 = null;
+    this.selectedPokemon2 = null;
 },
   
     addToPlayerTeam(pokemonDetails) {
@@ -123,6 +124,17 @@ resetSelectedPokemon() {
       }
     },
 
+    calculateAndApplyDamage(damageType, opponentDetails) {
+      console.log('Damage type', damageType, 'To opponent', opponentDetails);
+      if(damageType == 'physical'){
+        this.playerTeamAttackDamage = calculateTeamPhysicalDamage(this.playerTeam, opponentDetails);
+      }
+      else{
+        this.playerTeamAttackDamage = calculateTeamSpecialDamage(this.playerTeam, opponentDetails);
+      }
+      opponentDetails.currentHp = opponentDetails.currentHp - 10;
+    },
+
     initializeTestData() {
         const gameInfo = useGameInfoStore();
         this.activeRun = false;
@@ -130,7 +142,7 @@ resetSelectedPokemon() {
         const testData = createState(true);
 
         this.rareCandy = testData.rareCandy;
-        this.badges = [...testData.badges];
+        this.badges = testData.badges;
         this.unlockedRegions = [...testData.unlockedRegions];
         this.locationsWhitelist = [...testData.locationsWhitelist];
         testData.playerDex.map((pokemon) => {

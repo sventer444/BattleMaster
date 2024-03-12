@@ -46,7 +46,9 @@
         :alt="pokemonDetails.name"
         class="size-32"
       />
-
+      <div v-if="this.displayedDamage[slot] != null" class="text-lg font-bold">
+        {{ this.displayedDamage[slot] }}
+      </div>
     </div>
   </div>
 
@@ -81,6 +83,10 @@ export default {
         }
       });
       return teamArray;
+    },
+    displayedDamage() {
+      const attackDamage = usePlayerInfoStore().getAttackDamage;
+      return attackDamage;
     },
     selectedSlots() {
       return this.initializeSelectedSlots();

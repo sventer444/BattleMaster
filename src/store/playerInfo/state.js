@@ -2,7 +2,7 @@ export default (isTest = false) => {
   if (isTest) {
     return {
       rareCandy: 50,
-      badges: [true, true, true, true, true, true, true, false],
+      badges: 10,
       locationsWhitelist: ['Professors Lab', 'Route 1', 'Viridian City'],
       playerDex: [ 'squirtle', 'bulbasaur', 'mew',],
       unlockedRegions: ['1'],
@@ -16,11 +16,12 @@ export default (isTest = false) => {
     username: null,
     password: null,
     rareCandy: 0,
-    badges: [false, false, false, false, false, false, false, false],
+    badges: 0,
     locationsWhitelist: ['Professors Lab'],
     unlockedRegions: ['1'],
     playerTeam: {},
     playerPc: {},
+    playerTeamAttackDamage: Array(6).fill(null),
     selectedPokemon1: null,
     selectedPokemon2: null,
   };
