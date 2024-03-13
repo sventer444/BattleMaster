@@ -136,8 +136,9 @@ resetSelectedPokemon() {
         // TODO implement crits
 
         const typeBonus = calculateTypeBonus(pokemon.types, opponentDetails.types);
+        const totalDamage = calculateDamage(pokemon.level, attackStat, defenseStat)*typeBonus
         const damage = {
-          damage: calculateDamage(pokemon.level, attackStat, defenseStat)*typeBonus,
+          damage: Math.max(1, Math.round(totalDamage)),
           efficacy: typeBonus,
         }
 
