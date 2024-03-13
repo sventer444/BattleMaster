@@ -8,6 +8,7 @@
       </div>
       <!-- Pokemon sprite -->
       <img
+        v-if="displayedOpponent"
         :src="displayedOpponent.sprites.front_default"
         :alt="displayedOpponent.name"
         class="w-32 h-32"
@@ -43,7 +44,8 @@ export default {
   },
   computed: {
     displayedOpponent() {
-      return this.opponentDetails.team.find(pokemon => pokemon.currentHp > 0) || {};
+      // return this.opponentDetails.team.find(pokemon => pokemon.currentHp > 0) || {};
+      return this.opponentDetails.team[0]
     },
   },
   methods: {
@@ -51,7 +53,7 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
     handleAttack(damageType) {
-      usePlayerInfoStore().calculateAndApplyDamage(damageType, this.displayedOpponent);
+      usePlayerInfoStore().calculateAndApplyTeamDamage(damageType, this.displayedOpponent);
     },
   },
   components: {

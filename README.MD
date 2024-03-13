@@ -40,7 +40,7 @@ Master
 - Prestige can happen during a run, but if a pokemon is prestiged in the dex it is unlocked from the start
 - Game Corner lets you roll for items during a run in exchange for badges
 
-#### Features
+###### Features
 - [ ] 6 member team max (additional team for each region?)
 - [ ] Pc to swap team on the fly
 - [ ] Type effectiveness
@@ -86,10 +86,11 @@ Master
 - [x] Query one region at a time rather than all
 - [ ] Can add a pokemon to the team already there
 - [ ] Single entries in region list are off center
+- [ ] Pokemon team selection box feels wrong
 - [x] Location whitelist isnt working
 - [ ] Check team/pc for starter choice rather than pokedex
 - [ ] Spamming attacks can crash
-- [ ] cache type details so they arent pulled every time a new pokemon is made
+- [x] cache type details so they arent pulled every time a new pokemon is made
 
 ### Running The Game (Dev)
 
@@ -111,6 +112,8 @@ Master
 - [ ] give maushold to god
 - [ ] Rival starter logic
 - [ ] Implement critical hits
+- [ ] Able to apply 10 rare candy/bottlecaps at a time
+- [ ] Add lendaries to pool if player has masterball
 - [ ] Prestige a pokemon during a run?
 - [ ] Battle opponent apply special/physical depending on which deals more
 - [ ] Color/Bold pokemon team boxes based on damage

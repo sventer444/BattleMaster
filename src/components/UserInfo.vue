@@ -1,17 +1,14 @@
 <template>
   <div class="flex items-center justify-center h-screen bg-pokemon-dark">
     <div class="bg-pokemon-dark-shaded p-8 rounded-lg shadow-lg text-white text-center max-w-md">
-      <h1 v-if="isAuthenticated" class="text-3xl font-semibold mb-4">Trainer Card</h1>
-      <p v-else class="text-lg">Please log in to view this page.</p>
+      <h1 class="text-3xl font-semibold mb-4">Trainer Card</h1>
 
       <!-- Trainer's Name -->
-      <p v-if="isAuthenticated" class="text-2xl font-semibold">{{ username }}</p>
+      <p class="text-2xl font-semibold">{{ username }}</p>
 
       <!-- Pokedex Count -->
-      <p v-if="isAuthenticated" class="text-xl mt-4">Pokédex Count: {{ pokedexCount }}</p>
+      <p class="text-xl mt-4">Pokédex Count: {{ pokedexCount }}</p>
 
-      <!-- Display the Rare Candy count with appropriate styling -->
-      <p v-if="isAuthenticated" class="text-xl mt-4">Rare Candies: {{ rareCandy }}</p>
     </div>
   </div>
 </template>
@@ -22,14 +19,8 @@ import { useGameInfoStore } from '@/store/gameInfo';
 
 export default {
   computed: {
-    isAuthenticated() {
-      return usePlayerInfoStore().isAuthenticated;
-    },
     username() {
       return usePlayerInfoStore().username;
-    },
-    rareCandy() {
-      return usePlayerInfoStore().rareCandy;
     },
     pokedexCount() {
       return useGameInfoStore().accessPokedex.length;

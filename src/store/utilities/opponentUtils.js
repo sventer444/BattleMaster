@@ -23,7 +23,6 @@ export const calculateTypeBonus = (attackerTypes, targetTypes) => {
   
     attackerKeys.forEach((attackKey) => {
       const attackerTypeName = attackerTypes[attackKey].name;
-  
       targetKeys.forEach((targetKey) => {
         const target = targetTypes[targetKey].damage_relations;
         const noDamageArray = Object.values(target.no_damage_from);

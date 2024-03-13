@@ -124,7 +124,7 @@ resetSelectedPokemon() {
       }
     },
 
-    calculateAndApplyDamage(damageType, opponentDetails) {
+    calculateAndApplyTeamDamage(damageType, opponentDetails) {
       const teamKeys = Object.keys(this.playerTeam);
       const teamDamage = teamKeys.map((key) => {
         const pokemon = this.playerTeam[key];
@@ -142,11 +142,12 @@ resetSelectedPokemon() {
         // TODO implement crits
 
         const typeBonus = calculateTypeBonus(pokemon.types, opponentDetails.types);
-        const totalDamage = calculateDamage(pokemon.level, attackStat, defenseStat)*typeBonus
+        const rawDamage = calculateDamage(pokemon.level, attackStat, defenseStat);
+        const totalDamage = Math.max(1, Math.round(rawDamage*typeBonus));
         const damage = {
-          damage: Math.max(1, Math.round(totalDamage)),
+          damage: totalDamage,
           efficacy: typeBonus,
-        }
+        };
 
         return damage;
     },
@@ -155,7 +156,7 @@ resetSelectedPokemon() {
       this.playerTeamAttackDamage = teamDamage;
       teamDamage.map((damage) => {
        // this.playerTeamAttackDamage[index] = null;
-        opponentDetails.currentHp = Math.max(1, opponentDetails.currentHp - damage.damage);
+        opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp - damage.damage);
       });
     },
 
