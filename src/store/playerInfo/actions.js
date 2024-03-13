@@ -133,6 +133,7 @@ resetSelectedPokemon() {
         : pokemon.stats.specialAttack;
         const defenseStat = (damageType == 'physical') ? opponentDetails.stats.defense
         : pokemon.stats.specialDefense;
+        
         // TODO implement crits
 
         const typeBonus = calculateTypeBonus(pokemon.types, opponentDetails.types);
@@ -144,9 +145,14 @@ resetSelectedPokemon() {
 
         return damage;
       });
+      this.applyDamage(teamDamage, opponentDetails);
+    },
+
+    applyDamage(teamDamage, opponentDetails) {
       this.playerTeamAttackDamage = teamDamage;
-      // Ensure opponent's current HP is not less than 0
-      opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp -10);
+      teamDamage.map(damage => {
+        opponentDetails.currentHp = Math.max(1, opponentDetails.currentHp - damage.damage);
+      });
     },
 
     initializeTestData() {
