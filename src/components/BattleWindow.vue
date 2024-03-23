@@ -1,14 +1,13 @@
 <template>
   <div class="battle-window p-2 text-white text-center flex flex-col justify-between">
     <!-- Container for opponent's information -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center" v-if="displayedOpponent">
       <!-- Health styled above the Pokemon sprite -->
       <div class="flex items-center justify-center mb-1">
         <div class="bg-green-500 rounded-full px-9 py-1 text-xs font-bold">{{ displayedOpponent.currentHp }}</div>
       </div>
       <!-- Pokemon sprite -->
       <img
-        v-if="displayedOpponent"
         :src="displayedOpponent.sprites.front_default"
         :alt="displayedOpponent.name"
         class="w-32 h-32"
@@ -44,8 +43,14 @@ export default {
   },
   computed: {
     displayedOpponent() {
-      // return this.opponentDetails.team.find(pokemon => pokemon.currentHp > 0) || {};
-      return this.opponentDetails.team[0]
+      // Find the next healthy opponent Pokemon
+      const nextHealthyPokemon = this.opponentDetails.team.find(pokemon => pokemon.currentHp > 0);
+      // If no healthy Pokemon found, end the battle
+      if (!nextHealthyPokemon) {
+        this.endBattle();
+        return null; // Return null to avoid rendering any opponent information
+      }
+      return nextHealthyPokemon;
     },
   },
   methods: {
@@ -54,6 +59,11 @@ export default {
     },
     handleAttack(damageType) {
       usePlayerInfoStore().calculateAndApplyTeamDamage(damageType, this.displayedOpponent);
+    },
+    endBattle() {
+      usePlayerInfoStore().endBattle("win");
+
+      // TODO implement emit end battle event
     },
   },
   components: {

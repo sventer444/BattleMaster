@@ -137,7 +137,7 @@ export const fetchLocationDataByUrl = async (locationUrl) => {
   }
 };
 
-export const createPokemonObject = (pokemonDetails) => {
+export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) => {
     const newPokemon = {
       id: pokemonDetails.id,
       name: pokemonDetails.name,
@@ -145,8 +145,8 @@ export const createPokemonObject = (pokemonDetails) => {
       icon: pokemonDetails?.sprites?.versions['generation-viii'].icons,
       types: pokemonDetails?.types,
       currentHp: 1,
-      shiny: false,
-      level: 1,
+      shiny: shiny,
+      level: level,
       experience: 0,
       stats: {
         hp: 1,
@@ -164,41 +164,62 @@ export const createPokemonObject = (pokemonDetails) => {
         specialDefense: 1,
         speed: 1,
       },
+      ev_stats: {
+        hp: 1,
+        attack: 1,
+        specialAttack: 1,
+        defense: 1,
+        specialDefense: 1,
+        speed: 1,
+      },
+      iv_stats: {
+        hp: 1,
+        attack: 1,
+        specialAttack: 1,
+        defense: 1,
+        specialDefense: 1,
+        speed: 1,
+      },
       details: pokemonDetails,
     };
 
     for (const stat of pokemonDetails.stats) {
       switch (stat.stat.name) {
         case 'attack':
-          newPokemon.stats.attack = stat.base_stat;
           newPokemon.base_stats.attack = stat.base_stat;
           break;
         case 'hp':
-          newPokemon.stats.hp = stat.base_stat;
           newPokemon.base_stats.hp = stat.base_stat;
+          newPokemon.stats.hp = calculateHp(newPokemon);
           newPokemon.currentHp = newPokemon.stats.hp;
           break;
         case 'special-attack':
-          newPokemon.stats.specialAttack = stat.base_stat;
           newPokemon.base_stats.specialAttack = stat.base_stat;
           break;
         case 'defense':
-          newPokemon.stats.defense = stat.base_stat;
           newPokemon.base_stats.defense = stat.base_stat;
           break;
         case 'special-defense':
-          newPokemon.stats.specialDefense = stat.base_stat;
           newPokemon.base_stats.specialDefense = stat.base_stat;
           break;
         case 'speed':
-          newPokemon.stats.speed = stat.base_stat;
           newPokemon.base_stats.speed = stat.base_stat;
           break;
-        // Add other cases as needed
       }
     }
 
     return newPokemon;
+  };
+
+  export const calculateHp = (pokemonDetails) => {
+    const hpCalc = (((((2 * pokemonDetails.base_stats.hp)+pokemonDetails.iv_stats+(pokemonDetails.ev_stats/4))
+     * pokemonDetails.level) / 100)
+    * pokemonDetails.level) + 10;
+    return hpCalc;
+  };
+
+  export const calculateStatValue = (pokemonDetails) =>{
+    console.log(pokemonDetails);
   };
   
   export default { createPokemonObject, getNextAvailableSlot, swapPokemonSlots };

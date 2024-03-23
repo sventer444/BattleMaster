@@ -50,53 +50,53 @@ export default {
     this.activeRun = true;
   },
       
-// New action to swap the selected Pokémon
-swapSelectedPokemon() {
-  if (this.selectedPokemon1 && this.selectedPokemon2) {
-    const { pokemon: pokemon1, slot: slot1, type: type1 } = this.selectedPokemon1;
-    const { pokemon: pokemon2, slot: slot2, type: type2 } = this.selectedPokemon2;
+    // New action to swap the selected Pokémon
+    swapSelectedPokemon() {
+      if (this.selectedPokemon1 && this.selectedPokemon2) {
+        const { pokemon: pokemon1, slot: slot1, type: type1 } = this.selectedPokemon1;
+        const { pokemon: pokemon2, slot: slot2, type: type2 } = this.selectedPokemon2;
 
-    // If neither pokemon is a string
-    if (!(typeof pokemon1 === 'string') && !(typeof pokemon2 === 'string')){
-      const bothInTeam = type1 == 'Team' && type2 == 'Team';
-      const bothInPc = type1 == 'Pc' && type2 == 'Pc';
-      const inTeamAndPc = type1 == 'Team' && type2 == 'Pc';
-      const inPcAndTeam = type1 == 'Pc' && type2 == 'Team';
+        // If neither pokemon is a string
+        if (!(typeof pokemon1 === 'string') && !(typeof pokemon2 === 'string')){
+          const bothInTeam = type1 == 'Team' && type2 == 'Team';
+          const bothInPc = type1 == 'Pc' && type2 == 'Pc';
+          const inTeamAndPc = type1 == 'Team' && type2 == 'Pc';
+          const inPcAndTeam = type1 == 'Pc' && type2 == 'Team';
 
-      if (bothInTeam) {
-        // Call the utility function to swap Pokémon slots if both in player team
-        swapPokemonSlots(this.playerTeam, this.playerTeam, slot1, slot2);
-      } else if (bothInPc) {
-        // Call the utility function to swap Pokémon slots if both in PC
-        swapPokemonSlots(this.playerPc, this.playerPc, slot1, slot2);
-      } else if (inTeamAndPc) {
-        // Call the utility function to swap Pokémon slots if one in team and the other in PC
-        swapPokemonSlots(this.playerTeam, this.playerPc, slot1, slot2);
-      } else if (inPcAndTeam) {
-        // Call the utility function to swap Pokémon slots if one in PC and the other in team
-        swapPokemonSlots(this.playerPc, this.playerTeam, slot1, slot2);
-      } 
-    }
-    else if ((typeof pokemon1 != 'string') ^ (typeof pokemon2 != 'string')){
-      // Handle cases where one or both Pokémon are in empty slots
-      if (typeof pokemon2 === 'string' && type2 == 'Team') {
-        this.playerTeam[slot2] = pokemon1;
-      } else if (typeof pokemon2 === 'string' && type2 == 'Pc') {
-        this.playerPc[slot2] = pokemon1;
-      } else {
-        console.log('The pokemon were not set', pokemon1, pokemon2);
+          if (bothInTeam) {
+            // Call the utility function to swap Pokémon slots if both in player team
+            swapPokemonSlots(this.playerTeam, this.playerTeam, slot1, slot2);
+          } else if (bothInPc) {
+            // Call the utility function to swap Pokémon slots if both in PC
+            swapPokemonSlots(this.playerPc, this.playerPc, slot1, slot2);
+          } else if (inTeamAndPc) {
+            // Call the utility function to swap Pokémon slots if one in team and the other in PC
+            swapPokemonSlots(this.playerTeam, this.playerPc, slot1, slot2);
+          } else if (inPcAndTeam) {
+            // Call the utility function to swap Pokémon slots if one in PC and the other in team
+            swapPokemonSlots(this.playerPc, this.playerTeam, slot1, slot2);
+          } 
+        }
+        else if ((typeof pokemon1 != 'string') ^ (typeof pokemon2 != 'string')){
+          // Handle cases where one or both Pokémon are in empty slots
+          if (typeof pokemon2 === 'string' && type2 == 'Team') {
+            this.playerTeam[slot2] = pokemon1;
+          } else if (typeof pokemon2 === 'string' && type2 == 'Pc') {
+            this.playerPc[slot2] = pokemon1;
+          } else {
+            console.log('The pokemon were not set', pokemon1, pokemon2);
+          }
+          // Clean up old pokemon
+          (type1 == 'Team')? delete this.playerTeam[slot1] : delete this.playerPc[slot1];
+        }
+        // Reset selected Pokémon
+        this.resetSelectedPokemon();
       }
-      // Clean up old pokemon
-      (type1 == 'Team')? delete this.playerTeam[slot1] : delete this.playerPc[slot1];
-    }
-    // Reset selected Pokémon
-    this.resetSelectedPokemon();
-  }
-},
-resetSelectedPokemon() {
-    this.selectedPokemon1 = null;
-    this.selectedPokemon2 = null;
-},
+    },
+    resetSelectedPokemon() {
+        this.selectedPokemon1 = null;
+        this.selectedPokemon2 = null;
+    },
   
     addToPlayerTeam(pokemonDetails) {
       const nextAvailableSlot = getNextAvailableSlot(this.playerTeam);
@@ -126,9 +126,12 @@ resetSelectedPokemon() {
 
     calculateAndApplyTeamDamage(damageType, opponentDetails) {
       const teamKeys = Object.keys(this.playerTeam);
+      var target = opponentDetails;
       const teamDamage = teamKeys.map((key) => {
         const pokemon = this.playerTeam[key];
-        return this.calculateDamage(pokemon, opponentDetails, damageType);
+        const damage = this.calculateDamage(pokemon, target, damageType);
+        target = pokemon;
+        return damage;
       }, this);
       this.applyDamage(teamDamage, opponentDetails);
     },
@@ -152,10 +155,25 @@ resetSelectedPokemon() {
         return damage;
     },
 
+    endBattle(battleStatus){
+      console.log('status of battle', battleStatus);
+      if(battleStatus == 'win'){
+        // Restore Party Health
+
+        // Apply Exp
+
+        // ??? Anything else?
+      }
+      else
+      {
+        //TODO implement loss
+      }
+
+    },
+
     applyDamage(teamDamage, opponentDetails) {
       this.playerTeamAttackDamage = teamDamage;
       teamDamage.map((damage) => {
-       // this.playerTeamAttackDamage[index] = null;
         opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp - damage.damage);
       });
     },
