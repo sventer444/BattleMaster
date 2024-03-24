@@ -187,6 +187,9 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
       switch (stat.stat.name) {
         case 'attack':
           newPokemon.base_stats.attack = stat.base_stat;
+          newPokemon.stats.attack = calculateStatValue(newPokemon.base_stats.attack,
+            newPokemon.iv_stats.attack, newPokemon.ev_stats.attack,
+            newPokemon.level);
           break;
         case 'hp':
           newPokemon.base_stats.hp = stat.base_stat;
@@ -195,15 +198,27 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
           break;
         case 'special-attack':
           newPokemon.base_stats.specialAttack = stat.base_stat;
+          newPokemon.stats.specialAttack = calculateStatValue(newPokemon.base_stats.specialAttack,
+            newPokemon.iv_stats.specialAttack, newPokemon.ev_stats.specialAttack,
+            newPokemon.level);
           break;
         case 'defense':
           newPokemon.base_stats.defense = stat.base_stat;
+          newPokemon.stats.defense = calculateStatValue(newPokemon.base_stats.defense,
+            newPokemon.iv_stats.defense, newPokemon.ev_stats.defense,
+            newPokemon.level);
           break;
         case 'special-defense':
           newPokemon.base_stats.specialDefense = stat.base_stat;
+          newPokemon.stats.specialDefense = calculateStatValue(newPokemon.base_stats.specialDefense,
+            newPokemon.iv_stats.specialDefense, newPokemon.ev_stats.specialDefense,
+            newPokemon.level);
           break;
         case 'speed':
           newPokemon.base_stats.speed = stat.base_stat;
+          newPokemon.stats.speed = calculateStatValue(newPokemon.base_stats.speed,
+            newPokemon.iv_stats.speed, newPokemon.ev_stats.speed,
+            newPokemon.level);
           break;
       }
     }
@@ -212,14 +227,24 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
   };
 
   export const calculateHp = (pokemonDetails) => {
-    const hpCalc = (((((2 * pokemonDetails.base_stats.hp)+pokemonDetails.iv_stats+(pokemonDetails.ev_stats/4))
-     * pokemonDetails.level) / 100)
-    * pokemonDetails.level) + 10;
+    const hpCalc = basicStatCalc(pokemonDetails.base_stats.hp,
+      pokemonDetails.iv_stats.hp, pokemonDetails.ev_stats.hp,
+      pokemonDetails.level)
+    + pokemonDetails.level + 10;
     return hpCalc;
   };
 
-  export const calculateStatValue = (pokemonDetails) =>{
-    console.log(pokemonDetails);
+  export const calculateStatValue = (baseStat, ivStat, evStat, level) =>{
+    const statCalc = basicStatCalc(baseStat, ivStat, evStat, level) + 5;
+    return statCalc;
+  };
+
+  export const basicStatCalc = (baseStat, ivStat, evStat, level) => {
+    const statCalc = Math.floor(((((2 * baseStat) + ivStat
+    + Math.floor((evStat / 4)))
+     * level) / 100));
+
+    return statCalc;
   };
   
   export default { createPokemonObject, getNextAvailableSlot, swapPokemonSlots };
