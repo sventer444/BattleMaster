@@ -44,11 +44,11 @@ export default {
   computed: {
     displayedOpponent() {
       // Find the next healthy opponent Pokemon
-      const nextHealthyPokemon = this.opponentDetails.team.find(pokemon => pokemon.currentHp > 0);
+      const nextHealthyPokemon = usePlayerInfoStore().getFirstHealthyFromTeam(this.opponentDetails.team)
       // If no healthy Pokemon found, end the battle
       if (!nextHealthyPokemon) {
-        this.endBattle();
-        return null; // Return null to avoid rendering any opponent information
+        usePlayerInfoStore().endBattle("win");
+        this.$router.back();
       }
       return nextHealthyPokemon;
     },
@@ -58,12 +58,16 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
     handleAttack(damageType) {
-      usePlayerInfoStore().calculateAndApplyTeamDamage(damageType, this.displayedOpponent);
-    },
-    endBattle() {
-      usePlayerInfoStore().endBattle("win");
-
-      // TODO implement emit end battle event
+      //TODO determine attack order
+      const playerStore = usePlayerInfoStore();
+      playerStore.caclulateAndApplyOpponentDamage(this.displayedOpponent);
+      playerStore.calculateAndApplyTeamDamage(damageType, this.displayedOpponent);
+      const playerTeam = playerStore.getPlayerTeam;
+      const nextHealthyPokemon = playerStore.getFirstHealthyFromTeam(Object.values(playerTeam));
+      if (!nextHealthyPokemon) {
+        playerStore.endBattle();
+        this.$router.back();
+      }
     },
   },
   components: {

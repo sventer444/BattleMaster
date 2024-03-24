@@ -124,6 +124,20 @@ export default {
       }
     },
 
+    getFirstHealthyFromTeam (team) {
+      // Find the next healthy opponent Pokemon
+      const nextHealthyPokemon = team.find(pokemon => pokemon.currentHp > 0);
+      return (!nextHealthyPokemon) ? null : nextHealthyPokemon;
+    },
+
+    caclulateAndApplyOpponentDamage(opponentDetails){
+      const target = this.getFirstHealthyFromTeam(Object.values(this.playerTeam));
+      const physDamage = this.calculateDamage(opponentDetails, target, 'physical');
+      const specDamage = this.calculateDamage(opponentDetails, target, 'special');
+      let damage = (physDamage.damage < specDamage.damage) ? specDamage.damage : physDamage.damage;
+      this.applyDamage(damage, target);
+    },
+
     calculateAndApplyTeamDamage(damageType, opponentDetails) {
       const teamKeys = Object.keys(this.playerTeam);
       var target = opponentDetails;
@@ -133,18 +147,18 @@ export default {
         target = pokemon;
         return damage;
       }, this);
-      this.applyDamage(teamDamage, opponentDetails);
+      this.applyTeamDamage(teamDamage, opponentDetails);
     },
 
-    calculateDamage(pokemon, opponentDetails, damageType) {
+    calculateDamage(pokemon, targetDetails, damageType) {
         const attackStat = (damageType == 'physical') ? pokemon.stats.attack
         : pokemon.stats.specialAttack;
-        const defenseStat = (damageType == 'physical') ? opponentDetails.stats.defense
+        const defenseStat = (damageType == 'physical') ? targetDetails.stats.defense
         : pokemon.stats.specialDefense;
 
         // TODO implement crits
 
-        const typeBonus = calculateTypeBonus(pokemon.types, opponentDetails.types);
+        const typeBonus = calculateTypeBonus(pokemon.types, targetDetails.types);
         const rawDamage = calculateDamage(pokemon.level, attackStat, defenseStat);
         const totalDamage = Math.max(1, Math.round(rawDamage*typeBonus));
         const damage = {
@@ -156,7 +170,6 @@ export default {
     },
 
     endBattle(battleStatus){
-      console.log('status of battle', battleStatus);
       if(battleStatus == 'win'){
         // Restore Party Health
 
@@ -171,11 +184,26 @@ export default {
 
     },
 
-    applyDamage(teamDamage, opponentDetails) {
+    applyTeamDamage(teamDamage, opponentDetails) {
       this.playerTeamAttackDamage = teamDamage;
       teamDamage.map((damage) => {
         opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp - damage.damage);
       });
+    },
+
+    applyDamage(damage, target){
+      // Subtract the damage from the target's current HP
+      target.currentHp -= damage;
+      // Check if the target's current HP is 0 or less
+      if (target.currentHp <= 0) {
+        // If the target's current HP is 0 or less, determine the remaining damage
+        var remainingDamage = Math.abs(target.currentHp);
+        target.currentHp = 0;
+        const newTarget = this.getFirstHealthyFromTeam(Object.values(this.playerTeam));
+        if (newTarget != null) {
+          this.applyDamage(remainingDamage, newTarget);
+        }
+      }
     },
 
     initializeTestData() {
