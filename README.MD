@@ -90,6 +90,7 @@ Master
 - [x] Location whitelist isnt working
 - [ ] Check team/pc for starter choice rather than pokedex
 - [ ] Spamming attacks can crash
+- [ ] PokemonInfo types crash
 - [x] cache type details so they arent pulled every time a new pokemon is made
 
 ### Running The Game (Dev)

@@ -126,7 +126,7 @@ export default {
 
     getFirstHealthyFromTeam (team) {
       // Find the next healthy opponent Pokemon
-      const nextHealthyPokemon = team.find(pokemon => pokemon.currentHp > 0);
+      const nextHealthyPokemon = Object.values(team).find(pokemon => pokemon.currentHp > 0);
       return (!nextHealthyPokemon) ? null : nextHealthyPokemon;
     },
 

@@ -15,7 +15,7 @@
         :src="pokemonDetails?.sprites?.front_default"
         :alt="pokemonDetails?.name"
         class="w-44 h-44 cursor-pointer"
-        @click="selectStarter(pokemonDetails?.name)"
+        @click="selectStarter(index)"
         />
       </div>
     </div>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       selectedPokemonDetails: Array(3).fill(null),
+      starterOptionDetails: Array(3).fill(null),
       rivalBattle: false,
       rivalData: null,
     };
@@ -60,45 +61,54 @@ export default {
       const gameStore = useGameInfoStore();
       const pokedex = gameStore.accessPokedex;
       const uncaughtStarters = [0, 3, 6]
-      .filter((indexNumber) => {
-        return (typeof pokedex[indexNumber]) != 'object';
-      });
+      .filter((indexNumber, arrayIndex) => {
+        const pokedexHasNoData = (typeof pokedex[indexNumber]) != 'object';
+        if(!pokedexHasNoData){
+          this.starterOptionDetails[arrayIndex] = pokedex[indexNumber];
+        }
+        return pokedexHasNoData;
+      },this);
       return uncaughtStarters;
     },
   },
   methods: {
-    async selectStarter(starterName) {
-      const gameStore = useGameInfoStore();
+    selectStarter(starterIndex) {
       const playerStore = usePlayerInfoStore();
-      const regionDex = gameStore.getRegionDex;
 
-      try {
-        const pokemonDetails = regionDex[starterName];
-
-        if (pokemonDetails) {
+        const starterDetails = this.selectedPokemonDetails[starterIndex];
           // Add selected Pokémon to the player's team
-          playerStore.addToPlayerTeam(pokemonDetails);
-
+          playerStore.addToPlayerTeam(starterDetails);
+          
           // Add 'Route 1' to the player's location whitelist
           playerStore.addToLocationWhitelist('Route 1');
-          playerStore.startRun();
+          const rivalTeam = this.determineRivalStarter(starterDetails.types[0].name);
+          this.rivalData = rivalTeam;
 
+          playerStore.startRun();
           this.rivalBattle = true;
-        } else {
-          console.error(`Details not found for Pokemon ${starterName}`);
-        }
-      } catch (error) {
-        console.error(`Error fetching details for Pokemon ${starterName}:`, error);
-      }
     },
-    async fetchRivalData() {
-      const gameStore = useGameInfoStore();
-      this.rivalData = await gameStore.getOpponentDetails("rival");
+    determineRivalStarter(starterType){
+      let rivalStarterData = {};
+      switch(starterType){
+        case 'fire':
+          rivalStarterData = this.starterOptionDetails[2];
+          break;
+        case 'grass': 
+          rivalStarterData = this.starterOptionDetails[1];
+          break;
+        default: 
+          rivalStarterData = this.starterOptionDetails[0];
+          break;
+      }
+      return {
+              team: {
+                  "0": rivalStarterData
+              }
+          };
     },
   },
   async mounted() {
     const gameStore = useGameInfoStore();
-    this.fetchRivalData();
     const regionDex = Object.keys(gameStore.getRegionDex);
     const selectionIndexes = this.canSelectStarter;
 
@@ -107,9 +117,9 @@ export default {
 
       try {
         const pokemonDetails = await gameStore.getPokemonDetails(regionDex[index]);
-        // console.log(pokemonDetails)
         if (pokemonDetails) {
           this.selectedPokemonDetails[arrayIndex] = pokemonDetails;
+          this.starterOptionDetails[arrayIndex] = pokemonDetails;
         } else {
           console.error(`Details not found for Pokemon ${index}`);
         }
@@ -118,6 +128,7 @@ export default {
       }
     }
 
+    // Filter out null array values
     this.selectedPokemonDetails = this.selectedPokemonDetails.filter((detail) => {
       return detail != null
     });
