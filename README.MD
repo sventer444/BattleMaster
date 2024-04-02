@@ -90,11 +90,11 @@ Master
 - [x] Location whitelist isnt working
 - [ ] Check team/pc for starter choice rather than pokedex
 - [ ] Spamming attacks can crash
-- [ ] PokemonInfo types crash
+- [x] PokemonInfo types crash
 - [x] cache type details so they arent pulled every time a new pokemon is made
 
 ### Running The Game (Dev)
-
+```npm run serve```
 
 #### Todo
 - [ ] Implement giving Ivs/Rare Candies to pokedex pokemon
@@ -110,11 +110,11 @@ Master
 - [ ] Add shiny boolean to pokemon object, handle displaying shiny sprites
 - [x] Split the stores into playerInfo and gameInfo stores
 - [x] Dynamically center the pokemon on the team during battle
-- [ ] give maushold to god
+- [ ] !give maushold to god!
 - [ ] Rival starter logic
 - [ ] Implement critical hits
 - [ ] Able to apply 10 rare candy/bottlecaps at a time
-- [ ] Add lendaries to pool if player has masterball
+- [ ] Add legendaries to pool if player has masterball?
 - [ ] Prestige a pokemon during a run?
 - [ ] Battle opponent apply special/physical depending on which deals more
 - [ ] Color/Bold pokemon team boxes based on damage

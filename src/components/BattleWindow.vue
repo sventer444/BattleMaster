@@ -47,7 +47,7 @@ export default {
       const nextHealthyPokemon = usePlayerInfoStore().getFirstHealthyFromTeam(Object.values(this.opponentDetails.team))
       // If no healthy Pokemon found, end the battle
       if (!nextHealthyPokemon) {
-        // usePlayerInfoStore().endBattle("win");
+        usePlayerInfoStore().endBattle("win");
         // this.$router.back();
       }
       return nextHealthyPokemon;

@@ -31,9 +31,39 @@ export const fetchPokemonDetailsByName = async (pokemonName) => {
     // Wait for all type promises to resolve
     response.data.types = await Promise.all(typePromises);
 
+    // Get pokemon species details for growth rate
+    const pokemonSpeciesDetails = await fetchPokemonSpeciesDetails(response.data.id);
+    response.data.speciesDetails = pokemonSpeciesDetails;
+
+    // Retrieve pokemon growth rate info
+    const growthRateDetails = await fetchPokemonGrowthRateDetails(pokemonSpeciesDetails.growth_rate.url);
+    response.data.growthRateDetails = growthRateDetails;
+
     return response.data;
   } catch (error) {
     console.error(`Error fetching details for Pokemon ID ${pokemonName}:`, error);
+    return null;
+  }
+};
+
+// Fetch pokemon species details
+export const fetchPokemonSpeciesDetails = async (pokemonId) => {
+  try {
+    const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching details for species ${pokemonId}`, error);
+    return null;
+  }
+};
+
+// Fetch pokemon growth rate info
+export const fetchPokemonGrowthRateDetails = async (url) => {
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching details for growth rate ${url}`, error);
     return null;
   }
 };
@@ -180,6 +210,8 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
         specialDefense: 1,
         speed: 1,
       },
+      speciesDetails: pokemonDetails.speciesDetails,
+      growthRateDetails: pokemonDetails.growthRateDetails,
       details: pokemonDetails,
     };
 

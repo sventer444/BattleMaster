@@ -9,14 +9,15 @@
       <p>Select a starter pokemon!</p>
       <br>
       <div class="flex items-center justify-center space-x-4">
-        <img
-        v-for="(pokemonDetails, index) in selectedPokemonDetails"
-        :key="index"
-        :src="pokemonDetails?.sprites?.front_default"
-        :alt="pokemonDetails?.name"
-        class="w-44 h-44 cursor-pointer"
-        @click="selectStarter(index)"
-        />
+        <template v-for="(pokemonDetails, index) in selectedPokemonDetails"
+        :key="index">
+          <img v-if="pokemonDetails?.sprites?.front_default != null"
+            :src="pokemonDetails?.sprites?.front_default"
+            :alt="pokemonDetails?.name"
+            class="w-44 h-44 cursor-pointer"
+            @click="selectStarter(index)"
+            />
+        </template>
       </div>
     </div>
     <div v-if="rivalBattle">

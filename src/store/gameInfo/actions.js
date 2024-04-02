@@ -43,13 +43,14 @@ export default {
     },   
     // Determine rival starter
     determineRivalStarter(starterType, starterOptions){
+      // Rival picks weak type
       switch(starterType){
         case 'fire':
-          return createPokemonObject(starterOptions[2]);
-        case 'grass': 
-          return createPokemonObject(starterOptions[1]);
-        default: 
           return createPokemonObject(starterOptions[0]);
+        case 'grass': 
+          return createPokemonObject(starterOptions[2]);
+        default: 
+          return createPokemonObject(starterOptions[1]);
       }
     },
     // Add Pokemon to the Pokedex

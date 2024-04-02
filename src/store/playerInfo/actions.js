@@ -172,10 +172,11 @@ export default {
     endBattle(battleStatus){
       if(battleStatus == 'win'){
         // Restore Party Health
-
+        console.log(this.playerTeam);
         // Apply Exp
 
         // ??? Anything else?
+          // Drops?
       }
       else
       {
