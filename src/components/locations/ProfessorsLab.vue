@@ -89,7 +89,6 @@ export default {
               }
           };
           this.rivalData = rivalTeam;
-          console.log('prof lab starter data', this.rivalData);
 
           playerStore.startRun();
           this.rivalBattle = true;

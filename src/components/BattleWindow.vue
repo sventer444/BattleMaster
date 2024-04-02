@@ -50,7 +50,6 @@ export default {
         // usePlayerInfoStore().endBattle("win");
         // this.$router.back();
       }
-      console.log('healthy opponent', nextHealthyPokemon);
       return nextHealthyPokemon;
     },
   },

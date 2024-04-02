@@ -51,7 +51,7 @@ export default {
       return string.charAt(0).toUpperCase() + string.slice(1);
     },
     getFormattedTypes(types) {
-      return types.map(type => this.capitalizeFirstLetter(type.type.name)).join(', ');
+      return types.map(type => this.capitalizeFirstLetter(type.name)).join(', ');
     },
     displayStatName(statName) {
       switch (statName) {
