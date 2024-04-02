@@ -81,30 +81,18 @@ export default {
           
           // Add 'Route 1' to the player's location whitelist
           playerStore.addToLocationWhitelist('Route 1');
-          const rivalTeam = this.determineRivalStarter(starterDetails.types[0].name);
+          const rivalStarter = useGameInfoStore().determineRivalStarter(starterDetails.types[0].name,
+          this.starterOptionDetails);
+          const rivalTeam = {
+              team: {
+                  "0": rivalStarter
+              }
+          };
           this.rivalData = rivalTeam;
+          console.log('prof lab starter data', this.rivalData);
 
           playerStore.startRun();
           this.rivalBattle = true;
-    },
-    determineRivalStarter(starterType){
-      let rivalStarterData = {};
-      switch(starterType){
-        case 'fire':
-          rivalStarterData = this.starterOptionDetails[2];
-          break;
-        case 'grass': 
-          rivalStarterData = this.starterOptionDetails[1];
-          break;
-        default: 
-          rivalStarterData = this.starterOptionDetails[0];
-          break;
-      }
-      return {
-              team: {
-                  "0": rivalStarterData
-              }
-          };
     },
   },
   async mounted() {

@@ -41,7 +41,17 @@ export default {
       opponentDetails.team = (await promisedOpponentTeam).filter(Boolean);
       return opponentDetails;
     },   
-
+    // Determine rival starter
+    determineRivalStarter(starterType, starterOptions){
+      switch(starterType){
+        case 'fire':
+          return createPokemonObject(starterOptions[2]);
+        case 'grass': 
+          return createPokemonObject(starterOptions[1]);
+        default: 
+          return createPokemonObject(starterOptions[0]);
+      }
+    },
     // Add Pokemon to the Pokedex
     addToPokedex(pokemonDetails) {
       const pokemonIndex = pokemonDetails.id - 1;
@@ -50,11 +60,9 @@ export default {
       }
     },
 
-    setRegion(regionNumber) {
-        fetchRegionDataByUrl(`https://pokeapi.co/api/v2/region/${regionNumber}`)
-        .then((regionData) => {
-          this.regions.push(regionData);
-        });
+    async setRegion(regionNumber) {
+        const regionData = await fetchRegionDataByUrl(`https://pokeapi.co/api/v2/region/${regionNumber}`);
+        this.regions.push(regionData);
       },
 
     // Clear the Pokedex
