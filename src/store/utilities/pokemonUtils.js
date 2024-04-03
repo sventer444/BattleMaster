@@ -269,6 +269,15 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
     return newPokemon;
   };
 
+export const determineCrit = (pokemonSpeed, targetSpeed) => {
+  const baseCritRate = 0.2;
+  const speedRatio = pokemonSpeed / targetSpeed;
+  const random = Math.random() * 2.5;
+  // console.log('random val', random, 'speed ratio', speedRatio);
+  return random <= (baseCritRate * speedRatio);
+
+};
+
   export const calculateHp = (pokemonDetails) => {
     const hpCalc = basicStatCalc(pokemonDetails.base_stats.hp,
       pokemonDetails.iv_stats.hp, pokemonDetails.ev_stats.hp,

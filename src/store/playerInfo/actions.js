@@ -1,6 +1,6 @@
 // store/playerInfo/actions.js
 import createState from './state';
-import { createPokemonObject, determineAttackStat, determineDefenseStat, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
+import { createPokemonObject, determineAttackStat, determineCrit, determineDefenseStat, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
 import { validateUser } from '../utilities/loginUtils';
 import { useGameInfoStore } from '../gameInfo';
 import { calculateDamage, calculateTypeBonus } from '../utilities/opponentUtils';
@@ -157,7 +157,7 @@ export default {
       }, this);
       this.playerTeamAttackDamage = teamDamage;
       const totalTeamDamage = teamDamage.reduce((total, current) => {
-        return total += (current.damage * current.efficacy);
+        return total += (current.damage);
       }, 0);
       return totalTeamDamage;
     },
@@ -180,11 +180,15 @@ export default {
         const attackStat = determineAttackStat(damageType, pokemon);
         const defenseStat = determineDefenseStat(damageType, targetDetails);
 
-        // TODO implement crits
+        // Calculate Crit
+        const critValid = determineCrit(pokemon.stats.speed, targetDetails.stats.speed);
+        console.log('crit happened', critValid);
 
         const typeBonus = calculateTypeBonus(pokemon.types, targetDetails.types);
         const rawDamage = calculateDamage(pokemon.level, attackStat, defenseStat);
-        const totalDamage = Math.max(1, Math.round(rawDamage*typeBonus));
+        let totalDamage = Math.max(1, Math.round(rawDamage*typeBonus));
+        // Apply crit
+        if (critValid) totalDamage = totalDamage * 2.5;
         const damage = {
           damage: totalDamage,
           efficacy: typeBonus,
