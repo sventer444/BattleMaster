@@ -47,7 +47,7 @@
         class="size-32"
       />
       <div v-if="this.displayedDamage[slot] != null" class="text-lg font-bold">
-        {{ this.displayedDamage[slot].damage }}
+        {{ (this.displayedDamage[slot].damage * this.displayedDamage[slot].efficacy) }}
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 // store/playerInfo/actions.js
 import createState from './state';
-import { createPokemonObject, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
+import { createPokemonObject, determineAttackStat, determineDefenseStat, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
 import { validateUser } from '../utilities/loginUtils';
 import { useGameInfoStore } from '../gameInfo';
 import { calculateDamage, calculateTypeBonus } from '../utilities/opponentUtils';
@@ -40,7 +40,6 @@ export default {
       setSelectedPokemon(pokemon, slot, type) {
         if (this.selectedPokemon1 === null) {
           this.selectedPokemon1 = {pokemon: pokemon, slot: slot, type: type};
-          // console.log('selected a single pokemon ', this.selectedPokemon1);
         } else if (this.selectedPokemon2 === null) {
           this.selectedPokemon2 = {pokemon: pokemon, slot: slot, type: type};
           this.swapSelectedPokemon();
@@ -135,26 +134,51 @@ export default {
       const physDamage = this.calculateDamage(opponentDetails, target, 'physical');
       const specDamage = this.calculateDamage(opponentDetails, target, 'special');
       let damage = (physDamage.damage < specDamage.damage) ? specDamage.damage : physDamage.damage;
-      this.applyDamage(damage, target);
+      this.applyOpponentDamage(damage, target);
     },
 
     calculateAndApplyTeamDamage(damageType, opponentDetails) {
+      // Calc Team Damage
+      const teamDamage = this.calculateTeamDamage(opponentDetails, damageType);
+
+      // Calc Pc Damage
+      const pcDamage = this.calculatePcDamage(damageType, opponentDetails);
+
+      this.applyTeamDamage((teamDamage + pcDamage), opponentDetails);
+    },
+
+    calculateTeamDamage(target, damageType){
       const teamKeys = Object.keys(this.playerTeam);
-      var target = opponentDetails;
       const teamDamage = teamKeys.map((key) => {
         const pokemon = this.playerTeam[key];
         const damage = this.calculateDamage(pokemon, target, damageType);
         target = pokemon;
         return damage;
       }, this);
-      this.applyTeamDamage(teamDamage, opponentDetails);
+      this.playerTeamAttackDamage = teamDamage;
+      const totalTeamDamage = teamDamage.reduce((total, current) => {
+        return total += (current.damage * current.efficacy);
+      }, 0);
+      return totalTeamDamage;
+    },
+
+    calculatePcDamage(damageType, targetDetails){
+      const pcKeys = Object.keys(this.playerPc);
+      const pcDamage = pcKeys.reduce((total, key) => {
+        const pokemon = this.playerPc[key];
+        // Pc damage is flat
+        const attackStat = determineAttackStat(damageType, pokemon);
+        const defenseStat = determineDefenseStat(damageType, targetDetails);
+        
+        const rawDamage = calculateDamage(pokemon.level, attackStat, defenseStat);
+        return total += rawDamage.damage;
+      }, 0);
+      return pcDamage;
     },
 
     calculateDamage(pokemon, targetDetails, damageType) {
-        const attackStat = (damageType == 'physical') ? pokemon.stats.attack
-        : pokemon.stats.specialAttack;
-        const defenseStat = (damageType == 'physical') ? targetDetails.stats.defense
-        : pokemon.stats.specialDefense;
+        const attackStat = determineAttackStat(damageType, pokemon);
+        const defenseStat = determineDefenseStat(damageType, targetDetails);
 
         // TODO implement crits
 
@@ -169,30 +193,19 @@ export default {
         return damage;
     },
 
-    endBattle(battleStatus){
-      if(battleStatus == 'win'){
+    endBattle(){
         // Restore Party Health
         console.log(this.playerTeam);
-        // Apply Exp
-
         // ??? Anything else?
           // Drops?
-      }
-      else
-      {
-        //TODO implement loss
-      }
-
     },
 
     applyTeamDamage(teamDamage, opponentDetails) {
-      this.playerTeamAttackDamage = teamDamage;
-      teamDamage.map((damage) => {
-        opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp - damage.damage);
-      });
+      opponentDetails.currentHp = Math.max(0, opponentDetails.currentHp - teamDamage);
+      // Apply exp if opponent hp 0
     },
 
-    applyDamage(damage, target){
+    applyOpponentDamage(damage, target){
       // Subtract the damage from the target's current HP
       target.currentHp -= damage;
       // Check if the target's current HP is 0 or less

@@ -43,11 +43,12 @@ export default {
   },
   computed: {
     displayedOpponent() {
+      const playerStore = usePlayerInfoStore();
       // Find the next healthy opponent Pokemon
-      const nextHealthyPokemon = usePlayerInfoStore().getFirstHealthyFromTeam(Object.values(this.opponentDetails.team))
+      const nextHealthyPokemon = playerStore.getFirstHealthyFromTeam(Object.values(this.opponentDetails.team))
       // If no healthy Pokemon found, end the battle
       if (!nextHealthyPokemon) {
-        usePlayerInfoStore().endBattle("win");
+        playerStore.endBattle("win");
         // this.$router.back();
       }
       return nextHealthyPokemon;

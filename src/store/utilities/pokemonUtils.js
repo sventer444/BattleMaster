@@ -167,13 +167,24 @@ export const fetchLocationDataByUrl = async (locationUrl) => {
   }
 };
 
+export const determineAttackStat = (damageType, pokemon) => {
+  return (damageType == 'physical') ? pokemon.stats.attack
+  : pokemon.stats.specialAttack;
+};
+
+export const determineDefenseStat = (damageType, targetDetails) => {
+  return (damageType == 'physical') ? targetDetails.stats.defense
+  : targetDetails.stats.specialDefense;
+};
+
 export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) => {
     const newPokemon = {
       id: pokemonDetails.id,
       name: pokemonDetails.name,
-      sprites: pokemonDetails?.sprites,
-      icon: pokemonDetails?.sprites?.versions['generation-viii'].icons,
-      types: pokemonDetails?.types,
+      sprites: pokemonDetails.sprites,
+      icon: pokemonDetails.sprites.versions['generation-viii'].icons,
+      types: pokemonDetails.types,
+      baseExp: pokemonDetails.base_experience,
       currentHp: 1,
       shiny: shiny,
       level: level,

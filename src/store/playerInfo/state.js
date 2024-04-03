@@ -32,6 +32,7 @@ export default (isTest = false) => {
     playerTeam: {},
     playerPc: {},
     playerTeamAttackDamage: Array(6).fill(null),
+    playerPcDamage: 0,
     selectedPokemon1: null,
     selectedPokemon2: null,
   };
