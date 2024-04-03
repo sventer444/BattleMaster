@@ -270,11 +270,12 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
   };
 
 export const determineCrit = (pokemonSpeed, targetSpeed) => {
-  const baseCritRate = 0.2;
+  const baseCritRate = 0.15;
   const speedRatio = pokemonSpeed / targetSpeed;
-  const random = Math.random() * 2.5;
-  // console.log('random val', random, 'speed ratio', speedRatio);
-  return random <= (baseCritRate * speedRatio);
+  const random = Math.random();
+  const speedRate = (baseCritRate * speedRatio);
+  console.log('random val', random, 'speed rate', speedRate);
+  return random <= speedRate;
 
 };
 
