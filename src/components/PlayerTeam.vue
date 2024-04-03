@@ -1,5 +1,5 @@
 <template>
-  <div class="player-team bg-pokemon-dark p-8 text-white text-center">
+  <div class="player-team bg-pokemon-dark text-white p-12 text-center">
     <!-- PcWindow Team View -->
     <div v-if="isPcWindow" class="pc-style flex items-center justify-center flex-wrap space-x-4">
       <div
@@ -8,7 +8,7 @@
         :class="{ 'selected-slot': isSelected(slot) }"
         @click="selectSlot(slot)"
         :style="{ borderColor: '#000' }"
-        class="w-32 h-32 p-2 border-2 mb-2 cursor-pointer"
+        class="w-32 h-32 border-2 cursor-pointer"
       >
         <img
           v-if="pokemonDetails"
@@ -156,7 +156,7 @@ export default {
 }
 
 .pc-style {
-  margin-top: 20vh;
+  margin-top: 5vh;
 }
 
 .text-3xl {

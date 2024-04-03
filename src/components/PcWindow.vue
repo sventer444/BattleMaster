@@ -11,10 +11,10 @@
     
       <!-- Display the PlayerTeam.vue component at the top -->
       <!-- <h2 class="text-3xl font-semibold mt-2 mb-2">Current Party</h2> -->
-      <PlayerTeam class="mb-4 mt-2" :isPcWindow="true"/>
+      <PlayerTeam :isPcWindow="true"/>
 
       <!-- Display the PcBoxes component with adjusted spacing -->
-      <PcBoxes class="mt-4 mb-4" />
+      <PcBoxes class="mt-4 mb-2" />
     </div>
   </div>
 </template>
