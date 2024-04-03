@@ -177,6 +177,10 @@ export const determineDefenseStat = (damageType, targetDetails) => {
   : targetDetails.stats.specialDefense;
 };
 
+export const healPokemon = (pokemon) => {
+  pokemon.currentHp = pokemon.stats.hp;
+};
+
 export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) => {
     const newPokemon = {
       id: pokemonDetails.id,
@@ -272,9 +276,9 @@ export const createPokemonObject = (pokemonDetails, shiny = false, level = 1) =>
 export const determineCrit = (pokemonSpeed, targetSpeed) => {
   const baseCritRate = 0.15;
   const speedRatio = pokemonSpeed / targetSpeed;
-  const random = Math.random();
+  const random = Math.random() + 0.05;
   const speedRate = (baseCritRate * speedRatio);
-  console.log('random val', random, 'speed rate', speedRate);
+  // console.log('random val', random, 'speed rate', speedRate);
   return random <= speedRate;
 
 };

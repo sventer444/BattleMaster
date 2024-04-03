@@ -1,6 +1,6 @@
 // store/playerInfo/actions.js
 import createState from './state';
-import { createPokemonObject, determineAttackStat, determineCrit, determineDefenseStat, getNextAvailableSlot, swapPokemonSlots } from '../utilities/pokemonUtils';
+import { createPokemonObject, determineAttackStat, determineCrit, determineDefenseStat, getNextAvailableSlot, healPokemon, swapPokemonSlots } from '../utilities/pokemonUtils';
 import { validateUser } from '../utilities/loginUtils';
 import { useGameInfoStore } from '../gameInfo';
 import { calculateDamage, calculateTypeBonus } from '../utilities/opponentUtils';
@@ -192,6 +192,7 @@ export default {
         const damage = {
           damage: totalDamage,
           efficacy: typeBonus,
+          crit: critValid
         };
 
         return damage;
@@ -199,6 +200,10 @@ export default {
 
     endBattle(){
         // Restore Party Health
+        const playerValues = Object.values(this.playerTeam);
+        playerValues.map(pokemon =>{
+          healPokemon(pokemon);
+        });
         console.log(this.playerTeam);
         // ??? Anything else?
           // Drops?
