@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Darkest Day Simulator</title>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <script src="main.js"></script>
+    <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden; /* Disable scrolling */
+        height: 100%;
+        width: 100%;
+        touch-action: none; /* Prevent touch scrolling */
+    }
+
+    #game-container {
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* Prevent overflow */
+    }
+</style>
+    <div id="game-container"></div>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
