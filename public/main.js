@@ -1,22 +1,23 @@
 import MainMenu from './scenes/mainmenu.js';
+import GameScene from './scenes/game.js';
 
 const config = {
     type: Phaser.AUTO,
-    parent: 'game-container', // Attach Phaser to the container div
     width: window.innerWidth,
     height: window.innerHeight,
+    scene: [MainMenu, GameScene],
+    parent: "game-container",
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 0 }, // Default gravity; can override per object
-            debug: true, // Enable debug mode for visualizing physics
+            gravity: { y: 0 },
+            debug: false, // Disable physics debug for production
         },
     },
     scale: {
-        mode: Phaser.Scale.RESIZE,  // Ensures the game canvas resizes with the window
-        autoCenter: Phaser.Scale.CENTER_BOTH,  // Centers the game canvas during resize
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    scene: [MainMenu],  // Add your scenes here
 };
 
 const game = new Phaser.Game(config);

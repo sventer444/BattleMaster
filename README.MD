@@ -1,5 +1,10 @@
 ### Darkest Day Simulator
 
+
+
+##### sprites
+https://www.spriters-resource.com/ds_dsi/pokemonheartgoldsoulsilver/sheet/28243/
+
 #### TODO
 
 
