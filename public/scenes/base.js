@@ -1,7 +1,7 @@
+// BaseScene.js
 export default class BaseScene extends Phaser.Scene {
     constructor(key) {
         super(key);
-
         // Store reusable game objects or UI components
         this.additionalGameObjects = [];
     }
@@ -19,30 +19,24 @@ export default class BaseScene extends Phaser.Scene {
             this.resizeBackground(width, height);
         }
 
-        // Resize any additional game objects (e.g., text, images, etc.)
+        // Resize any additional game objects (e.g., text, images, buttons)
         this.resizeGameObjects(width, height);
     }
 
     resizeBackground(width, height) {
-        // Ensure the background is always scaled to the screen size
-        this.bg.setDisplaySize(width, height); 
-        this.bg.setPosition(width / 2, height / 2); // Center the background
+        // Resize the background to fill the screen
+        this.bg.setDisplaySize(width, height);
+        this.bg.setPosition(width / 2, height / 2);
     }
 
     resizeGameObjects(width, height) {
+        // Resize and reposition buttons based on new screen size
         this.additionalGameObjects.forEach((obj) => {
-            if (!obj || !obj.scene) return;
-
-            // Resize text objects
-            if (obj.setFontSize) {
-                obj.setFontSize(`${Math.min(width, height) * 0.04}px`);
-                obj.setPosition(width / 2, height / 2); // Adjust position as needed
-            }
-
-            // Resize images or other objects with setDisplaySize
-            else if (obj.setDisplaySize) {
-                obj.setDisplaySize(width * 0.6, height * 0.1); // Adjust size for buttons or other UI
-                obj.setPosition(width / 2, height / 2); // Adjust position as needed
+            if (obj && obj.setPosition) {
+                // Keep button width fixed (no scaling) but adjust the height and position
+                obj.setPosition(width / 2, obj.y);  // Keep horizontal position fixed
+                // Adjust vertical position relative to height
+                obj.setPosition(obj.x, obj.originalY * (height / this.originalHeight)); // Maintain vertical spacing based on original height
             }
         });
     }
@@ -51,7 +45,7 @@ export default class BaseScene extends Phaser.Scene {
         // Remove resize listener
         this.scale.off('resize', this.resizeElements, this);
 
-        // Cleanup common game objects
+        // Clean up game objects
         this.cleanupObjects();
 
         super.shutdown();
@@ -64,7 +58,7 @@ export default class BaseScene extends Phaser.Scene {
             this.bg = null;
         }
 
-        // Destroy additional game objects
+        // Destroy any other game objects
         this.additionalGameObjects.forEach((obj) => {
             if (obj) obj.destroy();
         });

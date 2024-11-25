@@ -35,32 +35,36 @@ export default class MainMenu extends BaseScene {
 
         const { width, height } = this.scale;
 
+        // Store original height for resizing logic
+        this.originalHeight = height;
+
         // Add and scale the background
         this.bg = this.add.image(width / 2, height / 2, 'background');
         this.bg.setDisplaySize(width, height);
 
         // Define starting position for the first button
-        let startY = height / 2 - 50; // Adjust as needed
+        let startY = height / 2 - 50;
 
         // Create the Play button
         this.playButton = UIManager.createButton(this, width / 2, startY, 'Play', () => {
             this.scene.stop('MainMenu');
             this.scene.start('GameScene');
         }, width, height);
+        this.playButton.originalY = startY; // Store original Y for resizing
 
         // Create the Pokedex button with a vertical offset from the Play button
-        this.pokedexButton = UIManager.createButton(this, width / 2, startY, 'Pokedex', () => {
+        this.pokedexButton = UIManager.createButton(this, width / 2, startY + 60, 'Pokedex', () => {
             console.log('Pokedex button clicked!');
-            // Add logic to navigate to the Pokedex scene
-        }, width, height, 60); // 60 is the vertical offset
+        }, width, height);
+        this.pokedexButton.originalY = startY + 60;
 
         // Create the Trainer button with a vertical offset from the Pokedex button
-        this.trainerButton = UIManager.createButton(this, width / 2, startY, 'Trainer', () => {
+        this.trainerButton = UIManager.createButton(this, width / 2, startY + 120, 'Trainer', () => {
             console.log('Trainer button clicked!');
-            // Add logic for opening the Trainer menu
-        }, width, height, 120); // 120 is the vertical offset
+        }, width, height);
+        this.trainerButton.originalY = startY + 120;
 
-        // Store buttons in an array for cleanup
+        // Add buttons to the array for cleanup
         this.additionalGameObjects = [this.playButton, this.pokedexButton, this.trainerButton];
     }
 
