@@ -10,9 +10,9 @@ export default class GameScene extends BaseScene {
 
         const { width, height } = this.scale;
 
-        // Add a Material grey background
+        // Update background to a darker material slate grey
         this.background = this.add.graphics();
-        this.background.fillStyle(0x9e9e9e, 1); // Material grey color (#9E9E9E)
+        this.background.fillStyle(0x37474f, 1); // Darker slate grey color (#37474F)
         this.background.fillRect(0, 0, width, height);
 
         // Add the top bar
@@ -54,7 +54,7 @@ export default class GameScene extends BaseScene {
             { label: 'Fight', callback: () => console.log('Fight button clicked!') },
             { label: 'Map', callback: () => console.log('Map button clicked!') },
             { label: 'Bag', callback: () => console.log('Bag button clicked!') },
-            { label: 'Run', callback: () => console.log('Run button clicked!') },
+            { label: 'Run', callback: () => console.log('Run button clicked!') }, // Run button
         ];
 
         const buttonStyle = {
@@ -99,6 +99,12 @@ export default class GameScene extends BaseScene {
             fill: '#ffffff',
         }).setOrigin(0.5);
         this.bottomContainer.add(this.teamText);
+
+        // Set up 'Run' button to return to the MainMenu scene
+        this.navButtons[3].on('pointerdown', () => {
+            console.log('Returning to Main Menu!');
+            this.scene.start('MainMenu');  // Start the 'MainMenu' scene
+        });
     }
 
     resizeGame(gameSize) {
@@ -106,7 +112,7 @@ export default class GameScene extends BaseScene {
 
         // Adjust background
         this.background.clear();
-        this.background.fillStyle(0x9e9e9e, 1);
+        this.background.fillStyle(0x37474f, 1); // Darker slate grey color (#37474F)
         this.background.fillRect(0, 0, width, height);
 
         // Adjust top bar
