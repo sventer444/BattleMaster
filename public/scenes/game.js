@@ -5,6 +5,12 @@ export default class GameScene extends BaseScene {
         super('GameScene');
     }
 
+    preload() {
+
+        // Load Pikachu sprite from the PokeAPI sprite repository
+        this.load.image('pikachu', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png');
+    }
+
     create() {
         super.create();
 
@@ -33,28 +39,28 @@ export default class GameScene extends BaseScene {
         const spacing = width / multipliers.length; // Even spacing for the numbers
         this.multiplierTexts = multipliers.map((value, index) =>
             this.add.text(
-                spacing * index + spacing / 2, // X position
-                this.topBarHeight / 2,        // Center vertically in the bar
-                value.toFixed(1),            // Display the multiplier (1 decimal)
+                spacing * index + spacing / 2,
+                this.topBarHeight / 2,
+                value.toFixed(1),
                 {
                     ...textStyle,
-                    color: `#${multiplierColors[index].toString(16)}`, // Convert color to hex
+                    color: `#${multiplierColors[index].toString(16)}`,
                 }
-            ).setOrigin(0.5) // Center align the text
+            ).setOrigin(0.5)
         );
 
         // Add the bottom navigation bar
         this.bottomBarHeight = 80;
         this.bottomBar = this.add.graphics();
-        this.bottomBar.fillStyle(0x212121, 1); // Dark grey color (#212121)
+        this.bottomBar.fillStyle(0x212121, 1);
         this.bottomBar.fillRect(0, height - this.bottomBarHeight, width, this.bottomBarHeight);
 
-        // Add navigation buttons, evenly spaced
+        // Add navigation buttons
         const navOptions = [
             { label: 'Fight', callback: () => console.log('Fight button clicked!') },
             { label: 'Map', callback: () => console.log('Map button clicked!') },
             { label: 'Bag', callback: () => console.log('Bag button clicked!') },
-            { label: 'Run', callback: () => console.log('Run button clicked!') }, // Run button
+            { label: 'Run', callback: () => this.scene.start('MainMenu') },
         ];
 
         const buttonStyle = {
@@ -62,17 +68,17 @@ export default class GameScene extends BaseScene {
             fill: '#ffffff',
         };
 
-        const buttonSpacing = width / (navOptions.length + 1); // Spacing between buttons
+        const buttonSpacing = width / (navOptions.length + 1);
         this.navButtons = navOptions.map((option, index) =>
             this.add.text(buttonSpacing * (index + 1), height - this.bottomBarHeight / 2, option.label, buttonStyle)
                 .setOrigin(0.5)
-                .setInteractive({ useHandCursor: true }) // Makes the button interactive
+                .setInteractive({ useHandCursor: true })
                 .on('pointerdown', option.callback)
                 .on('pointerover', function () {
-                    this.setStyle({ fill: '#ffcc00' }); // Highlight on hover
+                    this.setStyle({ fill: '#ffcc00' });
                 })
                 .on('pointerout', function () {
-                    this.setStyle({ fill: '#ffffff' }); // Reset on hover out
+                    this.setStyle({ fill: '#ffffff' });
                 })
         );
 
@@ -82,29 +88,20 @@ export default class GameScene extends BaseScene {
         // Add the game area between the top and bottom bars
         this.gameAreaHeight = height - this.topBarHeight - this.bottomBarHeight;
 
-        // Top container for "enemy"
+        // Top container for the enemy
         this.topContainerHeight = this.gameAreaHeight / 2;
-        this.topContainer = this.add.container(0, this.topBarHeight); // Positioned below the top bar
-        this.enemyText = this.add.text(width / 2, this.topContainerHeight / 2, 'Enemy', {
-            font: '32px Arial',
-            fill: '#ffffff',
-        }).setOrigin(0.5);
-        this.topContainer.add(this.enemyText);
+        this.topContainer = this.add.container(0, this.topBarHeight);
+        this.enemySprite = this.add.image(width / 2, this.topContainerHeight / 2, 'pikachu').setScale(2);
+        this.topContainer.add(this.enemySprite);
 
-        // Bottom container for "Team"
+        // Bottom container for the team
         this.bottomContainerHeight = this.gameAreaHeight / 2;
-        this.bottomContainer = this.add.container(0, this.topBarHeight + this.topContainerHeight); // Positioned below the top container
+        this.bottomContainer = this.add.container(0, this.topBarHeight + this.topContainerHeight);
         this.teamText = this.add.text(width / 2, this.bottomContainerHeight / 2, 'Team', {
             font: '32px Arial',
             fill: '#ffffff',
         }).setOrigin(0.5);
         this.bottomContainer.add(this.teamText);
-
-        // Set up 'Run' button to return to the MainMenu scene
-        this.navButtons[3].on('pointerdown', () => {
-            console.log('Returning to Main Menu!');
-            this.scene.start('MainMenu');  // Start the 'MainMenu' scene
-        });
     }
 
     resizeGame(gameSize) {
@@ -112,7 +109,7 @@ export default class GameScene extends BaseScene {
 
         // Adjust background
         this.background.clear();
-        this.background.fillStyle(0x37474f, 1); // Darker slate grey color (#37474F)
+        this.background.fillStyle(0x37474f, 1);
         this.background.fillRect(0, 0, width, height);
 
         // Adjust top bar
@@ -143,7 +140,7 @@ export default class GameScene extends BaseScene {
         // Adjust top container (enemy area)
         this.topContainer.setPosition(0, this.topBarHeight);
         this.topContainerHeight = this.gameAreaHeight / 2;
-        this.enemyText.setPosition(width / 2, this.topContainerHeight / 2);
+        this.enemySprite.setPosition(width / 2, this.topContainerHeight / 2);
 
         // Adjust bottom container (team area)
         this.bottomContainer.setPosition(0, this.topBarHeight + this.topContainerHeight);
