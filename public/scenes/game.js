@@ -49,11 +49,12 @@ export default class GameScene extends BaseScene {
         this.bottomBar.fillStyle(0x212121, 1); // Dark grey color (#212121)
         this.bottomBar.fillRect(0, height - this.bottomBarHeight, width, this.bottomBarHeight);
 
-        // Add navigation buttons
+        // Add navigation buttons, evenly spaced
         const navOptions = [
-            { label: 'Map', x: 50, callback: () => console.log('Map button clicked!') },
-            { label: 'Bag', x: width / 2, callback: () => console.log('Bag button clicked!') },
-            { label: 'Run', x: width - 50, callback: () => console.log('Run button clicked!') },
+            { label: 'Fight', callback: () => console.log('Fight button clicked!') },
+            { label: 'Map', callback: () => console.log('Map button clicked!') },
+            { label: 'Bag', callback: () => console.log('Bag button clicked!') },
+            { label: 'Run', callback: () => console.log('Run button clicked!') },
         ];
 
         const buttonStyle = {
@@ -61,17 +62,43 @@ export default class GameScene extends BaseScene {
             fill: '#ffffff',
         };
 
-        this.navButtons = navOptions.map(option =>
-            this.add.text(option.x, height - this.bottomBarHeight / 2, option.label, buttonStyle)
+        const buttonSpacing = width / (navOptions.length + 1); // Spacing between buttons
+        this.navButtons = navOptions.map((option, index) =>
+            this.add.text(buttonSpacing * (index + 1), height - this.bottomBarHeight / 2, option.label, buttonStyle)
                 .setOrigin(0.5)
                 .setInteractive({ useHandCursor: true }) // Makes the button interactive
                 .on('pointerdown', option.callback)
-                .on('pointerover', button => button.setStyle({ fill: '#ffcc00' })) // Highlight on hover
-                .on('pointerout', button => button.setStyle({ fill: '#ffffff' })) // Reset on hover out
+                .on('pointerover', function () {
+                    this.setStyle({ fill: '#ffcc00' }); // Highlight on hover
+                })
+                .on('pointerout', function () {
+                    this.setStyle({ fill: '#ffffff' }); // Reset on hover out
+                })
         );
 
         // Handle resizing
         this.scale.on('resize', this.resizeGame, this);
+
+        // Add the game area between the top and bottom bars
+        this.gameAreaHeight = height - this.topBarHeight - this.bottomBarHeight;
+
+        // Top container for "enemy"
+        this.topContainerHeight = this.gameAreaHeight / 2;
+        this.topContainer = this.add.container(0, this.topBarHeight); // Positioned below the top bar
+        this.enemyText = this.add.text(width / 2, this.topContainerHeight / 2, 'Enemy', {
+            font: '32px Arial',
+            fill: '#ffffff',
+        }).setOrigin(0.5);
+        this.topContainer.add(this.enemyText);
+
+        // Bottom container for "Team"
+        this.bottomContainerHeight = this.gameAreaHeight / 2;
+        this.bottomContainer = this.add.container(0, this.topBarHeight + this.topContainerHeight); // Positioned below the top container
+        this.teamText = this.add.text(width / 2, this.bottomContainerHeight / 2, 'Team', {
+            font: '32px Arial',
+            fill: '#ffffff',
+        }).setOrigin(0.5);
+        this.bottomContainer.add(this.teamText);
     }
 
     resizeGame(gameSize) {
@@ -99,9 +126,22 @@ export default class GameScene extends BaseScene {
         this.bottomBar.fillRect(0, height - this.bottomBarHeight, width, this.bottomBarHeight);
 
         // Adjust navigation buttons
-        const navPositions = [50, width / 2, width - 50];
+        const buttonSpacing = width / (this.navButtons.length + 1);
         this.navButtons.forEach((button, index) => {
-            button.setPosition(navPositions[index], height - this.bottomBarHeight / 2);
+            button.setPosition(buttonSpacing * (index + 1), height - this.bottomBarHeight / 2);
         });
+
+        // Adjust game area height
+        this.gameAreaHeight = height - this.topBarHeight - this.bottomBarHeight;
+
+        // Adjust top container (enemy area)
+        this.topContainer.setPosition(0, this.topBarHeight);
+        this.topContainerHeight = this.gameAreaHeight / 2;
+        this.enemyText.setPosition(width / 2, this.topContainerHeight / 2);
+
+        // Adjust bottom container (team area)
+        this.bottomContainer.setPosition(0, this.topBarHeight + this.topContainerHeight);
+        this.bottomContainerHeight = this.gameAreaHeight / 2;
+        this.teamText.setPosition(width / 2, this.bottomContainerHeight / 2);
     }
 }
