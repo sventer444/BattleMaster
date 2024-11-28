@@ -1,61 +1,40 @@
 import BaseScene from './base.js';
+import Pokemon from '../helpers/pokemon.js';
 
 export default class GameScene extends BaseScene {
     constructor() {
         super('GameScene');
+        this.playerTeam = []; // Array to hold the player's team
+        this.enemy = null; // Enemy Pokémon object
     }
 
-    preload() {
-
-        // Load Pikachu sprite from the PokeAPI sprite repository
-        this.load.image('pikachu', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png');
+    async preload() {
+        // Preload assets and fetch enemy Pokémon
+        await this.loadEnemyPokemon(); 
     }
 
-    create() {
+    async create() {
         super.create();
 
         const { width, height } = this.scale;
 
-        // Update background to a darker material slate grey
+        // Background setup
         this.background = this.add.graphics();
-        this.background.fillStyle(0x37474f, 1); // Darker slate grey color (#37474F)
+        this.background.fillStyle(0x37474f, 1);
         this.background.fillRect(0, 0, width, height);
 
-        // Add the top bar
+        // Top bar setup
         this.topBarHeight = 50;
         this.topBar = this.add.graphics();
-        this.topBar.fillStyle(0x212121, 1); // Dark grey color (#212121)
+        this.topBar.fillStyle(0x212121, 1);
         this.topBar.fillRect(0, 0, width, this.topBarHeight);
 
-        // Example multipliers (6 numbers with different colors)
-        const multiplierColors = [0xff5722, 0x4caf50, 0x2196f3, 0xffeb3b, 0x9c27b0, 0xe91e63];
-        const multipliers = [1.1, 2.5, 3.0, 1.8, 2.2, 4.0];
-
-        const textStyle = {
-            font: '20px Arial',
-            color: '#ffffff',
-        };
-
-        const spacing = width / multipliers.length; // Even spacing for the numbers
-        this.multiplierTexts = multipliers.map((value, index) =>
-            this.add.text(
-                spacing * index + spacing / 2,
-                this.topBarHeight / 2,
-                value.toFixed(1),
-                {
-                    ...textStyle,
-                    color: `#${multiplierColors[index].toString(16)}`,
-                }
-            ).setOrigin(0.5)
-        );
-
-        // Add the bottom navigation bar
+        // Bottom navigation bar setup
         this.bottomBarHeight = 80;
         this.bottomBar = this.add.graphics();
         this.bottomBar.fillStyle(0x212121, 1);
         this.bottomBar.fillRect(0, height - this.bottomBarHeight, width, this.bottomBarHeight);
 
-        // Add navigation buttons
         const navOptions = [
             { label: 'Fight', callback: () => console.log('Fight button clicked!') },
             { label: 'Map', callback: () => console.log('Map button clicked!') },
@@ -63,45 +42,95 @@ export default class GameScene extends BaseScene {
             { label: 'Run', callback: () => this.scene.start('MainMenu') },
         ];
 
-        const buttonStyle = {
-            font: '22px Arial',
-            fill: '#ffffff',
-        };
-
         const buttonSpacing = width / (navOptions.length + 1);
+        const buttonStyle = { font: '22px Arial', fill: '#ffffff' };
         this.navButtons = navOptions.map((option, index) =>
             this.add.text(buttonSpacing * (index + 1), height - this.bottomBarHeight / 2, option.label, buttonStyle)
                 .setOrigin(0.5)
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', option.callback)
-                .on('pointerover', function () {
-                    this.setStyle({ fill: '#ffcc00' });
-                })
-                .on('pointerout', function () {
-                    this.setStyle({ fill: '#ffffff' });
-                })
+                .on('pointerover', function () { this.setStyle({ fill: '#ffcc00' }); })
+                .on('pointerout', function () { this.setStyle({ fill: '#ffffff' }); })
         );
 
-        // Handle resizing
-        this.scale.on('resize', this.resizeGame, this);
-
-        // Add the game area between the top and bottom bars
+        // Game area setup
         this.gameAreaHeight = height - this.topBarHeight - this.bottomBarHeight;
 
-        // Top container for the enemy
+        // Enemy area
         this.topContainerHeight = this.gameAreaHeight / 2;
         this.topContainer = this.add.container(0, this.topBarHeight);
-        this.enemySprite = this.add.image(width / 2, this.topContainerHeight / 2, 'pikachu').setScale(2);
-        this.topContainer.add(this.enemySprite);
 
-        // Bottom container for the team
+        // Team area setup
         this.bottomContainerHeight = this.gameAreaHeight / 2;
         this.bottomContainer = this.add.container(0, this.topBarHeight + this.topContainerHeight);
-        this.teamText = this.add.text(width / 2, this.bottomContainerHeight / 2, 'Team', {
-            font: '32px Arial',
-            fill: '#ffffff',
-        }).setOrigin(0.5);
-        this.bottomContainer.add(this.teamText);
+
+        // Fetch and display the player's starting Pokémon
+        await this.loadStartingPokemon();
+        // Call this only after the enemy has been successfully loaded
+        this.displayEnemy();
+    }
+
+    async loadEnemyPokemon() {
+        try {
+            const response = await fetch('/api/pokemon?limit=1'); // Fetch 1 Pokémon for the enemy
+            const [enemyData] = await response.json(); // Assume only 1 Pokémon is returned
+
+            // Preload the enemy sprite
+            this.load.image('enemySprite', enemyData.sprite);
+
+            // Create the enemy Pokémon object
+            this.enemy = new Pokemon(enemyData);
+
+            // Start preloading and ensure it's complete before proceeding
+            await new Promise(resolve => {
+                this.load.once('complete', resolve);
+                this.load.start();
+            });
+        } catch (error) {
+            console.error('Error loading enemy Pokémon:', error);
+        }
+    }
+
+    async loadStartingPokemon() {
+        try {
+            const response = await fetch('/api/pokemon?limit=1'); // Request only 1 Pokémon for the player's team
+            const [pokemonData] = await response.json(); // Assuming only 1 Pokémon is returned
+
+            const startingPokemon = new Pokemon(pokemonData); // Create Pokémon object
+            this.playerTeam.push(startingPokemon);
+
+            // Display the Pokémon's name in the team area
+            const { width } = this.scale;
+            const slotSpacing = width / 6; // Placeholder for a team of 6 slots
+
+            this.teamSlots = [
+                this.add.text(slotSpacing / 2, this.bottomContainerHeight / 2, startingPokemon.name, {
+                    font: '24px Arial',
+                    fill: '#ffffff',
+                }).setOrigin(0.5),
+            ];
+
+            // Add the text to the bottom container
+            this.teamSlots.forEach(slot => this.bottomContainer.add(slot));
+        } catch (error) {
+            console.error('Error loading Pokémon:', error);
+        }
+    }
+
+    displayEnemy() {
+        if (!this.enemy) {
+            console.error('Enemy Pokémon is not loaded.');
+            return;
+        }
+
+        const { width } = this.scale;
+
+        // Display the enemy sprite in the top container
+        this.enemySprite = this.add.image(width / 2, this.topContainerHeight / 2, 'enemySprite')
+            .setOrigin(0.5)
+            .setDisplaySize(96, 96);
+
+        this.topContainer.add(this.enemySprite);
     }
 
     resizeGame(gameSize) {
@@ -117,12 +146,6 @@ export default class GameScene extends BaseScene {
         this.topBar.fillStyle(0x212121, 1);
         this.topBar.fillRect(0, 0, width, this.topBarHeight);
 
-        // Adjust multipliers
-        const spacing = width / this.multiplierTexts.length;
-        this.multiplierTexts.forEach((text, index) => {
-            text.setX(spacing * index + spacing / 2);
-        });
-
         // Adjust bottom bar
         this.bottomBar.clear();
         this.bottomBar.fillStyle(0x212121, 1);
@@ -137,14 +160,17 @@ export default class GameScene extends BaseScene {
         // Adjust game area height
         this.gameAreaHeight = height - this.topBarHeight - this.bottomBarHeight;
 
-        // Adjust top container (enemy area)
+        // Adjust enemy area
         this.topContainer.setPosition(0, this.topBarHeight);
         this.topContainerHeight = this.gameAreaHeight / 2;
-        this.enemySprite.setPosition(width / 2, this.topContainerHeight / 2);
 
-        // Adjust bottom container (team area)
+        // Adjust team area
         this.bottomContainer.setPosition(0, this.topBarHeight + this.topContainerHeight);
         this.bottomContainerHeight = this.gameAreaHeight / 2;
-        this.teamText.setPosition(width / 2, this.bottomContainerHeight / 2);
+
+        const slotSpacing = width / 6; // Assuming a team of 6 slots
+        this.teamSlots.forEach((slot, index) => {
+            slot.setPosition(slotSpacing * index + slotSpacing / 2, this.bottomContainerHeight / 2);
+        });
     }
 }
