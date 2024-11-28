@@ -115,34 +115,30 @@ export default class GameScene extends BaseScene {
             console.error('Player team is empty.');
             return;
         }
-
+    
         const { width } = this.scale;
-        const maxSlots = 6;  // Maximum number of slots for player team
+        const maxSlots = 6;
         const teamSize = this.playerTeam.length;
-
-        // Clear the existing team display to prevent duplication
-        // Manually remove each child (sprite and text) instead of using `removeAll()`
-        this.bottomContainer.removeAll(true);  // Use true to remove both children and event listeners
-
-        // Calculate the starting X position for the first slot so the team is centered
+    
+        // Clear existing team display
+        this.bottomContainer.removeAll(true);
+    
         const slotSpacing = 20;
         const slotWidth = 96;
         const totalWidth = slotWidth * maxSlots + (maxSlots - 1) * slotSpacing;
         const startX = (width - totalWidth) / 2;
-
-        // Loop through the player's team and display each Pokémon in their respective slots
+    
         for (let i = 0; i < teamSize; i++) {
             const slotX = startX + i * (slotWidth + slotSpacing);
             const pokemon = this.playerTeam[i];
-            
-            // Display the Pokémon sprite
+    
+            // Use name as texture key
             const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, pokemon.name)
                 .setOrigin(0.5)
-                .setDisplaySize(slotWidth, slotWidth); // Increased size for slots
+                .setDisplaySize(slotWidth, slotWidth);
             this.bottomContainer.add(sprite);
-
-            // Display the Pokémon name below the sprite
-            const capitalizedName = this.capitalizeName(pokemon.name);  // Capitalize the name
+    
+            const capitalizedName = this.capitalizeName(pokemon.name);
             const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 60, capitalizedName, {
                 font: '20px Arial',
                 fill: '#ffffff',
@@ -150,7 +146,7 @@ export default class GameScene extends BaseScene {
             this.bottomContainer.add(text);
         }
     }
-
+    
     capitalizeName(name) {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     }

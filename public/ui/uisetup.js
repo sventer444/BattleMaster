@@ -71,19 +71,20 @@ async function addPokemonToPlayerTeam(scene) {
         return;
     }
 
-    // Select a Pokémon to add (example: Bulbasaur)
+    // Fetch the Pokémon data
     const newPokemon = await scene.fetchPokemon('name=charmander');
     if (newPokemon) {
-        scene.load.image('playerSprite', newPokemon.icon); // Load new Pokémon sprite
-        
-        scene.playerTeam.push(newPokemon); // Add to player team
+        const spriteKey = newPokemon.name; // Use Pokémon name as key
+        scene.load.image(spriteKey, newPokemon.icon); // Load sprite with name as key
+
+        scene.playerTeam.push(newPokemon); // Add Pokémon to the team
         console.log(`Added ${newPokemon.name} to player team.`);
-        
-        // Reload the sprites and display the updated player team
+
+        // Ensure sprite is displayed after loading
         scene.load.once('complete', () => {
-            scene.displayPlayerTeam(); // Update team display after loading new sprite
+            scene.displayPlayerTeam(); // Update the display
         });
-        scene.load.start(); // Start loading the new sprite
+        scene.load.start(); // Start the loading process
     } else {
         console.error('Failed to add new Pokémon to team.');
     }
