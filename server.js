@@ -7,38 +7,73 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from the public directory
 app.use(express.static('public'));
 
+// In-memory cache for Pokémon data
+let pokemonCache = {};
+
+// Function to preload all Pokémon data into cache
+const preloadPokemonData = async () => {
+    try {
+        console.log("Preloading Pokémon data...");
+        const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1010'); // Adjust limit for all Pokémon
+        const pokemonList = response.data.results;
+
+        // Fetch detailed data for each Pokémon
+        const detailedDataPromises = pokemonList.map(async (pokemon) => {
+            const detailResponse = await axios.get(pokemon.url);
+            const detail = detailResponse.data;
+
+            // Store in cache with both name and ID as keys
+            const formattedData = {
+                id: detail.id,
+                name: detail.name,
+                sprite: detail.sprites.front_default,
+                icon: detail.sprites.versions['generation-viii'].icons.front_default,
+                abilities: detail.abilities,
+                base_experience: detail.base_experience,
+                order: detail.order,
+                stats: detail.stats,
+                types: detail.types,
+            };
+            pokemonCache[detail.id] = formattedData; // Use ID as key
+            pokemonCache[detail.name.toLowerCase()] = formattedData; // Use name as key (case-insensitive)
+        });
+
+        await Promise.all(detailedDataPromises);
+        console.log("Pokémon data preloaded successfully.");
+    } catch (error) {
+        console.error("Error preloading Pokémon data:", error);
+    }
+};
+
 // API route to fetch Pokémon data
 app.get('/api/pokemon', async (req, res) => {
     try {
-        const { name, limit } = req.query;
+        const { name, id } = req.query;
 
-        if (name) {
-            // Fetch a single Pokémon by name
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
-            const pokemonData = [{
-                id: response.data.id,
-                name: response.data.name,
-                sprite: response.data.sprites.front_default, // Default sprite URL
-            }];
-            return res.json(pokemonData); // Return as an array for consistency
+        if (pokemonCache.length === 0) {
+            console.error('Server cache is empty. Pokémon data not preloaded.');
+            return res.status(500).send('Pokémon data not preloaded.');
         }
 
-        // Default behavior: Fetch Pokémon by limit
-        const fetchLimit = limit || 151; // Default to the first 151 Pokémon
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${fetchLimit}`);
-        const pokemonList = response.data.results.map((pokemon, index) => ({
-            id: index + 1, // Pokémon IDs start at 1
-            name: pokemon.name,
-            sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1}.png`,
-        }));
-        res.json(pokemonList);
+        const queryKey = name?.toLowerCase() || id;
+
+        const pokemon = pokemonCache[queryKey]; // Query cache using name (lowercased) or id
+
+        if (pokemon) {
+            console.log(`Returning Pokémon for query: ${queryKey}`, pokemon);
+            return res.json([pokemon]); // Return as an array for consistency
+        } else {
+            console.warn(`No Pokémon found for query: ${queryKey}. Current cache:`, pokemonCache);
+            return res.status(404).send('Pokémon not found.');
+        }
     } catch (error) {
-        console.error('Error fetching Pokémon:', error);
-        res.status(500).send('Error fetching Pokémon data');
+        console.error('Error handling Pokémon API request:', error);
+        res.status(500).send('Internal server error.');
     }
 });
 
-// Start the server
-app.listen(PORT, () => {
+// Start the server and preload data
+app.listen(PORT, async () => {
     console.log(`Server running at http://localhost:${PORT}`);
+    await preloadPokemonData(); // Preload all Pokémon data into memory
 });

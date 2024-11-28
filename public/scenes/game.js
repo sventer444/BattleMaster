@@ -1,6 +1,5 @@
 import BaseScene from './base.js';
 import { setupBackground, setupBars, setupNavButtons } from '../ui/uisetup.js';
-import { loadPokemon, preloadPokemonSprite } from '../helpers/pokemonhelpers.js';
 
 export default class GameScene extends BaseScene {
     constructor() {
@@ -9,10 +8,12 @@ export default class GameScene extends BaseScene {
         this.enemy = null;
     }
 
-    
     preload() {
-        // Preload assets and fetch enemy Pokémon
-        this.loadEnemyPokemon();
+        try {
+            this.loadGameData(); // Preload enemy and player Pokémon data
+        } catch (error) {
+            console.error('Error during preload:', error);
+        }
     }
 
     create() {
@@ -37,46 +38,62 @@ export default class GameScene extends BaseScene {
         this.topContainer = this.add.container(0, this.topBarHeight);
         this.bottomContainer = this.add.container(0, this.topBarHeight + this.topContainerHeight);
 
-        // Load dynamic assets and display content
-        this.loadGameData();
+        // Display the loaded Pokémon
+        this.displayGameData();
     }
 
+    async fetchPokemon(query) {
+        try {
+            const response = await fetch(`/api/pokemon?${query}`);
+            if (!response.ok) {
+                console.error(`Failed to fetch Pokémon. Status: ${response.status}, Query: ${query}`);
+                return null;
+            }
+    
+            const data = await response.json();
+            if (data.length > 0) return data[0]; // Return the first Pokémon
+            console.warn(`No data returned for query: ${query}`);
+            return null;
+        } catch (error) {
+            console.error(`Error fetching Pokémon data for query: ${query}`, error);
+            return null;
+        }
+    }
     async loadGameData() {
-        await this.loadEnemyPokemon();
-        await this.loadStartingPokemon();
-        this.displayEnemy(); // Display after everything is loaded
-    }
-
-    async loadEnemyPokemon() {
-        // Fetch Pikachu specifically
-        this.enemy = await loadPokemon('/api/pokemon?name=pikachu'); // Adjust API query as necessary
+        try {
+            // Preload enemy sprite
+            this.enemy = await this.fetchPokemon('name=pikachu');
+            if (this.enemy && this.enemy.sprite) {
+                this.load.image('enemySprite', this.enemy.sprite); // Load enemy sprite
+            } else {
+                console.error('Failed to preload enemy Pokémon sprite.');
+            }
     
-        if (this.enemy && this.enemy.sprite) {
-            await preloadPokemonSprite(this, this.enemy.sprite, 'enemySprite');
-        } else {
-            console.error('Failed to load Pikachu or its sprite.');
+            // Preload player sprite
+            const playerPokemon = await this.fetchPokemon('name=bulbasaur');
+            if (playerPokemon && playerPokemon.icon) {
+                this.playerTeam.push(playerPokemon); // Add to player team
+                this.load.image('playerSprite', playerPokemon.icon); // Load player sprite
+            } else {
+                console.error('Failed to preload player Pokémon sprite.');
+            }
+    
+            // Wait for all assets to load
+            this.load.once('complete', () => {
+                console.log('All assets loaded.');
+                this.displayGameData(); // Proceed to display data after loading
+            });
+    
+            this.load.start(); // Start loading all images
+    
+        } catch (error) {
+            console.error('Error loading game data:', error);
         }
     }
     
-
-    async loadStartingPokemon() {
-        const startingPokemon = await loadPokemon('/api/pokemon?limit=1');
-        if (startingPokemon) {
-            this.playerTeam.push(startingPokemon);
-
-            // Display the Pokémon's name in the team area
-            const { width } = this.scale;
-            const slotSpacing = width / 6;
-
-            this.teamSlots = [
-                this.add.text(slotSpacing / 2, this.bottomContainerHeight / 2, startingPokemon.name, {
-                    font: '24px Arial',
-                    fill: '#ffffff',
-                }).setOrigin(0.5),
-            ];
-
-            this.teamSlots.forEach(slot => this.bottomContainer.add(slot));
-        }
+    displayGameData() {
+        this.displayEnemy();
+        this.displayPlayerTeam();
     }
 
     displayEnemy() {
@@ -90,5 +107,32 @@ export default class GameScene extends BaseScene {
             .setOrigin(0.5)
             .setDisplaySize(96, 96);
         this.topContainer.add(this.enemySprite);
+    }
+
+    displayPlayerTeam() {
+        if (this.playerTeam.length === 0) {
+            console.error('Player team is empty.');
+            return;
+        }
+
+        const { width } = this.scale;
+        const slotSpacing = width / 6;
+
+        this.playerTeam.forEach((pokemon, index) => {
+            const slotX = slotSpacing * index + slotSpacing / 2;
+
+            // Display the Pokémon sprite
+            const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, 'playerSprite')
+                .setOrigin(0.5)
+                .setDisplaySize(64, 64);
+            this.bottomContainer.add(sprite);
+
+            // Display Pokémon name below the sprite
+            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 40, pokemon.name, {
+                font: '18px Arial',
+                fill: '#ffffff',
+            }).setOrigin(0.5);
+            this.bottomContainer.add(text);
+        });
     }
 }
