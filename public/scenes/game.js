@@ -21,9 +21,6 @@ export default class GameScene extends BaseScene {
 
         const { width, height } = this.scale;
 
-        // Clear the player team before adding new Pokémon
-        this.playerTeam = []; // Clear the existing team
-
         // Set up the background, bars, and navigation buttons
         this.background = setupBackground(this, width, height);
         this.topBarHeight = 50;
@@ -73,11 +70,11 @@ export default class GameScene extends BaseScene {
                 console.error('Failed to preload enemy Pokémon sprite.');
             }
     
-            // Preload player sprite
+            // Preload player sprite (just one Pokémon for now)
             const playerPokemon = await this.fetchPokemon('name=bulbasaur');
             if (playerPokemon && playerPokemon.icon) {
                 this.playerTeam.push(playerPokemon); // Add to player team
-                this.load.image('playerSprite', playerPokemon.icon); // Load player sprite
+                this.load.image(playerPokemon.name, playerPokemon.icon); // Load the unique sprite for this Pokémon
             } else {
                 console.error('Failed to preload player Pokémon sprite.');
             }
@@ -120,32 +117,38 @@ export default class GameScene extends BaseScene {
         }
 
         const { width } = this.scale;
+        const maxSlots = 6;  // Maximum number of slots for player team
         const teamSize = this.playerTeam.length;
 
-        // Calculate the total width needed for all sprites
-        const totalWidth = 96 * teamSize + (teamSize - 1) * 20; // Increased to 96px per sprite
+        // Clear the existing team display to prevent duplication
+        // Manually remove each child (sprite and text) instead of using `removeAll()`
+        this.bottomContainer.removeAll(true);  // Use true to remove both children and event listeners
 
-        // Calculate the starting position so the team is centered
+        // Calculate the starting X position for the first slot so the team is centered
+        const slotSpacing = 20;
+        const slotWidth = 96;
+        const totalWidth = slotWidth * maxSlots + (maxSlots - 1) * slotSpacing;
         const startX = (width - totalWidth) / 2;
 
-        // Loop through the player's team and display each Pokémon
-        this.playerTeam.forEach((pokemon, index) => {
-            const slotX = startX + index * (96 + 20); // 96px sprite width + 20px spacing
-
-            // Display the Pokémon sprite with increased size
-            const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, 'playerSprite')
+        // Loop through the player's team and display each Pokémon in their respective slots
+        for (let i = 0; i < teamSize; i++) {
+            const slotX = startX + i * (slotWidth + slotSpacing);
+            const pokemon = this.playerTeam[i];
+            
+            // Display the Pokémon sprite
+            const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, pokemon.name)
                 .setOrigin(0.5)
-                .setDisplaySize(96, 96); // Increased size
+                .setDisplaySize(slotWidth, slotWidth); // Increased size for slots
             this.bottomContainer.add(sprite);
 
             // Display the Pokémon name below the sprite
             const capitalizedName = this.capitalizeName(pokemon.name);  // Capitalize the name
-            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 60, capitalizedName, { // Adjusted vertical position
+            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 60, capitalizedName, {
                 font: '20px Arial',
                 fill: '#ffffff',
             }).setOrigin(0.5);
             this.bottomContainer.add(text);
-        });
+        }
     }
 
     capitalizeName(name) {

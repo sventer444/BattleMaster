@@ -48,6 +48,7 @@ export function setupNavButtons(scene, width, height, bottomBarHeight, onRunCall
         { label: 'Map', callback: () => console.log('Map button clicked!') },
         { label: 'Bag', callback: () => console.log('Bag button clicked!') },
         { label: 'Run', callback: onRunCallback },
+        { label: 'Dev', callback: () => addPokemonToPlayerTeam(scene) },  // Added Dev button
     ];
 
     const buttonSpacing = width / (navOptions.length + 1);
@@ -61,4 +62,29 @@ export function setupNavButtons(scene, width, height, bottomBarHeight, onRunCall
             .on('pointerover', function () { this.setStyle({ fill: '#ffcc00' }); })
             .on('pointerout', function () { this.setStyle({ fill: '#ffffff' }); })
     );
+}
+
+// Function to add a Pokémon to the player’s team, up to a max of 6
+async function addPokemonToPlayerTeam(scene) {
+    if (scene.playerTeam.length >= 6) {
+        console.log('Player team is full.');
+        return;
+    }
+
+    // Select a Pokémon to add (example: Bulbasaur)
+    const newPokemon = await scene.fetchPokemon('name=charmander');
+    if (newPokemon) {
+        scene.load.image('playerSprite', newPokemon.icon); // Load new Pokémon sprite
+        
+        scene.playerTeam.push(newPokemon); // Add to player team
+        console.log(`Added ${newPokemon.name} to player team.`);
+        
+        // Reload the sprites and display the updated player team
+        scene.load.once('complete', () => {
+            scene.displayPlayerTeam(); // Update team display after loading new sprite
+        });
+        scene.load.start(); // Start loading the new sprite
+    } else {
+        console.error('Failed to add new Pokémon to team.');
+    }
 }

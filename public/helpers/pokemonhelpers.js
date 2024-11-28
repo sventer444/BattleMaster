@@ -14,8 +14,6 @@ export async function loadPokemon(apiEndpoint) {
     }
 }
 
-
-
 export async function preloadPokemonSprite(scene, spriteUrl, key) {
     if (!spriteUrl || !key) {
         console.error('Invalid sprite URL or key:', { spriteUrl, key });
