@@ -6,6 +6,7 @@ export function setupBackground(scene, width, height) {
 }
 
 export function setupBars(scene, width, height, topBarHeight, bottomBarHeight) {
+    // Create the top and bottom bars
     const topBar = scene.add.graphics();
     topBar.fillStyle(0x212121, 1);
     topBar.fillRect(0, 0, width, topBarHeight);
@@ -13,6 +14,30 @@ export function setupBars(scene, width, height, topBarHeight, bottomBarHeight) {
     const bottomBar = scene.add.graphics();
     bottomBar.fillStyle(0x212121, 1);
     bottomBar.fillRect(0, height - bottomBarHeight, width, bottomBarHeight);
+
+    // Example multipliers (6 numbers with different colors)
+    const multiplierColors = [0xff5722, 0x4caf50, 0x2196f3, 0xffeb3b, 0x9c27b0, 0xe91e63];
+    const multipliers = [1.1, 2.5, 3.0, 1.8, 2.2, 4.0];
+
+    const textStyle = {
+        font: '20px Arial',
+        color: '#ffffff',
+    };
+
+    const spacing = width / multipliers.length; // Even spacing for the numbers
+
+    // Display multipliers
+    multipliers.forEach((value, index) => {
+        scene.add.text(
+            spacing * index + spacing / 2,  // X position
+            topBarHeight / 2,               // Y position
+            value.toFixed(1),               // Text content
+            {
+                ...textStyle,
+                color: `#${multiplierColors[index].toString(16)}`,  // Dynamic color based on the index
+            }
+        ).setOrigin(0.5);
+    });
 
     return { topBar, bottomBar };
 }

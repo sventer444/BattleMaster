@@ -114,25 +114,31 @@ export default class GameScene extends BaseScene {
             console.error('Player team is empty.');
             return;
         }
-
+    
         const { width } = this.scale;
         const slotSpacing = width / 6;
-
+    
         this.playerTeam.forEach((pokemon, index) => {
             const slotX = slotSpacing * index + slotSpacing / 2;
-
+    
             // Display the Pokémon sprite
             const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, 'playerSprite')
                 .setOrigin(0.5)
                 .setDisplaySize(64, 64);
             this.bottomContainer.add(sprite);
-
-            // Display Pokémon name below the sprite
-            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 40, pokemon.name, {
+    
+            // Display the Pokémon name below the sprite
+            const capitalizedName = this.capitalizeName(pokemon.name);  // Capitalize the name
+            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 40, capitalizedName, {
                 font: '18px Arial',
                 fill: '#ffffff',
             }).setOrigin(0.5);
             this.bottomContainer.add(text);
         });
     }
+    
+    capitalizeName(name) {
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    }
+    
 }
