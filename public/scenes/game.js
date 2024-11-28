@@ -48,14 +48,16 @@ export default class GameScene extends BaseScene {
     }
 
     async loadEnemyPokemon() {
-        this.enemy = await loadPokemon('/api/pokemon?limit=1');
-
+        // Fetch Pikachu specifically
+        this.enemy = await loadPokemon('/api/pokemon?name=pikachu'); // Adjust API query as necessary
+    
         if (this.enemy && this.enemy.sprite) {
             await preloadPokemonSprite(this, this.enemy.sprite, 'enemySprite');
         } else {
-            console.error('Enemy data is missing or sprite URL is invalid.');
+            console.error('Failed to load Pikachu or its sprite.');
         }
     }
+    
 
     async loadStartingPokemon() {
         const startingPokemon = await loadPokemon('/api/pokemon?limit=1');
