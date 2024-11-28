@@ -1,6 +1,3 @@
-import Pokemon from './pokemon.js';
-
-
 export async function loadPokemon(apiEndpoint) {
     try {
         const response = await fetch(apiEndpoint);

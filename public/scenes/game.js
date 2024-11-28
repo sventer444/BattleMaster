@@ -21,6 +21,9 @@ export default class GameScene extends BaseScene {
 
         const { width, height } = this.scale;
 
+        // Clear the player team before adding new Pokémon
+        this.playerTeam = []; // Clear the existing team
+
         // Set up the background, bars, and navigation buttons
         this.background = setupBackground(this, width, height);
         this.topBarHeight = 50;
@@ -59,6 +62,7 @@ export default class GameScene extends BaseScene {
             return null;
         }
     }
+
     async loadGameData() {
         try {
             // Preload enemy sprite
@@ -90,7 +94,7 @@ export default class GameScene extends BaseScene {
             console.error('Error loading game data:', error);
         }
     }
-    
+
     displayGameData() {
         this.displayEnemy();
         this.displayPlayerTeam();
@@ -114,31 +118,37 @@ export default class GameScene extends BaseScene {
             console.error('Player team is empty.');
             return;
         }
-    
+
         const { width } = this.scale;
-        const slotSpacing = width / 6;
-    
+        const teamSize = this.playerTeam.length;
+
+        // Calculate the total width needed for all sprites
+        const totalWidth = 96 * teamSize + (teamSize - 1) * 20; // Increased to 96px per sprite
+
+        // Calculate the starting position so the team is centered
+        const startX = (width - totalWidth) / 2;
+
+        // Loop through the player's team and display each Pokémon
         this.playerTeam.forEach((pokemon, index) => {
-            const slotX = slotSpacing * index + slotSpacing / 2;
-    
-            // Display the Pokémon sprite
+            const slotX = startX + index * (96 + 20); // 96px sprite width + 20px spacing
+
+            // Display the Pokémon sprite with increased size
             const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, 'playerSprite')
                 .setOrigin(0.5)
-                .setDisplaySize(64, 64);
+                .setDisplaySize(96, 96); // Increased size
             this.bottomContainer.add(sprite);
-    
+
             // Display the Pokémon name below the sprite
             const capitalizedName = this.capitalizeName(pokemon.name);  // Capitalize the name
-            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 40, capitalizedName, {
-                font: '18px Arial',
+            const text = this.add.text(slotX, this.bottomContainerHeight / 2 + 60, capitalizedName, { // Adjusted vertical position
+                font: '20px Arial',
                 fill: '#ffffff',
             }).setOrigin(0.5);
             this.bottomContainer.add(text);
         });
     }
-    
+
     capitalizeName(name) {
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     }
-    
 }

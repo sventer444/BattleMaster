@@ -1,14 +1,48 @@
-// BaseScene.js
 export default class BaseScene extends Phaser.Scene {
     constructor(key) {
         super(key);
         // Store reusable game objects or UI components
         this.additionalGameObjects = [];
+        this.loadingCircle = null;
     }
 
     create() {
         // Attach a global resize handler
         this.scale.on('resize', this.resizeElements, this);
+        
+        // Show loading spinner when the scene starts
+        this.showLoadingCircle();
+
+        // Simulate loading process (you can remove this in real use case)
+        this.time.delayedCall(2000, this.hideLoadingCircle, [], this);
+    }
+
+    showLoadingCircle() {
+        const { width, height } = this.scale;
+
+        // Create a circle graphics object for the loading spinner
+        this.loadingCircle = this.add.graphics();
+        this.loadingCircle.lineStyle(4, 0xffffff, 1); // White circle
+        this.loadingCircle.beginPath();
+        this.loadingCircle.arc(width / 2, height / 2, 50, 0, Math.PI * 2, false);
+        this.loadingCircle.closePath();
+        this.loadingCircle.strokePath();
+
+        // Create a rotating animation for the loading spinner
+        this.tweens.add({
+            targets: this.loadingCircle,
+            angle: 360,
+            duration: 1500,
+            repeat: -1, // Infinite rotation
+            ease: 'Linear'
+        });
+    }
+
+    hideLoadingCircle() {
+        if (this.loadingCircle) {
+            this.loadingCircle.setAlpha(0); // Fade out the loading circle
+            this.time.delayedCall(500, () => this.loadingCircle.destroy(), [], this);
+        }
     }
 
     resizeElements() {
