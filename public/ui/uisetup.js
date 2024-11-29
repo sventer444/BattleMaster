@@ -15,29 +15,41 @@ export function setupBars(scene, width, height, topBarHeight, bottomBarHeight) {
     bottomBar.fillStyle(0x212121, 1);
     bottomBar.fillRect(0, height - bottomBarHeight, width, bottomBarHeight);
 
-    // Example multipliers (6 numbers with different colors)
-    const multiplierColors = [0xff5722, 0x4caf50, 0x2196f3, 0xffeb3b, 0x9c27b0, 0xe91e63];
-    const multipliers = [1.1, 2.5, 3.0, 1.8, 2.2, 4.0];
-
+    // Text style for enemy details
     const textStyle = {
-        font: '20px Arial',
+        font: '18px Arial',
         color: '#ffffff',
     };
 
-    const spacing = width / multipliers.length; // Even spacing for the numbers
+    // Display enemy name and level
+    scene.enemyNameText = scene.add.text(
+        10,  // Left-aligned with a small margin
+        topBarHeight / 2,
+        'Enemy: ??? (Lv. ??)', // Placeholder for enemy name and level
+        textStyle
+    ).setOrigin(0, 0.5); // Left alignment, vertically centered
 
-    // Display multipliers
-    multipliers.forEach((value, index) => {
-        scene.add.text(
-            spacing * index + spacing / 2,  // X position
-            topBarHeight / 2,               // Y position
-            value.toFixed(1),               // Text content
-            {
-                ...textStyle,
-                color: `#${multiplierColors[index].toString(16)}`,  // Dynamic color based on the index
-            }
-        ).setOrigin(0.5);
-    });
+    // Placeholder for health bar
+    const healthBarWidth = 200;
+    const healthBarHeight = 16;
+    const healthBarX = (width / 2) - (healthBarWidth / 2); // Centered horizontally
+    const healthBarY = (topBarHeight / 2) - (healthBarHeight / 2); // Centered vertically
+    scene.healthBarBg = scene.add.graphics();
+    scene.healthBarBg.fillStyle(0x555555, 1); // Grey background
+    scene.healthBarBg.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+    scene.healthBar = scene.add.graphics();
+    scene.healthBar.fillStyle(0xff0000, 1); // Red health
+    scene.healthBar.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+    // Placeholder for caught icon
+    const iconSize = 32;
+    scene.caughtIcon = scene.add.text(
+        width - 40, // Right-aligned with a margin
+        topBarHeight / 2,
+        '⚪', // Placeholder icon (can replace with a sprite later)
+        { font: '24px Arial', color: '#ffffff' }
+    ).setOrigin(0.5, 0.5); // Centered around its position
 
     return { topBar, bottomBar };
 }
