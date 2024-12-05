@@ -19,6 +19,9 @@ export default class GameScene extends BaseScene {
     create() {
         super.create();
     
+        // Reset the player team when the scene starts
+        this.playerTeam = [];
+    
         const { width, height } = this.scale;
     
         // Set up the background, bars, and navigation buttons
