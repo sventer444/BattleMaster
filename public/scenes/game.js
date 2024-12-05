@@ -21,6 +21,7 @@ export default class GameScene extends BaseScene {
     
         // Reset the player team when the scene starts
         this.playerTeam = [];
+        this.enemy = null;
     
         const { width, height } = this.scale;
     
@@ -126,40 +127,39 @@ export default class GameScene extends BaseScene {
     }
     
     displayGameData() {
+        console.log('Displaying game data...');
         this.displayEnemy();
         this.displayPlayerTeam();
-
+    
         // Update enemy name and level
         if (this.enemy) {
             this.updateEnemyInfo(this.enemy.name, this.enemy.level);
         }
     }
-
+    
     displayEnemy() {
         if (!this.enemy) {
             console.error('Enemy Pokémon is not loaded.');
             return;
         }
     
-        console.log('Enemy Data:', this.enemy);  // Debugging line
+        console.log('Enemy Data:', this.enemy);
     
         const { width } = this.scale;
-        
-        // Check if enemy sprite is already created
-        if (!this.enemySprite) {
-            this.enemySprite = this.add.image(width / 2, this.topContainerHeight / 2, 'enemySprite')
-                .setOrigin(0.5)
-                .setDisplaySize(96, 96);
-            this.topContainer.add(this.enemySprite);
+    
+        // Destroy the old sprite if it exists
+        if (this.enemySprite) {
+            console.log('Removing existing enemy sprite...');
+            this.enemySprite.destroy();
+            this.enemySprite = null;
         }
     
-        // Ensure the enemy has the expected structure
-        if (this.enemy.name && this.enemy.level) {
-            this.updateEnemyInfo(this.enemy.name, this.enemy.level);
-        } else {
-            console.error('Enemy does not have valid name or level:', this.enemy);
-        }
-    }    
+        console.log('Creating enemy sprite...');
+        this.enemySprite = this.add.image(width / 2, this.topContainerHeight / 2, 'enemySprite')
+            .setOrigin(0.5)
+            .setDisplaySize(96, 96);
+        this.topContainer.add(this.enemySprite);
+    }
     
     displayPlayerTeam() {
         if (this.playerTeam.length === 0) {
