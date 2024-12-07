@@ -78,11 +78,6 @@ export default class BaseScene extends Phaser.Scene {
     shutdown() {
         // Remove resize listener
         this.scale.off('resize', this.resizeElements, this);
-
-        // Clean up game objects
-        this.cleanupObjects();
-
-        super.shutdown();
     }
 
     cleanupObjects() {
@@ -101,8 +96,7 @@ export default class BaseScene extends Phaser.Scene {
     }
 
     destroy() {
-        // Ensure cleanup and destruction
-        this.shutdown();
-        super.destroy();
+        // Clean up game objects
+        this.cleanupObjects();
     }
 }

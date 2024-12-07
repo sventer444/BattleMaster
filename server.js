@@ -14,7 +14,8 @@ let pokemonCache = {};
 const preloadPokemonData = async () => {
     try {
         console.log("Preloading Pokémon data...");
-        const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=1010'); // Adjust limit for all Pokémon
+        // temporary cap to 151 for testing
+        const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151'); // Adjust limit for all Pokémon 1010
         const pokemonList = response.data.results;
 
         // Fetch detailed data for each Pokémon
