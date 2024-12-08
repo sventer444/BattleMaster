@@ -29,8 +29,8 @@ function setGameBars(scene, width, height) {
 function overlayGameUI(scene, width, height){
     displayNavButtons(scene, width, height);
     setGameContainers(scene, height);
-    displayEnemy(scene, width, height);
-    displayPlayerTeam(scene, width, height);
+    // displayEnemy(scene, width, height);
+    // displayPlayerTeam(scene, width, height);
 }
 
 function displayNavButtons(scene, width, height) {
@@ -110,7 +110,7 @@ function setGameContainers(scene, height){
         scene.bottomContainer = scene.add.container(0, topGameBarHeight + topContainerHeight);
 }
 
-function displayEnemy(scene, width, height) {
+export function displayEnemy(scene, width, height) {
     if (!scene.enemy) {
         console.warn('Enemy Pokémon is not loaded.');
         return;
@@ -145,7 +145,7 @@ function displayEnemy(scene, width, height) {
     }
 }
 
-function displayPlayerTeam(scene, width, height) {
+export function displayPlayerTeam(scene, width, height) {
     if (scene.playerTeam.length === 0) {
         console.error('Player team is empty.');
         return;

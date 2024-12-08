@@ -1,5 +1,5 @@
 import BaseScene from './base.js';
-import { initializeGameUI } from '../ui/uisetup.js';
+import { initializeGameUI, displayEnemy, displayPlayerTeam } from '../ui/uisetup.js';
 
 export default class GameScene extends BaseScene {
     constructor() {
@@ -11,14 +11,17 @@ export default class GameScene extends BaseScene {
     }
 
     preload() {
+        const { width, height } = this.scale;
+        // Set up the background, bars, and navigation buttons
+        initializeGameUI(this, width, height);
     }
 
     create() {
         super.create();
-    
         const { width, height } = this.scale;
-        // Set up the background, bars, and navigation buttons
-        initializeGameUI(this, width, height);
+    
+        displayEnemy(this, width, height);
+        displayPlayerTeam(this, width, height);
     }
 
     shutdown(){
