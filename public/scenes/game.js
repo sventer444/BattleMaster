@@ -11,84 +11,16 @@ export default class GameScene extends BaseScene {
     }
 
     preload() {
-        try {
-            this.loadGameData(); // Preload enemy and player Pokémon data
-        } catch (error) {
-            console.error('Error during preload:', error);
-        }
     }
 
     create() {
         super.create();
     
-        // Reset the player team when the scene starts
-        // this.playerTeam = [];
-        // this.enemy = null;
-    
         const { width, height } = this.scale;
-    
         // Set up the background, bars, and navigation buttons
         initializeGameUI(this, width, height);
-    
-        // Display the loaded Pokémon
-        // this.displayGameData();
     }
 
-    loadGameData() {
-        if (!this.enemy) {
-            console.warn('Enemy Pokémon not found to load');
-            return;
-        }
-        if (this.playerTeam.length === 0) {
-            console.warn('Player team is empty and will not be loaded');
-            return;
-        }
-        // TODO: Load sprites
-
-        // try {
-        //     // Preload enemy sprite
-        //     this.enemy = await this.fetchPokemon('name=pikachu');
-        //     if (this.enemy && this.enemy.sprite) {
-        //         this.load.image('enemySprite', this.enemy.sprite); // Load enemy sprite
-        //         // Ensure the enemy has both a name and level
-        //         this.enemy.level = this.enemy.level || 1; // Default to level 1 if not available
-        //     } else {
-        //         console.error('Failed to preload enemy Pokémon sprite.');
-        //     }
-    
-        //     // Preload player sprite (just one Pokémon for now)
-        //     const playerPokemon = await this.fetchPokemon('name=bulbasaur');
-        //     if (playerPokemon && playerPokemon.icon) {
-        //         this.playerTeam.push(playerPokemon); // Add to player team
-        //         this.load.image(playerPokemon.name, playerPokemon.icon); // Load the unique sprite for this Pokémon
-        //     } else {
-        //         console.error('Failed to preload player Pokémon sprite.');
-        //     }
-    
-        //     // Wait for all assets to load
-        //     this.load.once('complete', () => {
-        //         console.log('All assets loaded.');
-        //         this.displayGameData(); // Proceed to display data after loading
-        //     });
-    
-        //     this.load.start(); // Start loading all images
-    
-        // } catch (error) {
-        //     console.error('Error loading game data:', error);
-        // }
-    }
-    
-    displayGameData() {
-        console.log('Displaying game data...');
-        this.displayEnemy();
-        this.displayPlayerTeam();
-    
-        // Update enemy name and level
-        // if (this.enemy) {
-        //     this.updateEnemyInfo(this.enemy.name, this.enemy.level);
-        // }
-    }
-    
     shutdown(){
         super.shutdown();
     }

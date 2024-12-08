@@ -30,7 +30,7 @@ function overlayGameUI(scene, width, height){
     displayNavButtons(scene, width, height);
     setGameContainers(scene, height);
     displayEnemy(scene, width, height);
-    // displayPlayerTeam();
+    displayPlayerTeam(scene, width, height);
 }
 
 function displayNavButtons(scene, width, height) {
@@ -42,7 +42,11 @@ function displayNavButtons(scene, width, height) {
             scene.shutdown();
             scene.scene.start('MainMenu');
         } },
-        { label: 'Dev', callback: () => addPokemonToPlayerTeam(scene) },  // Added Dev button
+        { label: 'Dev', callback: () => {
+            addPokemonToPlayerTeam(scene);
+            displayPlayerTeam(scene, width, height);
+            }
+        },  // Added Dev button
     ];
 
     const buttonSpacing = width / (navOptions.length + 1);
@@ -141,16 +145,19 @@ function displayEnemy(scene, width, height) {
     }
 }
 
-function displayPlayerTeam() {
-    // if (this.playerTeam.length === 0) {
-    //     console.error('Player team is empty.');
-    //     return;
-    // }
-    // console.log('player team ', this.playerTeam[0]);
-    // const { width } = this.scale;
-    // const teamSize = this.playerTeam.length;
+function displayPlayerTeam(scene, width, height) {
+    if (scene.playerTeam.length === 0) {
+        console.error('Player team is empty.');
+        return;
+    }
+    const teamSize = scene.playerTeam.length;
+    // Clear existing slots in the bottom container
+    scene.bottomContainer.removeAll(true);
 
-    // this.bottomContainer.removeAll(true);
+    for (let i = 0; i < teamSize; i++) {
+        const pokemonName = scene.playerTeam[i] ? capitalizeName(scene.playerTeam[i]) : null; // Use Pokémon name if it exists
+        displayPlayerTeamSlot(scene, width, height, pokemonName, i, teamSize);
+    }
 
     // const availableWidth = width * 0.8;
     // const spriteSize = Math.min(96, availableWidth / teamSize - 10);
@@ -174,6 +181,48 @@ function displayPlayerTeam() {
     //     this.bottomContainer.add(text);
     // }
 }
+
+function displayPlayerTeamSlot(scene, width, height, pokemonName, index, totalSlots) {
+    // Calculate game area sizes
+    const topBarHeight = 50; // Example value for the top bar height
+    const bottomBarHeight = 80; // Example value for the bottom bar height
+    const gameAreaHeight = height - topBarHeight - bottomBarHeight;
+    const bottomContainerHeight = gameAreaHeight / 2;
+
+    // Slot configuration
+    const slotWidth = 120;
+    const slotHeight = 60;
+    const spacing = 20;
+
+    const totalWidth = totalSlots * (slotWidth + spacing) - spacing;
+    const startX = (width - totalWidth) / 2;
+
+    const slotX = startX + index * (slotWidth + spacing);
+    const slotY = bottomContainerHeight / 2 - slotHeight / 2;
+
+    // Add a semi-transparent rounded rectangle for the slot
+    const slotGraphics = scene.add.graphics();
+    slotGraphics.fillStyle(0x000000, 0.5); // Black with 50% transparency
+    slotGraphics.fillRoundedRect(slotX, slotY, slotWidth, slotHeight, 10); // Rounded corners with radius 10
+    scene.bottomContainer.add(slotGraphics);
+
+    // Add the Pokémon's name to the slot
+    const textStyle = {
+        font: '16px Arial',
+        color: '#ffffff',
+        align: 'center',
+    };
+
+    const nameText = scene.add.text(
+        slotX + slotWidth / 2, 
+        slotY + slotHeight / 2, 
+        pokemonName || 'Empty', 
+        textStyle
+    ).setOrigin(0.5);
+    scene.bottomContainer.add(nameText);
+
+}
+
 
 function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
@@ -204,5 +253,5 @@ async function addPokemonToPlayerTeam(scene) {
     //     console.error('Failed to add new Pokémon to team.');
     // }
 
-    scene.playerTeam.push("testpokemon");
+    scene.playerTeam.push("bulbasaur");
 }
