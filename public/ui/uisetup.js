@@ -43,7 +43,7 @@ function displayNavButtons(scene, width, height) {
             scene.scene.start('MainMenu');
         } },
         { label: 'Dev', callback: async () => {
-            addPokemonToPlayerTeam("bulbasaur");
+            await addPokemonToPlayerTeam(scene, "bulbasaur");
             scene.enemy = await fetchPokemon(scene, "pikachu");
             displayPlayerTeam(scene, width, height);
             displayEnemy(scene, width, height);
@@ -64,7 +64,7 @@ function displayNavButtons(scene, width, height) {
     );
 }
 
-function displayEnemyInfo(scene, width){
+function displayEnemyInfo(scene){
         // Text style for enemy details
         const textStyle = {
             font: '18px Arial',
@@ -131,15 +131,9 @@ export function displayEnemy(scene, width, height) {
         // }
     
         console.log('Displaying enemy sprite...');
-        // var enemySprite = scene.add.image(width / 2, this.topContainerHeight / 2, 'enemySprite')
-        //     .setOrigin(0.5)
-        //     .setDisplaySize(96, 96);
-        // scene.topContainer.add(enemySprite);
-        const textStyle = {
-            font: '18px Arial',
-            color: '#ffffff',
-        };
-        const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite).setOrigin(0.5);
+        const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite)
+        .setOrigin(0.5)
+        .setDisplaySize(96, 96);
         // const text = scene.add.text(width / 2, topContainerHeight / 2, capitalizeName(scene.enemy.name), textStyle).setOrigin(0.5);
         scene.topContainer.add(enemySprite);
     }
@@ -156,34 +150,11 @@ export function displayPlayerTeam(scene, width, height) {
     scene.bottomContainer.removeAll(true);
 
     for (let i = 0; i < teamSize; i++) {
-        const pokemonName = playerTeam[i] ? capitalizeName(playerTeam[i]) : null; // Use Pokémon name if it exists
-        displayPlayerTeamSlot(scene, width, height, pokemonName, i, teamSize);
+        displayPlayerTeamSlot(scene, width, height, playerTeam[i], i, teamSize);
     }
-
-    // const availableWidth = width * 0.8;
-    // const spriteSize = Math.min(96, availableWidth / teamSize - 10);
-    // const totalWidth = spriteSize * teamSize + (teamSize - 1) * 10;
-    // const startX = (width - totalWidth) / 2;
-
-    // for (let i = 0; i < teamSize; i++) {
-    //     const slotX = startX + i * (spriteSize + 50);
-    //     const pokemon = this.playerTeam[i];
-
-    //     const sprite = this.add.image(slotX, this.bottomContainerHeight / 2, pokemon.name)
-    //         .setOrigin(0.5)
-    //         .setDisplaySize(spriteSize, spriteSize);
-    //     this.bottomContainer.add(sprite);
-
-    //     const capitalizedName = this.capitalizeName(pokemon.name);
-    //     const text = this.add.text(slotX, this.bottomContainerHeight / 2 + spriteSize / 2 + 10, capitalizedName, {
-    //         font: '16px Arial',
-    //         fill: '#ffffff',
-    //     }).setOrigin(0.5);
-    //     this.bottomContainer.add(text);
-    // }
 }
 
-function displayPlayerTeamSlot(scene, width, height, pokemonName, index, totalSlots) {
+function displayPlayerTeamSlot(scene, width, height, pokemon, index, totalSlots) {
     // Calculate game area sizes
     const topBarHeight = 50; // Example value for the top bar height
     const bottomBarHeight = 80; // Example value for the bottom bar height
@@ -207,23 +178,20 @@ function displayPlayerTeamSlot(scene, width, height, pokemonName, index, totalSl
     slotGraphics.fillRoundedRect(slotX, slotY, slotWidth, slotHeight, 10); // Rounded corners with radius 10
     scene.bottomContainer.add(slotGraphics);
 
-    // Add the Pokémon's name to the slot
-    const textStyle = {
-        font: '16px Arial',
-        color: '#ffffff',
-        align: 'center',
-    };
+    // Calculate offset to center the Pokémon's icon visually
+    const iconHeight = 96; // Fixed display size
+    const iconYOffset = (iconHeight - slotHeight) / 2;
 
-    const nameText = scene.add.text(
+    // Add the Pokémon's icon to the slot
+    const pokemonIcon = scene.add.image(
         slotX + slotWidth / 2, 
-        slotY + slotHeight / 2, 
-        pokemonName || 'Empty', 
-        textStyle
-    ).setOrigin(0.5);
-    scene.bottomContainer.add(nameText);
-
+        slotY + slotHeight / 2 - iconYOffset, // Adjust Y offset
+        `${pokemon.name}Icon`
+    )
+    .setOrigin(0.5)
+    .setDisplaySize(96, 96); // Maintain proper size
+    scene.bottomContainer.add(pokemonIcon);
 }
-
 
 function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();

@@ -4,7 +4,7 @@ export function getPlayerTeam(){
     return playerTeam;
 }
 
-export function addPokemonToPlayerTeam(pokemon){
+export async function addPokemonToPlayerTeam(scene, pokemon){
     if (playerTeam.length >= 6) {
         console.log('Player team is full.');
         return;
@@ -27,7 +27,7 @@ export function addPokemonToPlayerTeam(pokemon){
     // } else {
     //     console.error('Failed to add new Pokémon to team.');
     // }
-
+    var pokemon = await fetchPokemon(scene, pokemon);
     playerTeam.push(pokemon);
 }
 

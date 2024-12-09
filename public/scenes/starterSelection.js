@@ -47,10 +47,10 @@ export default class StarterSelection extends BaseScene {
         });
     }
 
-    chooseStarter(starterName) {
+    async chooseStarter(starterName) {
         console.log(`Starter chosen: ${starterName}`);
         // Add to player's team
-        addPokemonToPlayerTeam(starterName);
+        await addPokemonToPlayerTeam(this.scene.get('GameScene'), starterName);
         this.scene.start('GameScene'); // Redirect to game
     }
 }
