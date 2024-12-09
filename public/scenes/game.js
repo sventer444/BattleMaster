@@ -4,9 +4,6 @@ import { initializeGameUI, displayEnemy, displayPlayerTeam } from '../ui/uisetup
 export default class GameScene extends BaseScene {
     constructor() {
         super('GameScene');
-        this.playerTeam = [
-            'bulbasaur'
-        ];
         this.enemy = 'pikachu';
     }
 

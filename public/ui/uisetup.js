@@ -1,3 +1,5 @@
+import { addPokemonToPlayerTeam, getPlayerTeam } from "../helpers/pokemonhelpers.js";
+
 const topGameBarHeight = 50;
 const bottomGameBarHeight = 80;
 
@@ -29,8 +31,6 @@ function setGameBars(scene, width, height) {
 function overlayGameUI(scene, width, height){
     displayNavButtons(scene, width, height);
     setGameContainers(scene, height);
-    // displayEnemy(scene, width, height);
-    // displayPlayerTeam(scene, width, height);
 }
 
 function displayNavButtons(scene, width, height) {
@@ -43,7 +43,7 @@ function displayNavButtons(scene, width, height) {
             scene.scene.start('MainMenu');
         } },
         { label: 'Dev', callback: () => {
-            addPokemonToPlayerTeam(scene);
+            addPokemonToPlayerTeam("bulbasaur");
             displayPlayerTeam(scene, width, height);
             }
         },  // Added Dev button
@@ -146,16 +146,17 @@ export function displayEnemy(scene, width, height) {
 }
 
 export function displayPlayerTeam(scene, width, height) {
-    if (scene.playerTeam.length === 0) {
+    var playerTeam = getPlayerTeam();
+    if (playerTeam.length === 0) {
         console.error('Player team is empty.');
         return;
     }
-    const teamSize = scene.playerTeam.length;
+    const teamSize = playerTeam.length;
     // Clear existing slots in the bottom container
     scene.bottomContainer.removeAll(true);
 
     for (let i = 0; i < teamSize; i++) {
-        const pokemonName = scene.playerTeam[i] ? capitalizeName(scene.playerTeam[i]) : null; // Use Pokémon name if it exists
+        const pokemonName = playerTeam[i] ? capitalizeName(playerTeam[i]) : null; // Use Pokémon name if it exists
         displayPlayerTeamSlot(scene, width, height, pokemonName, i, teamSize);
     }
 
@@ -228,30 +229,3 @@ function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-// Function to add a Pokémon to the player’s team, up to a max of 6
-async function addPokemonToPlayerTeam(scene) {
-    if (scene.playerTeam.length >= 6) {
-        console.log('Player team is full.');
-        return;
-    }
-
-    // Fetch the Pokémon data
-    // const newPokemon = await scene.fetchPokemon('name=charmander');
-    // if (newPokemon) {
-    //     const spriteKey = newPokemon.name; // Use Pokémon name as key
-    //     scene.load.image(spriteKey, newPokemon.icon); // Load sprite with name as key
-
-    //     scene.playerTeam.push(newPokemon); // Add Pokémon to the team
-    //     console.log(`Added ${newPokemon.name} to player team.`);
-
-    //     // Ensure sprite is displayed after loading
-    //     scene.load.once('complete', () => {
-    //         scene.displayPlayerTeam(); // Update the display
-    //     });
-    //     scene.load.start(); // Start the loading process
-    // } else {
-    //     console.error('Failed to add new Pokémon to team.');
-    // }
-
-    scene.playerTeam.push("bulbasaur");
-}

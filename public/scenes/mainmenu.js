@@ -1,5 +1,6 @@
 import BaseScene from './base.js';
 import UIManager from '../ui/uimanager.js'; // Import the UIManager
+import { getPlayerTeam } from '../helpers/pokemonhelpers.js';
 
 export default class MainMenu extends BaseScene {
     constructor() {
@@ -47,8 +48,7 @@ export default class MainMenu extends BaseScene {
 
         // Create the Play button
         this.playButton = UIManager.createButton(this, width / 2, startY, 'Play', () => {
-            this.scene.stop('MainMenu');
-            this.scene.start('GameScene');
+            startGame(this);
         }, width, height);
         this.playButton.originalY = startY; // Store original Y for resizing
 
@@ -76,5 +76,16 @@ export default class MainMenu extends BaseScene {
             this.additionalGameObjects.forEach((obj) => obj.destroy());
         }
         this.additionalGameObjects = null;
+    }
+}
+
+function startGame(scene) {
+
+    if (getPlayerTeam().length === 0) {
+        // Redirect to StarterSelection if no starter chosen
+        scene.scene.start('StarterSelection');
+    } else {
+        // Start GameScene directly if starter exists
+        scene.scene.start('GameScene');
     }
 }
