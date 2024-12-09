@@ -1,4 +1,4 @@
-import { addPokemonToPlayerTeam, getPlayerTeam } from "../helpers/pokemonhelpers.js";
+import { addPokemonToPlayerTeam, getPlayerTeam, fetchPokemon } from "../helpers/pokemonhelpers.js";
 
 const topGameBarHeight = 50;
 const bottomGameBarHeight = 80;
@@ -42,9 +42,11 @@ function displayNavButtons(scene, width, height) {
             scene.shutdown();
             scene.scene.start('MainMenu');
         } },
-        { label: 'Dev', callback: () => {
+        { label: 'Dev', callback: async () => {
             addPokemonToPlayerTeam("bulbasaur");
+            scene.enemy = await fetchPokemon(scene, "pikachu");
             displayPlayerTeam(scene, width, height);
+            displayEnemy(scene, width, height);
             }
         },  // Added Dev button
     ];
@@ -73,7 +75,7 @@ function displayEnemyInfo(scene, width){
         scene.enemyNameText = scene.add.text(
             40,  // Left-aligned with a small margin
             topGameBarHeight / 2,
-            capitalizeName(scene.enemy), // Placeholder for enemy name and level
+            capitalizeName(scene.enemy.name), // Placeholder for enemy name and level
             textStyle
         ).setOrigin(0, 0.5); // Left alignment, vertically centered
 
@@ -117,8 +119,6 @@ export function displayEnemy(scene, width, height) {
     }
     else {
         displayEnemyInfo(scene, width);
-        // TODO: Display enemy sprite
-        // const { width } = this.scale;
         // Calculate game area sizes
         var gameAreaHeight = height - topGameBarHeight - bottomGameBarHeight
         var topContainerHeight = gameAreaHeight / 2;
@@ -139,9 +139,9 @@ export function displayEnemy(scene, width, height) {
             font: '18px Arial',
             color: '#ffffff',
         };
-
-        const text = scene.add.text(width / 2, topContainerHeight / 2, capitalizeName(scene.enemy), textStyle).setOrigin(0.5);
-        scene.topContainer.add(text);
+        const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite).setOrigin(0.5);
+        // const text = scene.add.text(width / 2, topContainerHeight / 2, capitalizeName(scene.enemy.name), textStyle).setOrigin(0.5);
+        scene.topContainer.add(enemySprite);
     }
 }
 

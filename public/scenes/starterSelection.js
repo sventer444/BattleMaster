@@ -7,10 +7,6 @@ export default class StarterSelection extends BaseScene {
     }
 
     preload() {
-        // Preload starter Pokémon icons
-        this.load.image('bulbasaur', 'path_to_bulbasaur_icon.png');
-        this.load.image('charmander', 'path_to_charmander_icon.png');
-        this.load.image('squirtle', 'path_to_squirtle_icon.png');
     }
 
     create() {

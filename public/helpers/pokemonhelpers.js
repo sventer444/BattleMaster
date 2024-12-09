@@ -31,6 +31,39 @@ export function addPokemonToPlayerTeam(pokemon){
     playerTeam.push(pokemon);
 }
 
+export async function fetchPokemon(scene, pokemonName) {
+        try {
+            const response = await fetch(`/api/pokemon?name=${pokemonName}`);
+            if (!response.ok) {
+                console.error(`Failed to fetch Pokémon. Status: ${response.status}, Query: ${pokemonName}`);
+                return null;
+            }
+    
+            const data = await response.json();
+            if (data.length > 0){
+                var pokemon = data[0];
+                // Preload the Pokémon's sprite and Gen VIII icon
+                if (pokemon.sprite) {
+                    await preloadPokemonSprite(scene, pokemon.sprite, `${pokemon.name}Sprite`);
+                } else {
+                    console.warn(`Sprite not found for Pokémon: ${pokemonName}`);
+                }
+
+                if (pokemon.icon) {
+                    await preloadPokemonSprite(scene, pokemon.icon, `${pokemon.name}Icon`);
+                } else {
+                    console.warn(`Gen VIII Icon not found for Pokémon: ${pokemonName}`);
+                }
+                 return pokemon; // Return the first Pokémon
+            }
+            console.warn(`No data returned for query: ${pokemonName}`);
+            return null;
+        } catch (error) {
+            console.error(`Error fetching Pokémon data for query: ${pokemonName}`, error);
+            return null;
+        }
+}
+
 // export async function loadPokemon(apiEndpoint) {
 //     try {
 //         const response = await fetch(apiEndpoint);
@@ -47,16 +80,16 @@ export function addPokemonToPlayerTeam(pokemon){
 //     }
 // }
 
-// export async function preloadPokemonSprite(scene, spriteUrl, key) {
-//     if (!spriteUrl || !key) {
-//         console.error('Invalid sprite URL or key:', { spriteUrl, key });
-//         return;
-//     }
+async function preloadPokemonSprite(scene, spriteUrl, key) {
+    if (!spriteUrl || !key) {
+        console.error('Invalid sprite URL or key:', { spriteUrl, key });
+        return;
+    }
 
-//     scene.load.image(key, spriteUrl);
-//     await new Promise(resolve => {
-//         scene.load.once('complete', resolve);
-//         scene.load.start();
-//     });
-// }
+    scene.load.image(key, spriteUrl);
+    await new Promise(resolve => {
+        scene.load.once('complete', resolve);
+        scene.load.start();
+    });
+}
 

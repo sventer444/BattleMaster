@@ -4,7 +4,7 @@ import { initializeGameUI, displayEnemy, displayPlayerTeam } from '../ui/uisetup
 export default class GameScene extends BaseScene {
     constructor() {
         super('GameScene');
-        this.enemy = 'pikachu';
+        this.enemy = null;
     }
 
     preload() {
@@ -100,20 +100,3 @@ export default class GameScene extends BaseScene {
     //     ).setOrigin(0.5, 0.5);
     // }
 
-    // async fetchPokemon(query) {
-    //     try {
-    //         const response = await fetch(`/api/pokemon?${query}`);
-    //         if (!response.ok) {
-    //             console.error(`Failed to fetch Pokémon. Status: ${response.status}, Query: ${query}`);
-    //             return null;
-    //         }
-    
-    //         const data = await response.json();
-    //         if (data.length > 0) return data[0]; // Return the first Pokémon
-    //         console.warn(`No data returned for query: ${query}`);
-    //         return null;
-    //     } catch (error) {
-    //         console.error(`Error fetching Pokémon data for query: ${query}`, error);
-    //         return null;
-    //     }
-    // }
