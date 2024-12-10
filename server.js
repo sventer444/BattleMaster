@@ -11,6 +11,7 @@ app.use(express.static('public'));
 let pokemonCache = {};
 
 // Function to preload all Pokémon data into cache
+// Function to preload all Pokémon data into cache
 const preloadPokemonData = async () => {
     try {
         console.log("Preloading Pokémon data...");
@@ -23,6 +24,20 @@ const preloadPokemonData = async () => {
             const detailResponse = await axios.get(pokemon.url);
             const detail = detailResponse.data;
 
+            // Calculate initial stats
+            const baseStats = detail.stats.map((stat) => ({
+                name: stat.stat.name,
+                base: stat.base_stat,
+            }));
+
+            // Calculate total HP (based on Pokémon base HP and example level logic)
+            const initialLevel = 5; // Default level for a new Pokémon
+            const baseHP = baseStats.find((stat) => stat.name === 'hp').base;
+            const totalHP = Math.floor((2 * baseHP * initialLevel) / 100 + initialLevel + 10);
+            
+            // Initialize current HP to total HP
+            const currentHP = totalHP;
+
             // Store in cache with both name and ID as keys
             const formattedData = {
                 id: detail.id,
@@ -32,9 +47,13 @@ const preloadPokemonData = async () => {
                 abilities: detail.abilities,
                 base_experience: detail.base_experience,
                 order: detail.order,
-                stats: detail.stats,
+                stats: baseStats, // Store stats as { name, base }
                 types: detail.types,
+                level: initialLevel, // Default starting level
+                currentHP: currentHP, // Starting current HP
+                totalHP: totalHP, // Starting total HP
             };
+
             pokemonCache[detail.id] = formattedData; // Use ID as key
             pokemonCache[detail.name.toLowerCase()] = formattedData; // Use name as key (case-insensitive)
         });

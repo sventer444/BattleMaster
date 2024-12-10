@@ -64,42 +64,61 @@ function displayNavButtons(scene, width, height) {
     );
 }
 
-function displayEnemyInfo(scene){
-        // Text style for enemy details
-        const textStyle = {
-            font: '18px Arial',
-            color: '#ffffff',
-        };
+function displayEnemyInfo(scene, width) {
+    // Text style for enemy details
+    const textStyle = {
+        font: '18px Arial',
+        color: '#ffffff',
+    };
 
-        // Display enemy name and level
-        scene.enemyNameText = scene.add.text(
-            40,  // Left-aligned with a small margin
-            topGameBarHeight / 2,
-            capitalizeName(scene.enemy.name), // Placeholder for enemy name and level
-            textStyle
-        ).setOrigin(0, 0.5); // Left alignment, vertically centered
+    // Display enemy name and level
+    const enemyNameAndLevel = `${capitalizeName(scene.enemy.name)} Lv.${scene.enemy.level}`;
+    scene.enemyNameText = scene.add.text(
+        40, // Left-aligned with a small margin
+        topGameBarHeight / 2,
+        enemyNameAndLevel,
+        textStyle
+    ).setOrigin(0, 0.5); // Left alignment, vertically centered
 
-        // Placeholder for health bar
-        // const healthBarWidth = 200;
-        // const healthBarHeight = 16;
-        // const healthBarX = (width / 2) - (healthBarWidth / 2); // Centered horizontally
-        // const healthBarY = (topGameBarHeight / 2) - (healthBarHeight / 2); // Centered vertically
-        // scene.healthBarBg = scene.add.graphics();
-        // scene.healthBarBg.fillStyle(0x555555, 1); // Grey background
-        // scene.healthBarBg.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+    // Placeholder for health bar
+    const healthBarWidth = 200;
+    const healthBarHeight = 16;
+    const healthBarX = (width / 2) - (healthBarWidth / 2); // Centered horizontally
+    const healthBarY = (topGameBarHeight / 2) - (healthBarHeight / 2); // Centered vertically
 
-        // scene.healthBar = scene.add.graphics();
-        // scene.healthBar.fillStyle(0xff0000, 1); // Red health
-        // scene.healthBar.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+    // Grey background for health bar
+    scene.healthBarBg = scene.add.graphics();
+    scene.healthBarBg.fillStyle(0x555555, 1);
+    scene.healthBarBg.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
-        // Placeholder for caught icon
-        // const iconSize = 32;
-        // scene.caughtIcon = scene.add.text(
-        //     width - 40, // Right-aligned with a margin
-        //     topGameBarHeight / 2,
-        //     '⚪', // Placeholder icon (can replace with a sprite later)
-        //     { font: '24px Arial', color: '#ffffff' }
-        // ).setOrigin(0.5, 0.5); // Centered around its position
+    // Red health bar
+    scene.healthBar = scene.add.graphics();
+    const healthPercentage = scene.enemy.currentHealth / scene.enemy.totalHealth; // Example health calculation
+    scene.healthBar.fillStyle(0xff0000, 1);
+    scene.healthBar.fillRect(
+        healthBarX,
+        healthBarY,
+        healthBarWidth * healthPercentage,
+        healthBarHeight
+    );
+
+    // Display remaining/total health to the right of the health bar
+    const healthText = `${scene.enemy.currentHP}/${scene.enemy.totalHP}`;
+    scene.healthText = scene.add.text(
+        healthBarX + healthBarWidth + 10, // Slightly to the right of the health bar
+        topGameBarHeight / 2,
+        healthText,
+        textStyle
+    ).setOrigin(0, 0.5); // Left alignment, vertically centered
+
+    // Placeholder for caught icon
+    const iconSize = 32;
+    scene.caughtIcon = scene.add.text(
+        width - 40, // Right-aligned with a margin
+        topGameBarHeight / 2,
+        '⚪', // Placeholder icon (can replace with a sprite later)
+        { font: '24px Arial', color: '#ffffff' }
+    ).setOrigin(0.5, 0.5); // Centered around its position
 }
 
 function setGameContainers(scene, height){
