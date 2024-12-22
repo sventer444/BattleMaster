@@ -35,7 +35,8 @@ function overlayGameUI(scene, width, height){
 
 function displayNavButtons(scene, width, height) {
     const navOptions = [
-        { label: 'Fight', callback: () => console.log('Fight button clicked!') },
+        { label: 'Fight', callback: () => {
+            handleEnemyAttack(scene) } },
         { label: 'Map', callback: () => {
             scene.shutdown();
             scene.scene.start('Map');
@@ -50,7 +51,6 @@ function displayNavButtons(scene, width, height) {
         } },
         { label: 'Dev', callback: async () => {
             await addPokemonToPlayerTeam(scene, "bulbasaur");
-            scene.enemy = null;
             scene.create();
             }
         },  // Added Dev button
@@ -283,3 +283,95 @@ function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
+function handleEnemyAttack(scene) {
+    if (!scene.enemy || !scene.playerTeam || scene.playerTeam.length === 0) {
+        console.warn('No enemy or player Pokémon available.');
+        return;
+    }
+
+    const enemy = scene.enemy;
+    const playerPokemon = scene.playerTeam[0]; // Front Pokémon in the player's team
+
+    // Base damage calculation
+    const basePower = 50;
+
+    // Use the higher of attack or special attack
+    const enemyAttack =
+        enemy.stats.attack > enemy.stats.specialAttack
+            ? enemy.stats.attack
+            : enemy.stats.specialAttack;
+
+    // Use the higher of defense or special defense
+    const playerDefense =
+        playerPokemon.stats.defense > playerPokemon.stats.specialDefense
+            ? playerPokemon.stats.defense
+            : playerPokemon.stats.specialDefense;
+
+    // The move always has the type multiplier
+    const typeMatchMultiplier = 1.5;
+
+    // Implement type matchup of player Pokémon types vs. enemy's move type
+    const typeEffectiveness = calculateTypeEffectiveness(
+        enemy.types[0],
+        playerPokemon.types
+    );
+
+    // Calculate damage
+    const damage = Math.floor(
+        (basePower * (enemyAttack / playerDefense) * typeMatchMultiplier * typeEffectiveness) / 2
+    );
+
+    // Apply damage to player's Pokémon
+    playerPokemon.currentStats.currentHP -= damage;
+    console.log(
+        `${enemy.name} dealt ${damage} damage to ${playerPokemon.name}. Remaining HP: ${playerPokemon.currentStats.currentHP}`
+    );
+
+    // Check if player's Pokémon fainted
+    if (playerPokemon.currentStats.currentHP <= 0) {
+        console.log(`${playerPokemon.name} fainted!`);
+        playerPokemon.currentStats.currentHP = 0;
+
+        // Mark Pokémon as fainted but don't remove it from the team
+        playerPokemon.fainted = true;
+
+        // Check if all Pokémon have fainted
+        const allFainted = scene.playerTeam.every(pokemon => pokemon.fainted);
+        if (allFainted) {
+            console.log('All Pokémon fainted! Game Over.');
+            scene.shutdown();
+            scene.scene.start('MainMenu');
+        } else {
+            console.log('Switching to the next Pokémon.');
+            // Automatically select the next available Pokémon
+            const nextPokemon = scene.playerTeam.find(pokemon => !pokemon.fainted);
+            if (nextPokemon) {
+                console.log(`Next Pokémon: ${nextPokemon.name} enters the battle.`);
+            }
+        }
+    }
+}
+
+/**
+ * Calculates type effectiveness multiplier.
+ * @param {string} moveType - The type of the move being used.
+ * @param {Array<string>} targetTypes - The types of the target Pokémon.
+ * @returns {number} - The effectiveness multiplier (e.g., 0.5, 1, 2).
+ */
+function calculateTypeEffectiveness(moveType, targetTypes) {
+    const typeChart = {
+        normal: { rock: 0.5, ghost: 0, steel: 0.5 },
+        fire: { grass: 2, water: 0.5, rock: 0.5, bug: 2, steel: 2, ice: 2, dragon: 0.5 },
+        water: { fire: 2, water: 0.5, grass: 0.5, ground: 2, rock: 2, dragon: 0.5 },
+        // Add other types as needed...
+    };
+
+    let multiplier = 1;
+    for (const targetType of targetTypes) {
+        if (typeChart[moveType] && typeChart[moveType][targetType] !== undefined) {
+            multiplier *= typeChart[moveType][targetType];
+        }
+    }
+
+    return multiplier;
+}

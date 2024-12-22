@@ -4,32 +4,30 @@ const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Serve static files from the public directory
 app.use(express.static('public'));
+app.use(express.json()); // To parse JSON bodies
 
 // In-memory cache for Pokémon data
 let pokemonCache = {};
+// In-memory cache for player data
+let playerDataCache = {};
 
-// Function to preload all Pokémon data into cache
+// Preload Pokémon data (same as before)
 const preloadPokemonData = async () => {
     try {
         console.log("Preloading Pokémon data...");
-        // Temporary cap to 151 for testing
-        const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151'); // Adjust limit for all Pokémon 1010
+        const response = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151');
         const pokemonList = response.data.results;
 
-        // Fetch detailed data for each Pokémon
         const detailedDataPromises = pokemonList.map(async (pokemon) => {
             const detailResponse = await axios.get(pokemon.url);
             const detail = detailResponse.data;
 
-            // Base stats
             const baseStats = detail.stats.reduce((acc, stat) => {
                 acc[stat.stat.name] = stat.base_stat;
                 return acc;
             }, {});
 
-            // Store in cache with both name and ID as keys
             const formattedData = {
                 id: detail.id,
                 name: detail.name,
@@ -39,11 +37,11 @@ const preloadPokemonData = async () => {
                 base_experience: detail.base_experience,
                 order: detail.order,
                 types: detail.types,
-                baseStats: baseStats, // Store base stats
+                baseStats: baseStats,
             };
 
-            pokemonCache[detail.id] = formattedData; // Use ID as key
-            pokemonCache[detail.name.toLowerCase()] = formattedData; // Use name as key (case-insensitive)
+            pokemonCache[detail.id] = formattedData;
+            pokemonCache[detail.name.toLowerCase()] = formattedData;
         });
 
         await Promise.all(detailedDataPromises);
@@ -53,31 +51,100 @@ const preloadPokemonData = async () => {
     }
 };
 
-// API route to fetch Pokémon data
+// API route to fetch Pokémon data (same as before)
 app.get('/api/pokemon', async (req, res) => {
     try {
         const { name, id } = req.query;
-
-        if (pokemonCache.length === 0) {
-            console.error('Server cache is empty. Pokémon data not preloaded.');
-            return res.status(500).send('Pokémon data not preloaded.');
-        }
-
         const queryKey = name?.toLowerCase() || id;
-
-        const pokemon = pokemonCache[queryKey]; // Query cache using name (lowercased) or id
+        const pokemon = pokemonCache[queryKey];
 
         if (pokemon) {
-            console.log(`Returning Pokémon for query: ${queryKey}`, pokemon);
-            return res.json([pokemon]); // Return as an array for consistency
+            return res.json([pokemon]);
         } else {
-            console.warn(`No Pokémon found for query: ${queryKey}. Current cache:`, pokemonCache);
             return res.status(404).send('Pokémon not found.');
         }
     } catch (error) {
-        console.error('Error handling Pokémon API request:', error);
         res.status(500).send('Internal server error.');
     }
+});
+
+// API route to get player data
+app.get('/api/player/:playerId', (req, res) => {
+    const { playerId } = req.params;
+    const playerData = playerDataCache[playerId];
+
+    if (playerData) {
+        return res.json(playerData);
+    } else {
+        return res.status(404).send('Player data not found.');
+    }
+});
+
+// API route to update player team
+app.post('/api/player/:playerId/team', (req, res) => {
+    const { playerId } = req.params;
+    const { team } = req.body;
+
+    if (!Array.isArray(team)) {
+        return res.status(400).send('Team must be an array.');
+    }
+
+    if (!playerDataCache[playerId]) {
+        playerDataCache[playerId] = {}; // Create new player data if not exists
+    }
+
+    playerDataCache[playerId].team = team;
+    return res.status(200).send('Player team updated.');
+});
+
+// API route to add Pokémon to the Pokédex
+app.post('/api/player/:playerId/pokedex', (req, res) => {
+    const { playerId } = req.params;
+    const { pokemonId } = req.body;
+
+    if (!pokemonId) {
+        return res.status(400).send('Pokémon ID is required.');
+    }
+
+    if (!playerDataCache[playerId]) {
+        playerDataCache[playerId] = {}; // Create new player data if not exists
+    }
+
+    const player = playerDataCache[playerId];
+    if (!player.pokedex) {
+        player.pokedex = [];
+    }
+
+    if (!player.pokedex.includes(pokemonId)) {
+        player.pokedex.push(pokemonId);
+    }
+
+    return res.status(200).send('Pokémon added to Pokédex.');
+});
+
+// API route to add unlocked route
+app.post('/api/player/:playerId/routes', (req, res) => {
+    const { playerId } = req.params;
+    const { route } = req.body;
+
+    if (!route) {
+        return res.status(400).send('Route is required.');
+    }
+
+    if (!playerDataCache[playerId]) {
+        playerDataCache[playerId] = {}; // Create new player data if not exists
+    }
+
+    const player = playerDataCache[playerId];
+    if (!player.unlockedRoutes) {
+        player.unlockedRoutes = [];
+    }
+
+    if (!player.unlockedRoutes.includes(route)) {
+        player.unlockedRoutes.push(route);
+    }
+
+    return res.status(200).send('Route unlocked.');
 });
 
 // Start the server and preload data

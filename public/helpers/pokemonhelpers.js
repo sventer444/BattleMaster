@@ -115,21 +115,6 @@ export async function getPokemonByEncounterRate(scene, pool) {
     console.error('Failed to select a Pokémon from the pool.');
     return null;
 }
-// export async function loadPokemon(apiEndpoint) {
-//     try {
-//         const response = await fetch(apiEndpoint);
-//         const data = await response.json();
-        
-//         if (!Array.isArray(data)) {
-//             throw new Error('Unexpected API response format. Expected an array.');
-//         }
-
-//         return data[0]; // Always return the first Pokémon (for name queries)
-//     } catch (error) {
-//         console.error('Error fetching Pokémon:', error);
-//         return null;
-//     }
-// }
 
 async function preloadPokemonSprite(scene, spriteUrl, key) {
     if (!spriteUrl || !key) {
