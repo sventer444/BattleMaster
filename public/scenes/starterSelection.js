@@ -48,9 +48,8 @@ export default class StarterSelection extends BaseScene {
     }
 
     async chooseStarter(starterName) {
-        console.log(`Starter chosen: ${starterName}`);
         // Add to player's team
-        await addPokemonToPlayerTeam(this.scene.get('GameScene'), starterName);
-        this.scene.start('GameScene'); // Redirect to game
+        await addPokemonToPlayerTeam(this, starterName);
+        this.scene.start('KantoRoute1'); // Redirect to game
     }
 }

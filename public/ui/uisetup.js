@@ -36,8 +36,14 @@ function overlayGameUI(scene, width, height){
 function displayNavButtons(scene, width, height) {
     const navOptions = [
         { label: 'Fight', callback: () => console.log('Fight button clicked!') },
-        { label: 'Map', callback: () => console.log('Map button clicked!') },
-        { label: 'Bag', callback: () => console.log('Bag button clicked!') },
+        { label: 'Map', callback: () => {
+            scene.shutdown();
+            scene.scene.start('Map');
+        } },
+        { label: 'Bag', callback: () => {
+            scene.shutdown();
+            scene.scene.start('Bag');
+        } },
         { label: 'Run', callback: () => {
             scene.shutdown();
             scene.scene.start('MainMenu');
@@ -72,7 +78,7 @@ function displayEnemyInfo(scene, width) {
     };
 
     // Display enemy name and level
-    const enemyNameAndLevel = `${capitalizeName(scene.enemy.name)} Lv.${scene.enemy.level}`;
+    const enemyNameAndLevel = `${capitalizeName(scene.enemy.name)} Lv.${scene.enemy.currentStats.level}`;
     scene.enemyNameText = scene.add.text(
         40, // Left-aligned with a small margin
         topGameBarHeight / 2,
@@ -93,7 +99,7 @@ function displayEnemyInfo(scene, width) {
 
     // Red health bar
     scene.healthBar = scene.add.graphics();
-    const healthPercentage = scene.enemy.currentHealth / scene.enemy.totalHealth; // Example health calculation
+    const healthPercentage = scene.enemy.currentStats.currentHp / scene.enemy.currentStats.hp; // Example health calculation
     scene.healthBar.fillStyle(0xff0000, 1);
     scene.healthBar.fillRect(
         healthBarX,
@@ -103,7 +109,7 @@ function displayEnemyInfo(scene, width) {
     );
 
     // Display remaining/total health to the right of the health bar
-    const healthText = `${scene.enemy.currentHP}/${scene.enemy.totalHP}`;
+    const healthText = `${scene.enemy.currentStats.currentHp}/${scene.enemy.currentStats.hp}`;
     scene.healthText = scene.add.text(
         healthBarX + healthBarWidth + 10, // Slightly to the right of the health bar
         topGameBarHeight / 2,

@@ -2,8 +2,8 @@ import BaseScene from './base.js';
 import { initializeGameUI, displayEnemy, displayPlayerTeam } from '../ui/uisetup.js';
 
 export default class GameScene extends BaseScene {
-    constructor() {
-        super('GameScene');
+    constructor(key) {
+        super(key);
         this.enemy = null;
     }
 
@@ -22,6 +22,7 @@ export default class GameScene extends BaseScene {
     }
 
     shutdown(){
+        this.enemy = null;
         super.shutdown();
     }
 }

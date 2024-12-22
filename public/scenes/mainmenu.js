@@ -54,13 +54,13 @@ export default class MainMenu extends BaseScene {
 
         // Create the Pokedex button with a vertical offset from the Play button
         this.pokedexButton = UIManager.createButton(this, width / 2, startY + 60, 'Pokedex', () => {
-            console.log('Pokedex button clicked!');
+            this.scene.start('Pokedex');
         }, width, height);
         this.pokedexButton.originalY = startY + 60;
 
         // Create the Trainer button with a vertical offset from the Pokedex button
         this.trainerButton = UIManager.createButton(this, width / 2, startY + 120, 'Trainer', () => {
-            console.log('Trainer button clicked!');
+            this.scene.start('Trainer');
         }, width, height);
         this.trainerButton.originalY = startY + 120;
 
@@ -86,6 +86,6 @@ function startGame(scene) {
         scene.scene.start('StarterSelection');
     } else {
         // Start GameScene directly if starter exists
-        scene.scene.start('GameScene');
+        scene.scene.start('KantoRoute1');
     }
 }

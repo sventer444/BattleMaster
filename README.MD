@@ -1,15 +1,11 @@
 ### Darkest Day Simulator
 
 
-
-##### sprites
-https://www.spriters-resource.com/ds_dsi/pokemonheartgoldsoulsilver/sheet/28243/
-
 #### TODO
 
 
 
-### Recc Strategy
+### Recommended Strategy
 1. Understand Copyright & Fair Use
 
 Pokémon assets, such as sprites, are owned by The Pokémon Company. To use them:
