@@ -69,6 +69,48 @@ function displayNavButtons(scene, width, height) {
     );
 }
 
+export function displayEnemy(scene, width, height) {
+    if (!scene.enemy) {
+        console.warn('Enemy Pokémon is not loaded.');
+        return;
+    }
+    
+    // Calculate game area sizes
+    var gameAreaHeight = height - topGameBarHeight - bottomGameBarHeight;
+    var topContainerHeight = gameAreaHeight / 2;
+
+    // Destroy the old sprite if it exists
+    if (scene.enemySprite) {
+        console.log('Removing existing enemy sprite...');
+        scene.enemySprite.destroy();
+        scene.enemySprite = null;
+    }
+
+    console.log('Displaying enemy sprite...');
+    // Create and display the new enemy sprite
+    const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite)
+        .setOrigin(0.5)
+        .setDisplaySize(96, 96)
+        .setAlpha(0)  // Start with 0 alpha (invisible)
+        .setScale(0.5); // Start with a smaller scale for the zoom-in effect
+
+    // Tween for fade-in and scale-up effect
+    scene.tweens.add({
+        targets: enemySprite,
+        alpha: 1,  // Fade to full opacity
+        scale: 1,  // Scale to original size
+        duration: 500,  // Duration of the animation in ms
+        ease: 'Power2',  // Easing function for smooth animation
+    });
+
+    // Store the new sprite in the scene for future reference
+    scene.enemySprite = enemySprite;
+    scene.topContainer.add(enemySprite);
+
+    // Call the function to display enemy info with animation
+    displayEnemyInfo(scene, width);
+}
+
 function displayEnemyInfo(scene, width) {
     // Clear old enemy info if it exists
     if (scene.enemyNameText) {
@@ -107,6 +149,14 @@ function displayEnemyInfo(scene, width) {
         textStyle
     ).setOrigin(0, 0.5); // Left alignment, vertically centered
 
+    // Tween for fade-in effect for text
+    scene.tweens.add({
+        targets: scene.enemyNameText,
+        alpha: 1,  // Fade in the text
+        duration: 500,  // Duration of the animation in ms
+        ease: 'Power2',  // Easing function for smooth animation
+    });
+
     // Placeholder for health bar
     const healthBarWidth = 200;
     const healthBarHeight = 16;
@@ -138,6 +188,14 @@ function displayEnemyInfo(scene, width) {
         textStyle
     ).setOrigin(0, 0.5); // Left alignment, vertically centered
 
+    // Tween for fade-in effect for health text
+    scene.tweens.add({
+        targets: scene.healthText,
+        alpha: 1,  // Fade in the health text
+        duration: 500,  // Duration of the animation in ms
+        ease: 'Power2',  // Easing function for smooth animation
+    });
+
     // Placeholder for caught icon
     const iconSize = 32;
     scene.caughtIcon = scene.add.text(
@@ -146,6 +204,14 @@ function displayEnemyInfo(scene, width) {
         '⚪', // Placeholder icon (can replace with a sprite later)
         { font: '24px Arial', color: '#ffffff' }
     ).setOrigin(0.5, 0.5); // Centered around its position
+
+    // Tween for fade-in effect for caught icon
+    scene.tweens.add({
+        targets: scene.caughtIcon,
+        alpha: 1,  // Fade in the icon
+        duration: 500,  // Duration of the animation in ms
+        ease: 'Power2',  // Easing function for smooth animation
+    });
 }
 
 function setGameContainers(scene, height){
@@ -156,38 +222,6 @@ function setGameContainers(scene, height){
         // Enemy and Team Containers
         scene.topContainer = scene.add.container(0, topGameBarHeight);
         scene.bottomContainer = scene.add.container(0, topGameBarHeight + topContainerHeight);
-}
-
-export function displayEnemy(scene, width, height) {
-    if (!scene.enemy) {
-        console.warn('Enemy Pokémon is not loaded.');
-        return;
-    }
-    
-    displayEnemyInfo(scene, width);
-    // Calculate game area sizes
-    var gameAreaHeight = height - topGameBarHeight - bottomGameBarHeight;
-    var topContainerHeight = gameAreaHeight / 2;
-
-    // Destroy the old sprite if it exists
-    if (scene.enemySprite) {
-        console.log('Removing existing enemy sprite...');
-        scene.enemySprite.destroy();
-        scene.enemySprite = null;
-    }
-
-    console.log('Displaying enemy sprite...');
-    // Create and display the new enemy sprite
-    const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite)
-        .setOrigin(0.5)
-        .setDisplaySize(96, 96);
-    
-    // Optionally, add text or other data here if needed
-    // const text = scene.add.text(width / 2, topContainerHeight / 2, capitalizeName(scene.enemy.name), textStyle).setOrigin(0.5);
-    
-    // Store the new sprite in the scene for future reference
-    scene.enemySprite = enemySprite;
-    scene.topContainer.add(enemySprite);
 }
 
 
