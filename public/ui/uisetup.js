@@ -50,9 +50,8 @@ function displayNavButtons(scene, width, height) {
         } },
         { label: 'Dev', callback: async () => {
             await addPokemonToPlayerTeam(scene, "bulbasaur");
-            scene.enemy = await fetchPokemon(scene, "pikachu");
-            displayPlayerTeam(scene, width, height);
-            displayEnemy(scene, width, height);
+            scene.enemy = null;
+            scene.create();
             }
         },  // Added Dev button
     ];
@@ -71,6 +70,28 @@ function displayNavButtons(scene, width, height) {
 }
 
 function displayEnemyInfo(scene, width) {
+    // Clear old enemy info if it exists
+    if (scene.enemyNameText) {
+        scene.enemyNameText.destroy();
+        scene.enemyNameText = null;
+    }
+    if (scene.healthBarBg) {
+        scene.healthBarBg.destroy();
+        scene.healthBarBg = null;
+    }
+    if (scene.healthBar) {
+        scene.healthBar.destroy();
+        scene.healthBar = null;
+    }
+    if (scene.healthText) {
+        scene.healthText.destroy();
+        scene.healthText = null;
+    }
+    if (scene.caughtIcon) {
+        scene.caughtIcon.destroy();
+        scene.caughtIcon = null;
+    }
+
     // Text style for enemy details
     const textStyle = {
         font: '18px Arial',
@@ -142,27 +163,33 @@ export function displayEnemy(scene, width, height) {
         console.warn('Enemy Pokémon is not loaded.');
         return;
     }
-    else {
-        displayEnemyInfo(scene, width);
-        // Calculate game area sizes
-        var gameAreaHeight = height - topGameBarHeight - bottomGameBarHeight
-        var topContainerHeight = gameAreaHeight / 2;
     
-        // // Destroy the old sprite if it exists
-        // if (this.enemySprite) {
-        //     console.log('Removing existing enemy sprite...');
-        //     this.enemySprite.destroy();
-        //     this.enemySprite = null;
-        // }
-    
-        console.log('Displaying enemy sprite...');
-        const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite)
+    displayEnemyInfo(scene, width);
+    // Calculate game area sizes
+    var gameAreaHeight = height - topGameBarHeight - bottomGameBarHeight;
+    var topContainerHeight = gameAreaHeight / 2;
+
+    // Destroy the old sprite if it exists
+    if (scene.enemySprite) {
+        console.log('Removing existing enemy sprite...');
+        scene.enemySprite.destroy();
+        scene.enemySprite = null;
+    }
+
+    console.log('Displaying enemy sprite...');
+    // Create and display the new enemy sprite
+    const enemySprite = scene.add.image(width / 2, topContainerHeight / 2, `${scene.enemy.name}Sprite`, scene.enemy.sprite)
         .setOrigin(0.5)
         .setDisplaySize(96, 96);
-        // const text = scene.add.text(width / 2, topContainerHeight / 2, capitalizeName(scene.enemy.name), textStyle).setOrigin(0.5);
-        scene.topContainer.add(enemySprite);
-    }
+    
+    // Optionally, add text or other data here if needed
+    // const text = scene.add.text(width / 2, topContainerHeight / 2, capitalizeName(scene.enemy.name), textStyle).setOrigin(0.5);
+    
+    // Store the new sprite in the scene for future reference
+    scene.enemySprite = enemySprite;
+    scene.topContainer.add(enemySprite);
 }
+
 
 export function displayPlayerTeam(scene, width, height) {
     var playerTeam = getPlayerTeam();

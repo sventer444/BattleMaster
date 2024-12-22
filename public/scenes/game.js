@@ -1,10 +1,12 @@
 import BaseScene from './base.js';
 import { initializeGameUI, displayEnemy, displayPlayerTeam } from '../ui/uisetup.js';
+import { getPokemonByEncounterRate } from '../helpers/pokemonhelpers.js';
 
 export default class GameScene extends BaseScene {
     constructor(key) {
         super(key);
         this.enemy = null;
+        this.encounterPool = [];
     }
 
     preload() {
@@ -17,12 +19,15 @@ export default class GameScene extends BaseScene {
         super.create();
         const { width, height } = this.scale;
     
-        displayEnemy(this, width, height);
+        getPokemonByEncounterRate(this, this.encounterPool)
+        .then((pokemon) => {
+            this.enemy = pokemon
+            displayEnemy(this, width, height);
+        });
         displayPlayerTeam(this, width, height);
     }
 
     shutdown(){
-        this.enemy = null;
         super.shutdown();
     }
 }
