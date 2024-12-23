@@ -283,74 +283,75 @@ function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
-function handleEnemyAttack(scene) {
-    if (!scene.enemy || !scene.playerTeam || scene.playerTeam.length === 0) {
-        console.warn('No enemy or player Pokémon available.');
-        return;
-    }
+// function handleEnemyAttack(scene) {
+//     console.log('party', scene.playerTeam.length)
+//     if (!scene.enemy || !scene.playerTeam || scene.playerTeam.length === 0) {
+//         console.warn('No enemy or player Pokémon available.');
+//         return;
+//     }
 
-    const enemy = scene.enemy;
-    const playerPokemon = scene.playerTeam[0]; // Front Pokémon in the player's team
+//     const enemy = scene.enemy;
+//     const playerPokemon = scene.playerTeam[0]; // Front Pokémon in the player's team
 
-    // Base damage calculation
-    const basePower = 50;
+//     // Base damage calculation
+//     const basePower = 50;
 
-    // Use the higher of attack or special attack
-    const enemyAttack =
-        enemy.stats.attack > enemy.stats.specialAttack
-            ? enemy.stats.attack
-            : enemy.stats.specialAttack;
+//     // Use the higher of attack or special attack
+//     const enemyAttack =
+//         enemy.stats.attack > enemy.stats.specialAttack
+//             ? enemy.stats.attack
+//             : enemy.stats.specialAttack;
 
-    // Use the higher of defense or special defense
-    const playerDefense =
-        playerPokemon.stats.defense > playerPokemon.stats.specialDefense
-            ? playerPokemon.stats.defense
-            : playerPokemon.stats.specialDefense;
+//     // Use the higher of defense or special defense
+//     const playerDefense =
+//         playerPokemon.stats.defense > playerPokemon.stats.specialDefense
+//             ? playerPokemon.stats.defense
+//             : playerPokemon.stats.specialDefense;
 
-    // The move always has the type multiplier
-    const typeMatchMultiplier = 1.5;
+//     // The move always has the type multiplier
+//     const typeMatchMultiplier = 1.5;
 
-    // Implement type matchup of player Pokémon types vs. enemy's move type
-    const typeEffectiveness = calculateTypeEffectiveness(
-        enemy.types[0],
-        playerPokemon.types
-    );
+//     // Implement type matchup of player Pokémon types vs. enemy's move type
+//     const typeEffectiveness = calculateTypeEffectiveness(
+//         enemy.types[0],
+//         playerPokemon.types
+//     );
 
-    // Calculate damage
-    const damage = Math.floor(
-        (basePower * (enemyAttack / playerDefense) * typeMatchMultiplier * typeEffectiveness) / 2
-    );
+//     // Calculate damage
+//     const damage = Math.floor(
+//         (basePower * (enemyAttack / playerDefense) * typeMatchMultiplier * typeEffectiveness) / 2
+//     );
 
-    // Apply damage to player's Pokémon
-    playerPokemon.currentStats.currentHP -= damage;
-    console.log(
-        `${enemy.name} dealt ${damage} damage to ${playerPokemon.name}. Remaining HP: ${playerPokemon.currentStats.currentHP}`
-    );
+//     // Apply damage to player's Pokémon
+//     playerPokemon.currentStats.currentHP -= damage;
+//     console.log(
+//         `${enemy.name} dealt ${damage} damage to ${playerPokemon.name}. Remaining HP: ${playerPokemon.currentStats.currentHP}`
+//     );
 
-    // Check if player's Pokémon fainted
-    if (playerPokemon.currentStats.currentHP <= 0) {
-        console.log(`${playerPokemon.name} fainted!`);
-        playerPokemon.currentStats.currentHP = 0;
+//     // Check if player's Pokémon fainted
+//     if (playerPokemon.currentStats.currentHP <= 0) {
+//         console.log(`${playerPokemon.name} fainted!`);
+//         playerPokemon.currentStats.currentHP = 0;
 
-        // Mark Pokémon as fainted but don't remove it from the team
-        playerPokemon.fainted = true;
+//         // Mark Pokémon as fainted but don't remove it from the team
+//         playerPokemon.fainted = true;
 
-        // Check if all Pokémon have fainted
-        const allFainted = scene.playerTeam.every(pokemon => pokemon.fainted);
-        if (allFainted) {
-            console.log('All Pokémon fainted! Game Over.');
-            scene.shutdown();
-            scene.scene.start('MainMenu');
-        } else {
-            console.log('Switching to the next Pokémon.');
-            // Automatically select the next available Pokémon
-            const nextPokemon = scene.playerTeam.find(pokemon => !pokemon.fainted);
-            if (nextPokemon) {
-                console.log(`Next Pokémon: ${nextPokemon.name} enters the battle.`);
-            }
-        }
-    }
-}
+//         // Check if all Pokémon have fainted
+//         const allFainted = scene.playerTeam.every(pokemon => pokemon.fainted);
+//         if (allFainted) {
+//             console.log('All Pokémon fainted! Game Over.');
+//             scene.shutdown();
+//             scene.scene.start('MainMenu');
+//         } else {
+//             console.log('Switching to the next Pokémon.');
+//             // Automatically select the next available Pokémon
+//             const nextPokemon = scene.playerTeam.find(pokemon => !pokemon.fainted);
+//             if (nextPokemon) {
+//                 console.log(`Next Pokémon: ${nextPokemon.name} enters the battle.`);
+//             }
+//         }
+//     }
+// }
 
 /**
  * Calculates type effectiveness multiplier.

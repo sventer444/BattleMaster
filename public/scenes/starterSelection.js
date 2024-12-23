@@ -4,18 +4,10 @@ import BaseScene from './base.js';
 export default class StarterSelection extends BaseScene {
     constructor() {
         super('StarterSelection');
-        this.starters = ['bulbasaur', 'charmander', 'squirtle']; // Starter Pokémon names
+        this.starters = [];
     }
 
-    async preload() {
-        for (const name of this.starters) {
-            const pokemon = await fetchPokemon(this, name, 5); // Fetch Pokémon data
-            this.load.image(`${name}Sprite`, pokemon.sprite); // Dynamically preload the sprite
-        }
-    }
-    
-
-    create() {
+    async create() {
         super.create();
         const { width, height } = this.scale;
         this.cameras.main.setBackgroundColor('#555555');
@@ -24,6 +16,11 @@ export default class StarterSelection extends BaseScene {
             color: '#ffffff',
         }).setOrigin(0.5);
     
+        const starterNames = ['Bulbasaur', 'Charmander', 'Squirtle'];
+        for (const name of starterNames) {
+            const pokemon = await fetchPokemon(this, name, 5); // Fetch Pokémon data
+            this.starters.push(pokemon);
+        }
         this.displayStarters(this, width, height);
     }
     
@@ -38,17 +35,16 @@ export default class StarterSelection extends BaseScene {
         const startY = height / 2; // Vertically center the sprites
     
         // Destroy old sprites if they exist
-        if (scene.starterSprites) {
-            scene.starterSprites.forEach(sprite => sprite.destroy());
-        }
-        scene.starterSprites = [];
+        // if (scene.starterSprites) {
+        //     scene.starterSprites.forEach(sprite => sprite.destroy());
+        // }
+        // scene.starterSprites = [];
     
-        scene.starters.forEach((name, index) => {
+        scene.starters.forEach((pokemon, index) => {
             const x = startX + index * 120;
     
-            console.log(`Displaying starter sprite for ${name}...`);
             // Create and display the starter sprite
-            const starterSprite = scene.add.image(x, startY, `${name}Sprite`)
+            const starterSprite = scene.add.image(x, startY, `${pokemon.name}Sprite`, pokemon.sprite)
                 .setOrigin(0.5)
                 .setDisplaySize(96, 96)
                 .setAlpha(0) // Start with 0 alpha (invisible)
@@ -66,7 +62,7 @@ export default class StarterSelection extends BaseScene {
             // Add hover and click interaction
             starterSprite.setInteractive();
             starterSprite.on('pointerdown', () => {
-                scene.chooseStarter(name);
+                scene.chooseStarter(pokemon.name);
             });
             starterSprite.on('pointerover', () => {
                 starterSprite.setScale(1.1); // Slightly enlarge on hover
@@ -76,10 +72,10 @@ export default class StarterSelection extends BaseScene {
             });
     
             // Store the sprite for future reference
-            scene.starterSprites.push(starterSprite);
+            // scene.starterSprites.push(starterSprite);
     
             // Display Pokémon name below the sprite
-            scene.add.text(x, startY + 70, name, {
+            scene.add.text(x, startY + 70, pokemon.name, {
                 font: '18px Arial',
                 color: '#ffffff',
             }).setOrigin(0.5);
@@ -116,8 +112,6 @@ export default class StarterSelection extends BaseScene {
                 },
                 body: JSON.stringify({ route: 'KantoRoute1' }),
             });
-
-            console.log('Player data updated on the server.');
 
             // Add to player's team
             await addPokemonToPlayerTeam(this, starterName);
